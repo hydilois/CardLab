@@ -1,0 +1,104 @@
+{# utilisateur #}
+
+{% extends 'base.html.twig' %}
+{% block title %}Gestion des utilisateurs{% endblock %}
+{% block contenu %}
+        <div class="row">
+        <div class="col-sm-12">
+        <section class="panel">
+        <header class="panel-heading text-center">
+            <h1>Liste des utilisateurs </h1>
+        </header>
+        <div class="panel-body">
+        <div class="adv-table">
+        <table  class="display table table-bordered table-striped" id="dynamic-table">
+        <thead>
+        <tr>
+            <th>Actions</th>
+            <th>Nom</th>
+            <th>Login</th>
+            <th>Adresse Email</th>
+            <th>Numéro de téléphone</th>
+            <th>Activer / Desactiver</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for utilisateur in utilisateurs %}
+            <tr>
+                <td>
+                <div class="input-group-btn">
+                  <button type="button" class="btn btn-primary btn-flat dropdown-toggle" data-toggle="dropdown" aria-expanded="true">Actions
+                    <span class="fa fa-caret-down"></span></button>
+                  <ul class="dropdown-menu">
+                    <li>
+                        <a name="show-utilisateur" data-utilisateur="{{utilisateur.id}}"><i class="fa fa-eye"></i> Voir Utilisateur</a>
+                    </li>
+                    <li><a href="{{ path('utilisateur_edit', { 'id': utilisateur.id }) }}"><i class="fa fa-edit"></i> Editer Utilisateur</a></li>
+                  </ul>
+                </div>
+                </td>
+                <td>{{ utilisateur.nom }}</td>
+                <td>{{ utilisateur.username }}</td>
+                <td>{{ utilisateur.email }}</td>
+                <td>{{ utilisateur.numeroTelephone }}</td>
+                <td>
+                    {% if utilisateur.enabled %}
+                        <a href="{{ path('utilisateur_disable', { 'id': utilisateur.id }) }}" class="btn btn-danger" > Désactiver
+                        </a>
+                    {% else %}
+                        <a href="{{ path('utilisateur_enable', { 'id': utilisateur.id }) }}" class="btn btn-warning">Activer</a>
+                    {% endif %}
+                                
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        </table>
+        </div>
+        </div>
+        </section>
+        </div>
+        <!-- modal window to show utilisateur-details-->
+
+        <div class="modal fade modal-show-utilisateur-details" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+          <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+              <div class="modal-header">
+                    <h3 class="text-center">Consulter Un utilisateur</h3>
+              </div>
+              <div class="modal-body">
+                <div class="table-responsive">          
+                    <table class="table table-striped">
+                    <tr>
+                        <td> ID Utilisateur: </td>
+                        <td id="idUtilisateur"></td>
+                    </tr>
+                    <tr>
+                        <td>Nom de l'utilisateur :</td>
+                        <td id="nomUtilisateur"></td>
+                    </tr>
+                    <tr>
+                        <td>Login :</td>
+                        <td id="loginUser"></td>
+                    </tr>
+                    <tr>
+                        <td>Adresse Email :</td>
+                        <td id="emailUtilisateur"></td>
+                    </tr>
+                    <tr>
+                        <td>Numéro de téléphone:</td>
+                        <td id="numeroTelephone"></td>
+                    </tr>
+                </table>
+                </div>
+              </div>
+              <div class="modal-footer">
+              </div>
+            </div>
+          </div>
+        </div>
+        </div>
+    {% include './utilisateur/extras.css.html.twig' %}
+    {% include './utilisateur/extras.js.html.twig' %}
+{% endblock %}
+

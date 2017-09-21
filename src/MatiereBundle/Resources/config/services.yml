@@ -1,0 +1,4 @@
+services:
+#    matiere.example:
+#        class: MatiereBundle\Example
+#        arguments: ["@service_id", "plain_value", "%parameter%"]

@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block contenu %}
+    <div class="row">
+        <div class="col-md-offset-1 col-lg-10 col-md-10 col-sm-10 col-xs-10">
+        <section class="panel">
+            <header class="panel-heading text-center">
+                <h1>Nouvelle année scolaire</h1>
+            </header><!-- /header -->
+            <div class="panel-body">
+                <div class="row">
+            {{ form_start(form) }}
+            <div class=" col-md-offset-2 col-md-8 col-sm-8">
+                <fieldset>
+                    <legend>Renseigner les nouvelles informations sur l'année scolaire</legend>
+                        <div class="form-group">
+                            {{form_label(form.anneeDebut)}}
+                            {{form_errors(form.anneeDebut)}}
+                            {{form_widget(form.anneeDebut, {'attr':{'class':'form-control'}})}}
+                        </div>
+                        <div class="form-group">
+                            {{form_label(form.anneeFin)}}
+                            {{form_errors(form.anneeFin)}}
+                            {{form_widget(form.anneeFin, {'attr':{'class':'form-control'}})}}
+                        </div>
+                        <div class="form-group">
+                            {{form_label(form.isAnneeEnCour)}}
+                            {{form_errors(form.isAnneeEnCour)}}
+                            {{form_widget(form.isAnneeEnCour)}}
+                        </div>
+                </fieldset>
+            </div>
+                </div>
+                <table class="pull-right">
+                    <tr>
+                        <td><input type="submit" class="btn btn-default" value="Enregistrer" /></td>
+                        <td>&nbsp;</td>
+                        <td><a class="btn btn-primary" href="{{ path('annee_index') }}">Retour à la liste</a></td>
+                        <td>&nbsp;</td>
+                    </tr>
+                </table>
+            </div>
+            {{ form_end(form) }}
+        </section>
+    </div>
+    </div>
+    {% include './classe/extras.css.html.twig' %}
+{% endblock %}
+

@@ -1,0 +1,44 @@
+student:
+    resource: "@StudentBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+note:
+    resource: "@NoteBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+matiere:
+    resource: "@MatiereBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+gestion:
+    resource: "@GestionBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+config_etablissement:
+    resource: "@ConfigBundle/Controller/EtablissementController.php"
+    type:     annotation
+
+config:
+    resource: "@ConfigBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+user_utilisateur:
+    resource: "@UserBundle/Controller/UtilisateurController.php"
+    type:     annotation
+
+user:
+    resource: "@UserBundle/Controller/"
+    type:     annotation
+    prefix:   /
+
+app:
+    resource: '@AppBundle/Controller/'
+    type: annotation
+    
+fos_user:
+    resource: "@FOSUserBundle/Resources/config/routing/all.xml"

@@ -1,0 +1,30 @@
+ {% trans_default_domain 'FOSUserBundle' %}
+
+
+	<body class="login-body">
+
+	<div class="container">
+
+	    {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register form-signin'}}) }}
+	        <div class="form-signin-heading text-center">
+	            <h1 class="sign-title">Créer votre compte</h1>
+	        </div>
+
+	        <div class="login-wrap">
+	            {# <p>Informations personnelles</p> #}
+	            {{ form_widget(form) }}
+	            <button type="submit" class="btn btn-lg btn-login btn-block" value="" >{{ 'registration.submit'|trans }}</button>
+
+	            <div class="registration">
+	                Déjà enregistré(e).
+	                <a href="{{path('fos_user_security_login')}}" class="">
+	                    Se Connecter
+	                </a>
+	            </div>
+
+	        </div>
+
+	    {{ form_end(form) }}
+
+	</div>
+</body>

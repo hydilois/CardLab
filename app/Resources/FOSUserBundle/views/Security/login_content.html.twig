@@ -1,0 +1,71 @@
+
+
+{% trans_default_domain 'FOSUserBundle' %}
+
+{% if error %}
+    <div class="text-center" style="color:white; font-size: 1.5em;">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+{% endif %}
+
+<body class="login-body">
+
+<div class="container">
+    <form class="form-signin" action="{{ path("fos_user_security_check") }}" method="post">
+    {% if csrf_token %}
+        <input type="hidden" name="_csrf_token" value="{{ csrf_token }}" />
+    {% endif %}
+        <div class="form-signin-heading text-center">
+            <h1 class="sign-title">Se connecter</h1>
+            {# <img src="{{asset('images/login-logo.png')}}" alt=""/> #}
+            <h2 class="text-center" style="color:black">GST-CardLab</h2>
+        </div>
+        <div class="login-wrap">
+            <label for="username">{{ 'security.login.username'|trans }}</label>
+            <input class="form-control" type="text" id="username" name="_username" value="{{ last_username }}" required="required" />
+
+            <label for="password">{{ 'security.login.password'|trans }}</label>
+            <input class="form-control" type="password" id="password" name="_password" required="required" />
+
+            <button type="submit" id="_submit" class="btn btn-lg btn-login btn-block" name="_submit" value="{{ 'security.login.submit'|trans }}"><i class="fa fa-check"></i>
+            </button>
+            <div class="registration">
+                Pas de compte ?
+                <a class="" href="{{path('fos_user_registration_register')}}">
+                    S'enregistrer
+                </a>
+            </div>
+            <label class="checkbox">
+                <input type="checkbox" id="remember_me" name="_remember_me" value="on" />
+                <label for="remember_me">{{ 'security.login.remember_me'|trans }}</label>
+
+                <span class="pull-right">
+                    <a href="{{path('fos_user_resetting_request')}}"> Mot de passe oublié?</a>
+
+                </span>
+            </label>
+        </div>
+
+        <!-- Modal -->
+        <div aria-hidden="true" aria-labelledby="myModalLabel" role="dialog" tabindex="-1" id="myModal" class="modal fade">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                        <h4 class="modal-title">Mot de passe Oublié ?</h4>
+                    </div>
+                    <div class="modal-body">
+                        <p>Entrer votre mot addresse email pour reinitialiser votre mot de passe.</p>
+                        <input type="text" name="email" placeholder="Email" autocomplete="off" class="form-control placeholder-no-fix">
+
+                    </div>
+                    <div class="modal-footer">
+                        <button data-dismiss="modal" class="btn btn-default" type="button">Annuler</button>
+                        <button class="btn btn-primary" type="button">Valider</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- modal -->
+    </form>        
+    </div>
+    
+</body>
