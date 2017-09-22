@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Constante</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ constante.id }}</td>
+            </tr>
+            <tr>
+                <th>Ville</th>
+                <td>{{ constante.ville }}</td>
+            </tr>
+            <tr>
+                <th>Nomfrancais</th>
+                <td>{{ constante.nomFrancais }}</td>
+            </tr>
+            <tr>
+                <th>Nomanglais</th>
+                <td>{{ constante.nomAnglais }}</td>
+            </tr>
+            <tr>
+                <th>Devisefrancais</th>
+                <td>{{ constante.deviseFrancais }}</td>
+            </tr>
+            <tr>
+                <th>Deviseanglais</th>
+                <td>{{ constante.deviseAnglais }}</td>
+            </tr>
+            <tr>
+                <th>Boitepostal</th>
+                <td>{{ constante.boitePostal }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('constante_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('constante_edit', { 'id': constante.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

@@ -76,6 +76,7 @@ class Constante
     /**
      * @ORM\OneToOne(targetEntity="StudentBundle\Entity\Image",cascade={"persist", "remove"})
      * @ORM\JoinColumn(name="logo_id", referencedColumnName="id", nullable=true)
+     *  @Assert\Valid()
      */
     private $logo;
 
@@ -277,29 +278,5 @@ class Constante
     public function getBoitePostal()
     {
         return $this->boitePostal;
-    }
-
-    /**
-     * Set logo
-     *
-     * @param \StudentBundle\Entity\Image $logo
-     *
-     * @return Constante
-     */
-    public function setLogo(\StudentBundle\Entity\Image $logo = null)
-    {
-        $this->logo = $logo;
-
-        return $this;
-    }
-
-    /**
-     * Get logo
-     *
-     * @return \StudentBundle\Entity\Image
-     */
-    public function getLogo()
-    {
-        return $this->logo;
     }
 }
