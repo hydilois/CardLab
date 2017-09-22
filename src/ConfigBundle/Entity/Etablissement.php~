@@ -6,13 +6,13 @@ use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 /**
- * Constante
+ * Etablissement
  *
- * @ORM\Table(name="constante")
- * @ORM\Entity(repositoryClass="ConfigBundle\Repository\ConstanteRepository")
+ * @ORM\Table(name="etablissement")
+ * @ORM\Entity(repositoryClass="ConfigBundle\Repository\EtablissementRepository")
  */
-class Constante {
-
+class Etablissement
+{
     /**
      * @var int
      *
@@ -24,106 +24,58 @@ class Constante {
 
     /**
      * @var string
-     * 
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     *
+     * @ORM\Column(name="ville", type="string", length=100, unique=true)
      */
     private $ville;
 
     /**
      * @var string
-     * 
-     * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
+     *
+     * @ORM\Column(name="nomFrancais", type="string", length=255, unique=true)
      */
     private $nomFrancais;
 
     /**
      * @var string
-     * 
-     * @ORM\Column(type="string", length=255)
+     *
+     * @ORM\Column(type="string", length=255, unique=true)
      * @Assert\NotBlank()
      */
     private $nomAnglais;
 
     /**
      * @var string
-     * 
-     * @ORM\Column(type="string", length=255)
+     *
+     * @ORM\Column(type="string", length=100)
      * @Assert\NotBlank()
      */
     private $deviseFrancais;
 
     /**
      * @var string
-     * 
-     * @ORM\Column(type="string", length=255)
+     *
+     * @ORM\Column(type="string", length=100)
      * @Assert\NotBlank()
      */
     private $deviseAnglais;
 
     /**
      * @var string
-     * 
-     * @ORM\Column(type="string", length=255)
+     *
+     * @ORM\Column(type="string", length=100)
      * @Assert\NotBlank()
      */
     private $boitePostal;
 
     /**
-     * @ORM\Column(type="string", length=255)
-     */
-    private $logo;
-
-    /**
      * Get id
      *
-     * @return integer 
+     * @return int
      */
-    public function getId() {
+    public function getId()
+    {
         return $this->id;
-    }
-
-    /**
-     * Set url
-     *
-     * @param string $url
-     * @return Image
-     */
-    public function setUrl($url) {
-        $this->url = $url;
-
-        return $this;
-    }
-
-    /**
-     * Get url
-     *
-     * @return string 
-     */
-    public function getUrl() {
-        return $this->url;
-    }
-
-    /**
-     * Set alt
-     *
-     * @param string $alt
-     * @return Image
-     */
-    public function setAlt($alt) {
-        $this->alt = $alt;
-
-        return $this;
-    }
-
-    /**
-     * Get alt
-     *
-     * @return string 
-     */
-    public function getAlt() {
-        return $this->alt;
     }
 
     /**
@@ -131,9 +83,10 @@ class Constante {
      *
      * @param string $ville
      *
-     * @return Constante
+     * @return Etablissement
      */
-    public function setVille($ville) {
+    public function setVille($ville)
+    {
         $this->ville = $ville;
 
         return $this;
@@ -144,7 +97,8 @@ class Constante {
      *
      * @return string
      */
-    public function getVille() {
+    public function getVille()
+    {
         return $this->ville;
     }
 
@@ -153,9 +107,10 @@ class Constante {
      *
      * @param string $nomFrancais
      *
-     * @return Constante
+     * @return Etablissement
      */
-    public function setNomFrancais($nomFrancais) {
+    public function setNomFrancais($nomFrancais)
+    {
         $this->nomFrancais = $nomFrancais;
 
         return $this;
@@ -166,7 +121,8 @@ class Constante {
      *
      * @return string
      */
-    public function getNomFrancais() {
+    public function getNomFrancais()
+    {
         return $this->nomFrancais;
     }
 
@@ -175,9 +131,10 @@ class Constante {
      *
      * @param string $nomAnglais
      *
-     * @return Constante
+     * @return Etablissement
      */
-    public function setNomAnglais($nomAnglais) {
+    public function setNomAnglais($nomAnglais)
+    {
         $this->nomAnglais = $nomAnglais;
 
         return $this;
@@ -188,7 +145,8 @@ class Constante {
      *
      * @return string
      */
-    public function getNomAnglais() {
+    public function getNomAnglais()
+    {
         return $this->nomAnglais;
     }
 
@@ -197,9 +155,10 @@ class Constante {
      *
      * @param string $deviseFrancais
      *
-     * @return Constante
+     * @return Etablissement
      */
-    public function setDeviseFrancais($deviseFrancais) {
+    public function setDeviseFrancais($deviseFrancais)
+    {
         $this->deviseFrancais = $deviseFrancais;
 
         return $this;
@@ -210,7 +169,8 @@ class Constante {
      *
      * @return string
      */
-    public function getDeviseFrancais() {
+    public function getDeviseFrancais()
+    {
         return $this->deviseFrancais;
     }
 
@@ -219,9 +179,10 @@ class Constante {
      *
      * @param string $deviseAnglais
      *
-     * @return Constante
+     * @return Etablissement
      */
-    public function setDeviseAnglais($deviseAnglais) {
+    public function setDeviseAnglais($deviseAnglais)
+    {
         $this->deviseAnglais = $deviseAnglais;
 
         return $this;
@@ -232,7 +193,8 @@ class Constante {
      *
      * @return string
      */
-    public function getDeviseAnglais() {
+    public function getDeviseAnglais()
+    {
         return $this->deviseAnglais;
     }
 
@@ -241,9 +203,10 @@ class Constante {
      *
      * @param string $boitePostal
      *
-     * @return Constante
+     * @return Etablissement
      */
-    public function setBoitePostal($boitePostal) {
+    public function setBoitePostal($boitePostal)
+    {
         $this->boitePostal = $boitePostal;
 
         return $this;
@@ -254,8 +217,8 @@ class Constante {
      *
      * @return string
      */
-    public function getBoitePostal() {
+    public function getBoitePostal()
+    {
         return $this->boitePostal;
     }
-
 }

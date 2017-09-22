@@ -5,16 +5,14 @@ namespace ConfigBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
-use Symfony\Component\HttpFoundation\File\UploadedFile;
-
 /**
  * Constante
  *
  * @ORM\Table(name="constante")
  * @ORM\Entity(repositoryClass="ConfigBundle\Repository\ConstanteRepository")
  */
-class Constante
-{
+class Constante {
+
     /**
      * @var int
      *
@@ -24,7 +22,6 @@ class Constante
      */
     private $id;
 
-
     /**
      * @var string
      * 
@@ -32,7 +29,7 @@ class Constante
      * @Assert\NotBlank()
      */
     private $ville;
-    
+
     /**
      * @var string
      * 
@@ -74,8 +71,7 @@ class Constante
     private $boitePostal;
 
     /**
-     * @ORM\OneToOne(targetEntity="StudentBundle\Entity\Image",cascade={"persist", "remove"})
-     * @ORM\JoinColumn(name="logo_id", referencedColumnName="id", nullable=true)
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $logo;
 
@@ -84,8 +80,7 @@ class Constante
      *
      * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -95,8 +90,7 @@ class Constante
      * @param string $url
      * @return Image
      */
-    public function setUrl($url)
-    {
+    public function setUrl($url) {
         $this->url = $url;
 
         return $this;
@@ -107,8 +101,7 @@ class Constante
      *
      * @return string 
      */
-    public function getUrl()
-    {
+    public function getUrl() {
         return $this->url;
     }
 
@@ -118,8 +111,7 @@ class Constante
      * @param string $alt
      * @return Image
      */
-    public function setAlt($alt)
-    {
+    public function setAlt($alt) {
         $this->alt = $alt;
 
         return $this;
@@ -130,8 +122,7 @@ class Constante
      *
      * @return string 
      */
-    public function getAlt()
-    {
+    public function getAlt() {
         return $this->alt;
     }
 
@@ -142,8 +133,7 @@ class Constante
      *
      * @return Constante
      */
-    public function setVille($ville)
-    {
+    public function setVille($ville) {
         $this->ville = $ville;
 
         return $this;
@@ -154,8 +144,7 @@ class Constante
      *
      * @return string
      */
-    public function getVille()
-    {
+    public function getVille() {
         return $this->ville;
     }
 
@@ -166,8 +155,7 @@ class Constante
      *
      * @return Constante
      */
-    public function setNomFrancais($nomFrancais)
-    {
+    public function setNomFrancais($nomFrancais) {
         $this->nomFrancais = $nomFrancais;
 
         return $this;
@@ -178,8 +166,7 @@ class Constante
      *
      * @return string
      */
-    public function getNomFrancais()
-    {
+    public function getNomFrancais() {
         return $this->nomFrancais;
     }
 
@@ -190,8 +177,7 @@ class Constante
      *
      * @return Constante
      */
-    public function setNomAnglais($nomAnglais)
-    {
+    public function setNomAnglais($nomAnglais) {
         $this->nomAnglais = $nomAnglais;
 
         return $this;
@@ -202,8 +188,7 @@ class Constante
      *
      * @return string
      */
-    public function getNomAnglais()
-    {
+    public function getNomAnglais() {
         return $this->nomAnglais;
     }
 
@@ -214,8 +199,7 @@ class Constante
      *
      * @return Constante
      */
-    public function setDeviseFrancais($deviseFrancais)
-    {
+    public function setDeviseFrancais($deviseFrancais) {
         $this->deviseFrancais = $deviseFrancais;
 
         return $this;
@@ -226,8 +210,7 @@ class Constante
      *
      * @return string
      */
-    public function getDeviseFrancais()
-    {
+    public function getDeviseFrancais() {
         return $this->deviseFrancais;
     }
 
@@ -238,8 +221,7 @@ class Constante
      *
      * @return Constante
      */
-    public function setDeviseAnglais($deviseAnglais)
-    {
+    public function setDeviseAnglais($deviseAnglais) {
         $this->deviseAnglais = $deviseAnglais;
 
         return $this;
@@ -250,8 +232,7 @@ class Constante
      *
      * @return string
      */
-    public function getDeviseAnglais()
-    {
+    public function getDeviseAnglais() {
         return $this->deviseAnglais;
     }
 
@@ -262,8 +243,7 @@ class Constante
      *
      * @return Constante
      */
-    public function setBoitePostal($boitePostal)
-    {
+    public function setBoitePostal($boitePostal) {
         $this->boitePostal = $boitePostal;
 
         return $this;
@@ -274,19 +254,19 @@ class Constante
      *
      * @return string
      */
-    public function getBoitePostal()
-    {
+    public function getBoitePostal() {
         return $this->boitePostal;
     }
+
 
     /**
      * Set logo
      *
-     * @param \StudentBundle\Entity\Image $logo
+     * @param string $logo
      *
      * @return Constante
      */
-    public function setLogo(\StudentBundle\Entity\Image $logo = null)
+    public function setLogo($logo)
     {
         $this->logo = $logo;
 
@@ -296,7 +276,7 @@ class Constante
     /**
      * Get logo
      *
-     * @return \StudentBundle\Entity\Image
+     * @return string
      */
     public function getLogo()
     {

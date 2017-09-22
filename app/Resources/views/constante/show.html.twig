@@ -33,6 +33,10 @@
                 <th>Boitepostal</th>
                 <td>{{ constante.boitePostal }}</td>
             </tr>
+            <tr>
+                <th>Logo</th>
+                <td><img src="{{asset('Uploads/Logo/' ~ constante.logo)}}" /></td>
+            </tr>
         </tbody>
     </table>
 
@@ -45,7 +49,7 @@
         </li>
         <li>
             {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
+            <input type="submit" value="Delete">
             {{ form_end(delete_form) }}
         </li>
     </ul>

@@ -32,3 +32,4 @@ class Droit
         return $this->id;
     }
 }
+
