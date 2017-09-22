@@ -13,10 +13,6 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Student {
 
-    public function __toString() {
-        return $this->getNom();
-    }
-
     /**
      * @var int
      *
@@ -372,28 +368,6 @@ class Student {
      */
     public function getClasse() {
         return $this->classe;
-    }
-
-    /**
-     * Set photo
-     *
-     * @param string $photo
-     *
-     * @return Student
-     */
-    public function setPhoto($photo) {
-        $this->photo = $photo;
-
-        return $this;
-    }
-
-    /**
-     * Get photo
-     *
-     * @return string
-     */
-    public function getPhoto() {
-        return $this->photo;
     }
 
 }

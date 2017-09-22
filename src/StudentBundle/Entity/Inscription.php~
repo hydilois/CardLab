@@ -60,7 +60,6 @@ class Inscription
 
     /**
      * @ORM\ManyToOne(targetEntity="ConfigBundle\Entity\Annee")
-     * @Assert\NotBlank()
      */
     private $annee;
 

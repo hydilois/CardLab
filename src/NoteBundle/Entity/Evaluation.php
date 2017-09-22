@@ -11,8 +11,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Table(name="evaluation")
  * @ORM\Entity(repositoryClass="NoteBundle\Repository\EvaluationRepository")
  */
-class Evaluation
-{
+class Evaluation {
+
     /**
      * @var int
      *
@@ -21,7 +21,6 @@ class Evaluation
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-
 
     /**
      * @ORM\ManyToOne(targetEntity="StudentBundle\Entity\Student")
@@ -205,5 +204,5 @@ class Evaluation
     public function getClasse() {
         return $this->classe;
     }
-}
 
+}

@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block body -%}
+
+    <div class="row">
+        <div class="col-sm-12">
+            <section class="panel">
+                <header class="panel-heading">
+                    Liste des élèves non inscrits
+                    <span class="tools pull-right">
+                        <a href="javascript:;" class="fa fa-chevron-down"></a>
+                        <a href="javascript:;" class="fa fa-times"></a>
+                    </span>
+                </header>
+                <div class="panel-body">
+                    <div class="adv-table">
+                        <table class="display table table-bordered" id="hidden-table-info">
+                            <thead>
+                                <tr>
+                                    <th class="text-center">Matricule</th>
+                                    <th class="text-center">Nom et pr&eacute;nom</th>
+                                    <th class="text-center">Classe</th>
+                                    <th class="text-center">Ann&eacute;e Acad&eacute;mique</th>
+                                    <th class="text-center">Avance</th>
+                                    <th class="text-center">Date Derni&egrave;re Avance</th>
+                                    <th class="text-center">Action</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for entity in entities %}
+                                    <tr>
+                                        <td class="text-center">{{ entity.matricule }}</td>
+                                        <td class="text-center">{{ entity.nom }}</td>
+                                        <td class="text-center">{{ entity.classe }}</td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td class="text-center">
+                                            <a href="{{ path('inscription_new', { 'studentId': entity.id }) }}">Inscrire</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                                {% for incrip in incriptionsNonCompletes  %}
+                                    <tr>
+                                        <td class="text-center">{{ incrip.student.matricule }}</td>
+                                        <td class="text-center">{{ incrip.student.nom }}</td>
+                                        <td class="text-center">{{ incrip.classe }}</td>
+                                        <td class="text-center">{{ incrip.annee }}</td>
+                                        <td class="text-center">{{ incrip.avance }}</td>
+                                        <td class="text-center">{% if incrip.dateDerniereAvance %}{{ incrip.dateDerniereAvance|date('d-m-Y') }}{% endif %}</td>
+                                        <td class="text-center">
+                                            <a href="{{ path('inscription_edit', { 'id': incrip.id }) }}">Completer</a>
+                                        </td>
+                                    </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <a class="btn btn-grey" href="{{ path('inscription_index') }}">
+        Retour &agrave; la liste
+    </a>
+    {% include '/categorie/extras_categorie.css.html.twig' %}
+    {% include '/categorie/extras_categorie.js.html.twig' %}
+{% endblock %}

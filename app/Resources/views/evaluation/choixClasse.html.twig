@@ -1,0 +1,41 @@
+
+{% extends 'base.html.twig' %}
+{% block body -%}
+    <div class="form-article panel panel-default">
+        <fieldset class="col-md-12">
+            <legend>
+                Gestion des salles de classes
+            </legend>
+            <span class="col-md-12">
+                <table class="display table table-bordered table-striped" id="dynamic-table">
+                    <thead>
+                        <tr>
+                            <th>N°</th>
+                            <th>Liste des salles de classes</th>
+                            <th>Notes</th>
+                            <th>Absences</th>
+                            <th>Bulletins</th>
+                            <th>Statistiques</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% set num = 1 %}
+                        {% for classe in classes %}
+                            <tr>
+                                <td>{{num}}</td>
+                                <td>{{classe}}</td>
+                                <td><a href="#" class="">Insérer</a></td>
+                                <td><a href="#" class="">Ajouter</a></td>
+                                <td><a href="#" class="">Générer</a></td>
+                                <td><a href="#" class="">Produire</a></td>
+                            </tr>
+                            {% set num = num + 1 %}
+                        {% endfor  %}
+                    </tbody>
+                </table>
+            </span>
+        </fieldset>
+    </div>
+    {% include '/categorie/extras_categorie.css.html.twig' %}
+    {% include '/categorie/extras_categorie.js.html.twig' %}
+{% endblock %}

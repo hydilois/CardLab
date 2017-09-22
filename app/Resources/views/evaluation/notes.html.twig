@@ -1,0 +1,57 @@
+{% extends 'base.html.twig' %}
+
+{% block body -%}
+    <h1 class="text-center">Remplissage des notes des élèves</h1>
+
+    <div class="col-md-12">
+        <div class="row">
+            <div class="col-md-4">
+                <label for="">Ann&eacute;e Acad&eacute;mique: </label> <span>{{annee.anneeScolaire}}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label for="">Classe: </label> <span>{{classe.nom}}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label for="">Séquence: </label> <span>{{sequence.nom}}</span>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">
+                <label for="">Matière: </label> <span>{{matiere.nom}}</span>
+            </div>
+        </div>
+        <form name="notes" action="{{ path('enregistrement_note', { 'id': classe.id, 'idSeq':sequence.id, 'idMat':matiere.id})}}" method="post">
+            <table class="table table-bordered table-hover panel-primary" id="notes">
+                <thead class="panel-heading">
+                    <tr>
+                        <th>Noms et prénoms</th>
+                        <th class="col-md-2">Notes</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for eleve in eleves %}
+                        <tr>
+                            <td>{{eleve.nom}}</td>
+                            <td>
+                                <input type="text" min="0" max="20" {#value="{{ notes.student.nom }}"#} name="{{ eleve.id }}" class="form-control col-md-1" placeholder="note-{{ eleve.nom }}">
+
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div>
+                <a class="btn btn-default pull-left" href="#">
+                    Retour &agrave; l'accueil
+                </a>
+                <input class="btn btn-primary pull-right" type="submit" value="Enregistrer" />
+            </div>
+        </form>
+    </div>
+    {% include '/categorie/extras_categorie.css.html.twig' %}
+    {% include '/categorie/extras_categorie.js.html.twig' %}
+{% endblock %}

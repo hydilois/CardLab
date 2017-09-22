@@ -49,6 +49,10 @@
                 <th>Dernieretablissementfreq</th>
                 <td>{{ student.dernierEtablissementFreq }}</td>
             </tr>
+            <tr>
+                <th>Photo</th>
+                <td><img src="{{asset('Uploads/Photos/' ~ student.photo)}}" height="75px" width="100px"/></td>
+            </tr>
         </tbody>
     </table>
 
@@ -61,7 +65,7 @@
         </li>
         <li>
             {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
+            <input type="submit" value="Delete">
             {{ form_end(delete_form) }}
         </li>
     </ul>
