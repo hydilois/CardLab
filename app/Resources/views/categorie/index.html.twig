@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <ul>
+        <li>
+            <a href="{{ path('categorie_new') }}">Create a new categorie</a>
+        </li>
+    </ul>
+    <div class="row">
+    <div class="col-sm-12">
+    <section class="panel">
+    <header class="panel-heading">
+        Liste des Categories
+        <span class="tools pull-right">
+            <a href="javascript:;" class="fa fa-chevron-down"></a>
+            <a href="javascript:;" class="fa fa-times"></a>
+         </span>
+    </header>
+    <div class="panel-body">
+    <div class="adv-table">
+    <table class="display table table-bordered" id="hidden-table-info">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Nom</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for categorie in categories %}
+            <tr>
+                <td><a href="{{ path('categorie_show', { 'id': categorie.id }) }}">{{ categorie.id }}</a></td>
+                <td>{{ categorie.nom }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('categorie_show', { 'id': categorie.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('categorie_edit', { 'id': categorie.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+    </tbody>
+    </table>
+
+    </div>
+    </div>
+    </section>
+    </div>
+    </div>
+    {% include '/categorie/extras_categorie.css.html.twig' %}
+    {% include '/categorie/extras_categorie.js.html.twig' %}
+{% endblock %}

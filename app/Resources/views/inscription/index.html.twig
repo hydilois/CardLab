@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Inscriptions list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Avance</th>
+                <th>Datederniereavance</th>
+                <th>Status</th>
+                <th>Redoublant</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for inscription in inscriptions %}
+            <tr>
+                <td><a href="{{ path('inscription_show', { 'id': inscription.id }) }}">{{ inscription.id }}</a></td>
+                <td>{{ inscription.avance }}</td>
+                <td>{% if inscription.dateDerniereAvance %}{{ inscription.dateDerniereAvance|date('Y-m-d') }}{% endif %}</td>
+                <td>{% if inscription.status %}Yes{% else %}No{% endif %}</td>
+                <td>{% if inscription.redoublant %}Yes{% else %}No{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('inscription_show', { 'id': inscription.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('inscription_edit', { 'id': inscription.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('inscription_new') }}">Create a new inscription</a>
+        </li>
+    </ul>
+{% endblock %}

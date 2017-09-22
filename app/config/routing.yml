@@ -1,3 +1,51 @@
+student_cycle:
+    resource: "@StudentBundle/Controller/CycleController.php"
+    type:     annotation
+
+student_sexe:
+    resource: "@StudentBundle/Controller/SexeController.php"
+    type:     annotation
+
+student_student:
+    resource: "@StudentBundle/Controller/StudentController.php"
+    type:     annotation
+
+student_inscription:
+    resource: "@StudentBundle/Controller/InscriptionController.php"
+    type:     annotation
+
+student_classe:
+    resource: "@StudentBundle/Controller/ClasseController.php"
+    type:     annotation
+
+student_absence:
+    resource: "@StudentBundle/Controller/AbsenceController.php"
+    type:     annotation
+
+note_sequence:
+    resource: "@NoteBundle/Controller/SequenceController.php"
+    type:     annotation
+
+note_evaluation:
+    resource: "@NoteBundle/Controller/EvaluationController.php"
+    type:     annotation
+
+matiere_matiere:
+    resource: "@MatiereBundle/Controller/MatiereController.php"
+    type:     annotation
+
+matiere_est_dispense:
+    resource: "@MatiereBundle/Controller/EstDispenseController.php"
+    type:     annotation
+
+matiere_categorie:
+    resource: "@MatiereBundle/Controller/CategorieController.php"
+    type:     annotation
+
+config_droit:
+    resource: "@ConfigBundle/Controller/DroitController.php"
+    type:     annotation
+
 config_constante:
     resource: "@ConfigBundle/Controller/ConstanteController.php"
     type:     annotation

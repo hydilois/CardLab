@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Estdispense</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ estDispense.id }}</td>
+            </tr>
+            <tr>
+                <th>Coefficient</th>
+                <td>{{ estDispense.coefficient }}</td>
+            </tr>
+            <tr>
+                <th>Nombreheuresannuel</th>
+                <td>{{ estDispense.nombreHeuresAnnuel }}</td>
+            </tr>
+            <tr>
+                <th>Nombreleconsannuel</th>
+                <td>{{ estDispense.nombreLeconsAnnuel }}</td>
+            </tr>
+            <tr>
+                <th>Titulaire</th>
+                <td>{% if estDispense.titulaire %}Yes{% else %}No{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('estdispense_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('estdispense_edit', { 'id': estDispense.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
