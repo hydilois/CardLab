@@ -1,16 +1,11 @@
-{% extends 'base.html.twig' %}
-
-{% block body %}
-    <h1>Sequence creation</h1>
-
-    {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
+    {{ form_start(form, {'method': 'POST', 'action': path('sequence_new')}) }}
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">        
+        <div class="form-group">
+        {{ form_label(form.nom, "Nom de la séquence") }}
+        {{ form_widget(form.nom, {'attr':{'class':'form-control'}}) }}
+        </div>
+        <input class="btn btn-primary" type="submit" value="Enregistrer" />
+    </div>
+    </div>
     {{ form_end(form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('sequence_index') }}">Back to the list</a>
-        </li>
-    </ul>
-{% endblock %}

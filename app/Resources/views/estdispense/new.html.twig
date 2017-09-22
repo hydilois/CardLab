@@ -1,16 +1,53 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Estdispense creation</h1>
-
     {{ form_start(form) }}
-        {{ form_widget(form) }}
-        <input type="submit" value="Create" />
-    {{ form_end(form) }}
+    <div class="row">
+        <div class="col-md-offset-1 col-md-10">
+            <section class="panel">
+                <header class="panel-heading text-center">
+                    Nouvel enseignement
+                </header>
+                <div class="panel-body">
+                    <form role="form">
+                        <div class="form-group">
+                            {{ form_label(form.matiere, "Matiere") }}
+                            {{ form_widget(form.matiere, {'attr':{'class':'form-control'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.enseignant, "Enseignant") }}
+                            {{ form_widget(form.enseignant, {'attr':{'class':'form-control'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.classe, "Classe") }}
+                            {{ form_widget(form.classe, {'attr':{'class':'form-control'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.coefficient, "Coefficient") }}
+                            {{ form_widget(form.coefficient, {'attr':{'class':'form-control'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.annee, "Annee") }}
+                            {{ form_widget(form.annee, {'attr':{'class':'form-control'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.nombreHeuresAnnuel, "nombre d'heure Annuel") }}
+                            {{ form_widget(form.nombreHeuresAnnuel, {'attr':{'class':'form-control'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.nombreLeconsAnnuel, "nombre de leçons Annuel") }}
+                            {{ form_widget(form.nombreLeconsAnnuel, {'attr':{'class':'form-control'}}) }}
+                        </div>
+                        <div class="form-group">
+                            {{ form_label(form.titulaire, "Titulaire") }}
+                            {{ form_widget(form.titulaire, {'attr':{'class':'form-control'}}) }}
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                    </form>
 
-    <ul>
-        <li>
-            <a href="{{ path('estdispense_index') }}">Back to the list</a>
-        </li>
-    </ul>
+                </div>
+            </section>
+        </div>
+    </div>
+    {{ form_end(form) }}
 {% endblock %}

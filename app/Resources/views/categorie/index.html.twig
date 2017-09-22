@@ -1,24 +1,20 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <ul>
-        <li>
-            <a href="{{ path('categorie_new') }}">Create a new categorie</a>
-        </li>
-    </ul>
     <div class="row">
     <div class="col-sm-12">
     <section class="panel">
-    <header class="panel-heading">
+    <header class="panel-heading text-center">
+            <a name="add-categorie" class="btn btn-primary pull-left" href="#">Ajouter une categorie</a>
         Liste des Categories
         <span class="tools pull-right">
             <a href="javascript:;" class="fa fa-chevron-down"></a>
-            <a href="javascript:;" class="fa fa-times"></a>
+            {# <a href="javascript:;" class="fa fa-times"></a> #}
          </span>
     </header>
     <div class="panel-body">
     <div class="adv-table">
-    <table class="display table table-bordered" id="hidden-table-info">
+    <table class="display table table-bordered table-striped" id="dynamic-table">
     <thead>
     <tr>
         <th>Id</th>
@@ -29,17 +25,10 @@
     <tbody>
         {% for categorie in categories %}
             <tr>
-                <td><a href="{{ path('categorie_show', { 'id': categorie.id }) }}">{{ categorie.id }}</a></td>
+                <td>{{ categorie.id }}</td>
                 <td>{{ categorie.nom }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('categorie_show', { 'id': categorie.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('categorie_edit', { 'id': categorie.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                    <a class="btn btn-success" name="categorie-edit" data-categorie ="{{categorie.id}}" href="#">Modifier</a>
                 </td>
             </tr>
         {% endfor %}
@@ -50,6 +39,38 @@
     </div>
     </section>
     </div>
+    </div>
+
+    <!-- modal window to add a new paiement -->
+    <div class="modal fade modal-add-categorie" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+    <div class="col-md-offset-2 col-md-8">
+        <div class="modal-content">
+          <div class="modal-header">
+                <h3 class="text-center">Nouvelle Categorie</h3>
+          </div>
+          <div class="modal-body" id="categorie-form">
+
+          </div>
+        </div>
+      </div>
+        </div>
+    </div>
+
+    <!-- modal window to add a new paiement -->
+    <div class="modal fade modal-edit-categorie" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+    <div class="col-md-offset-2 col-md-8">
+        <div class="modal-content">
+          <div class="modal-header">
+                <h3 class="text-center">Modifier une Catégorie</h3>
+          </div>
+          <div class="modal-body" id="categorie-editform">
+
+          </div>
+        </div>
+      </div>
+        </div>
     </div>
     {% include '/categorie/extras_categorie.css.html.twig' %}
     {% include '/categorie/extras_categorie.js.html.twig' %}

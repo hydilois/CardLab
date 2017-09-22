@@ -138,10 +138,10 @@ class Matiere
     /**
      * Set categorie
      *
-     * @param \School\MatiereBundle\Entity\Categorie $categorie
+     * @param \MatiereBundle\Entity\Categorie $categorie
      * @return Matiere
      */
-    public function setCategorie(\School\MatiereBundle\Entity\Categorie $categorie = null) {
+    public function setCategorie(\MatiereBundle\Entity\Categorie $categorie = null) {
         $this->categorie = $categorie;
 
         return $this;
@@ -150,7 +150,7 @@ class Matiere
     /**
      * Get categorie
      *
-     * @return \School\MatiereBundle\Entity\Categorie 
+     * @return \MatiereBundle\Entity\Categorie 
      */
     public function getCategorie() {
         return $this->categorie;

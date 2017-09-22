@@ -1,15 +1,28 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Estdispenses list</h1>
-
-    <table>
+    <div class="row">
+    <div class="col-sm-12">
+    <section class="panel">
+    <header class="panel-heading text-center">
+        Liste des Enseignements
+        <span class="tools pull-right">
+            <a href="javascript:;" class="fa fa-chevron-down"></a>
+            {# <a href="javascript:;" class="fa fa-times"></a> #}
+         </span>
+    </header>
+    <div class="panel-body">
+    <div class="adv-table">
+    <table class="display table table-bordered table-striped" id="dynamic-table">
         <thead>
             <tr>
                 <th>Id</th>
+                <th>Matière</th>
+                <th>Enseignant</th>
+                <th>Classe</th>
                 <th>Coefficient</th>
-                <th>Nombreheuresannuel</th>
-                <th>Nombreleconsannuel</th>
+                <th>Nombre heures annuel</th>
+                <th>Nombre leçons annuel</th>
                 <th>Titulaire</th>
                 <th>Actions</th>
             </tr>
@@ -18,28 +31,26 @@
         {% for estDispense in estDispenses %}
             <tr>
                 <td><a href="{{ path('estdispense_show', { 'id': estDispense.id }) }}">{{ estDispense.id }}</a></td>
+                <td>{{ estDispense.matiere }}</td>
+                <td>{{ estDispense.enseignant }}</td>
+                <td>{{ estDispense.classe }}</td>
                 <td>{{ estDispense.coefficient }}</td>
                 <td>{{ estDispense.nombreHeuresAnnuel }}</td>
                 <td>{{ estDispense.nombreLeconsAnnuel }}</td>
-                <td>{% if estDispense.titulaire %}Yes{% else %}No{% endif %}</td>
+                <td>{% if estDispense.titulaire %}<span class="label label-info">Oui</span>{% else %}<span class="label label-warning">Non</span>{% endif %}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('estdispense_show', { 'id': estDispense.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('estdispense_edit', { 'id': estDispense.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                            <a class="btn btn-info" href="{{ path('estdispense_show', { 'id': estDispense.id }) }}">Voir</a>
+                            <a class="btn btn-success" href="{{ path('estdispense_edit', { 'id': estDispense.id }) }}">Modifier</a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('estdispense_new') }}">Create a new estDispense</a>
-        </li>
-    </ul>
+    </div>
+    </div>
+    </section>
+    </div>
+    </div>
+
 {% endblock %}
