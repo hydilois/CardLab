@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Estdispenses list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Coefficient</th>
+                <th>Nombreheuresannuel</th>
+                <th>Nombreleconsannuel</th>
+                <th>Titulaire</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for estDispense in estDispenses %}
+            <tr>
+                <td><a href="{{ path('estdispense_show', { 'id': estDispense.id }) }}">{{ estDispense.id }}</a></td>
+                <td>{{ estDispense.coefficient }}</td>
+                <td>{{ estDispense.nombreHeuresAnnuel }}</td>
+                <td>{{ estDispense.nombreLeconsAnnuel }}</td>
+                <td>{% if estDispense.titulaire %}Yes{% else %}No{% endif %}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('estdispense_show', { 'id': estDispense.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('estdispense_edit', { 'id': estDispense.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('estdispense_new') }}">Create a new estDispense</a>
+        </li>
+    </ul>
+{% endblock %}

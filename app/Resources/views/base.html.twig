@@ -29,6 +29,11 @@
   <script src="{{asset('js/html5shiv.js')}}"></script>
   <script src="{{asset('js/respond.min.js')}}"></script>
   <![endif]-->
+    <!-- Placed js at the end of the document so the pages load faster -->
+    <script src="{{asset('js/jquery-1.10.2.min.js')}}"></script>
+    <script src="{{asset('js/jquery-ui-1.9.2.custom.min.js')}}"></script>
+    <script src="{{asset('js/jquery-migrate-1.2.1.min.js')}}"></script>
+  
 </head>
 
 <body class="sticky-header">
@@ -399,10 +404,6 @@
         </section>
 
     {% block javascripts %}
-        <!-- Placed js at the end of the document so the pages load faster -->
-        <script src="{{asset('js/jquery-1.10.2.min.js')}}"></script>
-        <script src="{{asset('js/jquery-ui-1.9.2.custom.min.js')}}"></script>
-        <script src="{{asset('js/jquery-migrate-1.2.1.min.js')}}"></script>
         <script src="{{asset('js/bootstrap.min.js')}}"></script>
         <script src="{{asset('js/modernizr.min.js')}}"></script>
         <script src="{{asset('js/jquery.nicescroll.js')}}"></script>
@@ -420,14 +421,14 @@
         <script src="{{asset('js/icheck-init.js')}}"></script>
 
         <!-- jQuery Flot Chart-->
-        <script src="{{asset('js/flot-chart/jquery.flot.js')}}"></script>
+        {#<script src="{{asset('js/flot-chart/jquery.flot.js')}}"></script>
         <script src="{{asset('js/flot-chart/jquery.flot.tooltip.js')}}"></script>
         <script src="{{asset('js/flot-chart/jquery.flot.resize.js')}}"></script>
         <script src="{{asset('js/flot-chart/jquery.flot.pie.resize.js')}}"></script>
         <script src="{{asset('js/flot-chart/jquery.flot.selection.js')}}"></script>
         <script src="{{asset('js/flot-chart/jquery.flot.stack.js')}}"></script>
         <script src="{{asset('js/flot-chart/jquery.flot.time.js')}}"></script>
-        <script src="{{asset('js/main-chart.js')}}"></script>
+        <script src="{{asset('js/main-chart.js')}}"></script>#}
 
         <!--common scripts for all pages-->
         <script src="{{asset('js/scripts.js')}}"></script>

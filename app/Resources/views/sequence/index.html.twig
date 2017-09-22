@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Sequences list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for sequence in sequences %}
+            <tr>
+                <td><a href="{{ path('sequence_show', { 'id': sequence.id }) }}">{{ sequence.id }}</a></td>
+                <td>{{ sequence.nom }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('sequence_show', { 'id': sequence.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('sequence_edit', { 'id': sequence.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('sequence_new') }}">Create a new sequence</a>
+        </li>
+    </ul>
+{% endblock %}

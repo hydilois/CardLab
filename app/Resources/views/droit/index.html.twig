@@ -1,0 +1,45 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Droits list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Nom</th>
+                <th>Righttoken</th>
+                <th>Membredudroit</th>
+                <th>Description</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for droit in droits %}
+            <tr>
+                <td><a href="{{ path('droit_show', { 'id': droit.id }) }}">{{ droit.id }}</a></td>
+                <td>{{ droit.nom }}</td>
+                <td>{{ droit.rightToken }}</td>
+                <td>{{ droit.membreDuDroit }}</td>
+                <td>{{ droit.description }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('droit_show', { 'id': droit.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('droit_edit', { 'id': droit.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('droit_new') }}">Create a new droit</a>
+        </li>
+    </ul>
+{% endblock %}
