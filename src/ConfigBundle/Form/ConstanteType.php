@@ -15,6 +15,7 @@ class ConstanteType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options) {
         $builder->add('ville')->add('nomFrancais')->add('nomAnglais')->add('deviseFrancais')->add('deviseAnglais')
                 ->add('boitePostal')
+                //test
                 ->add('logo', Component\Form\Extension\Core\Type\FileType::class, ['required' => false]);
     }
 
