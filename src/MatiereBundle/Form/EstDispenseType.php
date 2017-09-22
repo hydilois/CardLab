@@ -5,6 +5,8 @@ namespace MatiereBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\ORM\EntityRepository;
 
 class EstDispenseType extends AbstractType
 {
@@ -13,7 +15,19 @@ class EstDispenseType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('coefficient')->add('nombreHeuresAnnuel')->add('nombreLeconsAnnuel')->add('titulaire')->add('matiere')->add('enseignant')->add('classe')->add('annee');
+        $builder->add('coefficient')
+        ->add('nombreHeuresAnnuel')
+        ->add('nombreLeconsAnnuel')
+        ->add('titulaire', null,
+            [
+                'required' => false
+            ])
+        ->add('matiere')
+        ->add('enseignant')
+        ->add('classe',EntityType::class, array('class'=>'StudentBundle\Entity\Classe',
+            'query_builder' => function (\Doctrine\ORM\EntityRepository $repository)
+            {return $repository->createQueryBuilder('c')->where('c.classePere is NOT NULL');}))
+        ->add('annee');
     }
     
     /**

@@ -9,6 +9,8 @@
   <title>GST-CardLab</title>
 
 {% block stylesheets %}
+        <!-- iCheck for checkboxes and radio inputs -->
+      <link href="{{ asset('js/iCheck/all.css') }}" rel="stylesheet" type="text/css" />
       <!--icheck-->
       <link href="{{asset('js/iCheck/skins/minimal/minimal.css')}}" rel="stylesheet">
       <link href="{{asset('js/iCheck/skins/square/square.css')}}" rel="stylesheet">
@@ -31,6 +33,7 @@
   <![endif]-->
     <!-- Placed js at the end of the document so the pages load faster -->
     <script src="{{asset('js/jquery-1.10.2.min.js')}}"></script>
+    <script src="{{asset('js/library/head.min.js')}}"></script>
     <script src="{{asset('js/jquery-ui-1.9.2.custom.min.js')}}"></script>
     <script src="{{asset('js/jquery-migrate-1.2.1.min.js')}}"></script>
   
@@ -395,7 +398,7 @@
                 <!--body wrapper end-->
 
                 <!--footer section start-->
-                <footer>
+                <footer class="text-center">
                     2017 &copy; CardLab by GreenSoft-Team
                 </footer>
                 <!--footer section end-->

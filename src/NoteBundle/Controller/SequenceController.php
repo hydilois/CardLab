@@ -48,7 +48,11 @@ class SequenceController extends Controller
             $em->persist($sequence);
             $em->flush();
 
-            return $this->redirectToRoute('sequence_show', array('id' => $sequence->getId()));
+            $sequences = $em->getRepository('NoteBundle:Sequence')->findAll();
+
+            return $this->redirectToRoute('sequence_index', array(
+                'sequences' => $sequences,
+            ));
         }
 
         return $this->render('sequence/new.html.twig', array(
@@ -88,7 +92,13 @@ class SequenceController extends Controller
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('sequence_edit', array('id' => $sequence->getId()));
+            $em = $this->getDoctrine()->getManager();
+
+            $sequences = $em->getRepository('NoteBundle:Sequence')->findAll();
+
+            return $this->redirectToRoute('sequence_index', array(
+                'sequences' => $sequences,
+            ));
         }
 
         return $this->render('sequence/edit.html.twig', array(

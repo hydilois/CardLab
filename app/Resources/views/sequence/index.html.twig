@@ -1,39 +1,77 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Sequences list</h1>
-
-    <table>
-        <thead>
-            <tr>
-                <th>Id</th>
-                <th>Nom</th>
-                <th>Actions</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="row">
+    <div class="col-sm-12">
+    <section class="panel">
+    <header class="panel-heading text-center">
+            <a name="add-sequence" class="btn btn-primary pull-left" href="#">Ajouter une Séquence</a>
+        Liste des sequences
+        <span class="tools pull-right">
+            <a href="javascript:;" class="fa fa-chevron-down"></a>
+            {# <a href="javascript:;" class="fa fa-times"></a> #}
+         </span>
+    </header>
+    <div class="panel-body">
+    <div class="adv-table">
+    <table class="display table table-bordered" id="hidden-table-info">
+    <thead>
+    <tr>
+        <th>Id</th>
+        <th>Nom</th>
+        <th>Actions</th>
+    </tr>
+    </thead>
+    <tbody>
         {% for sequence in sequences %}
             <tr>
-                <td><a href="{{ path('sequence_show', { 'id': sequence.id }) }}">{{ sequence.id }}</a></td>
+                <td>{{ sequence.id }}</td>
                 <td>{{ sequence.nom }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('sequence_show', { 'id': sequence.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('sequence_edit', { 'id': sequence.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                    <a class="btn btn-success" name="sequence-edit" data-sequence ="{{sequence.id}}" href="#">Modifier</a>
                 </td>
             </tr>
         {% endfor %}
-        </tbody>
+    </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('sequence_new') }}">Create a new sequence</a>
-        </li>
-    </ul>
+    </div>
+    </div>
+    </section>
+    </div>
+    </div>
+
+    <!-- modal window to add a new paiement -->
+    <div class="modal fade modal-add-sequence" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+    <div class="col-md-offset-2 col-md-8">
+        <div class="modal-content">
+          <div class="modal-header">
+                <h3 class="text-center">Nouvelle séquence</h3>
+          </div>
+          <div class="modal-body" id="sequence-form">
+
+          </div>
+        </div>
+      </div>
+        </div>
+    </div>
+
+    <!-- modal window to add a new paiement -->
+    <div class="modal fade modal-edit-sequence" id="myModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
+      <div class="modal-dialog modal-lg" role="document">
+    <div class="col-md-offset-2 col-md-8">
+        <div class="modal-content">
+          <div class="modal-header">
+                <h3 class="text-center">Modifier une séquence</h3>
+          </div>
+          <div class="modal-body" id="sequence-editform">
+
+          </div>
+        </div>
+      </div>
+        </div>
+    </div>
+    {% include '/categorie/extras_categorie.css.html.twig' %}
+    {% include '/sequence/extras_sequence.js.html.twig' %}
 {% endblock %}

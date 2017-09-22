@@ -43,12 +43,16 @@ class EstDispenseController extends Controller
         $form = $this->createForm('MatiereBundle\Form\EstDispenseType', $estDispense);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
             $em = $this->getDoctrine()->getManager();
             $em->persist($estDispense);
             $em->flush();
 
-            return $this->redirectToRoute('estdispense_show', array('id' => $estDispense->getId()));
+            $estDispenses = $em->getRepository('MatiereBundle:EstDispense')->findAll();
+
+            return $this->redirectToRoute('estdispense_index', array(
+                'estDispenses' => $estDispenses,
+            ));
         }
 
         return $this->render('estdispense/new.html.twig', array(
@@ -85,10 +89,16 @@ class EstDispenseController extends Controller
         $editForm = $this->createForm('MatiereBundle\Form\EstDispenseType', $estDispense);
         $editForm->handleRequest($request);
 
-        if ($editForm->isSubmitted() && $editForm->isValid()) {
+        if ($editForm->isSubmitted()) {
             $this->getDoctrine()->getManager()->flush();
 
-            return $this->redirectToRoute('estdispense_edit', array('id' => $estDispense->getId()));
+            $em = $this->getDoctrine()->getManager();
+
+            $estDispenses = $em->getRepository('MatiereBundle:EstDispense')->findAll();
+
+            return $this->redirectToRoute('estdispense_index', array(
+                'estDispenses' => $estDispenses,
+            ));
         }
 
         return $this->render('estdispense/edit.html.twig', array(

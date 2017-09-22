@@ -48,7 +48,11 @@ class CategorieController extends Controller
             $em->persist($categorie);
             $em->flush();
 
-            return $this->redirectToRoute('categorie_show', array('id' => $categorie->getId()));
+            $categories = $em->getRepository('MatiereBundle:Categorie')->findAll();
+
+            return $this->redirectToRoute('categorie_index', array(
+            'categories' => $categories,
+            ));
         }
 
         return $this->render('categorie/new.html.twig', array(
@@ -87,8 +91,12 @@ class CategorieController extends Controller
 
         if ($editForm->isSubmitted() && $editForm->isValid()) {
             $this->getDoctrine()->getManager()->flush();
+            $em = $this->getDoctrine()->getManager();
+            $categories = $em->getRepository('MatiereBundle:Categorie')->findAll();
 
-            return $this->redirectToRoute('categorie_edit', array('id' => $categorie->getId()));
+            return $this->redirectToRoute('categorie_index', array(
+            'categories' => $categories,
+            ));
         }
 
         return $this->render('categorie/edit.html.twig', array(
