@@ -391,6 +391,15 @@
 
                 <!--body wrapper start-->
                 <div class="wrapper">
+                    <div class="row">
+                        {% for type, msgs in app.session.flashbag.all %}
+                            {%for msg in msgs %}
+                                <div id="flashbag-alert"class="alert alert-{{type}} col-lg-12 col-md-12 col-sm-12 col-xs-12 text-center fade in">
+                                {{msg}}
+                                </div>
+                            {% endfor %}      
+                        {% endfor%}
+                    </div> 
                     {% block body %}
 
                     {% endblock %}

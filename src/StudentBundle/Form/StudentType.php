@@ -5,6 +5,8 @@ namespace StudentBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\ORM\EntityRepository;
 use Symfony\Component;
 
 class StudentType extends AbstractType {
@@ -21,7 +23,11 @@ class StudentType extends AbstractType {
                 ->add('dernierEtablissementFreq')
                 ->add('sexe')
                 ->add('photo', Component\Form\Extension\Core\Type\FileType::class, ['required' => false])
-                ->add('classe');
+                // ->add('classe')
+                ->add('classe',EntityType::class, array('class'=>'StudentBundle\Entity\Classe',
+            'query_builder' => function (\Doctrine\ORM\EntityRepository $repository)
+            {return $repository->createQueryBuilder('c')->where('c.classePere is NOT NULL');}))
+                ;
     }
 
     /**

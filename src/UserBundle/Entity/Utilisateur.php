@@ -13,41 +13,66 @@ use FOS\UserBundle\Model\User as BaseUser;
  */
 class Utilisateur extends BaseUser
 {
+    public function __toString() {
+        return ($this->getNom() != '') ? $this->getNom() : 'Pas de Nom';
+    }
+
     /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
+     * @ORM\Column(type="integer")
      * @ORM\GeneratedValue(strategy="AUTO")
      */
     protected $id;
 
     /**
      * @var string
-     *
-     * @ORM\Column(name="nom", type="string", length=100, unique=true)
+     * 
+     * @ORM\Column(type="string", length=255, nullable=true)
      */
     private $nom;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="numeroTelephone", type="string", length=100, unique=true)
+     * @var integer
+     * @ORM\Column(type="integer", nullable=true)
      */
-    private $numeroTelephone;
+    private $anciennete;
 
-    public function __toString(){
-        return $this->nom;
-    }
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $matricule;
 
+    /**
+     * @var string
+     * @ORM\Column(type="string", nullable=true)
+     */
+    private $grade;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $diplomes;
+
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $telephone;
+    
+    /**
+     * @var string
+     * @ORM\Column(type="string", length=255, nullable=true)
+     */
+    private $level;
 
     /**
      * Get id
      *
-     * @return int
+     * @return integer 
      */
-    public function getId()
-    {
+    public function getId() {
         return $this->id;
     }
 
@@ -55,11 +80,9 @@ class Utilisateur extends BaseUser
      * Set nom
      *
      * @param string $nom
-     *
-     * @return Utilisateur
+     * @return User
      */
-    public function setNom($nom)
-    {
+    public function setNom($nom) {
         $this->nom = $nom;
 
         return $this;
@@ -68,34 +91,138 @@ class Utilisateur extends BaseUser
     /**
      * Get nom
      *
-     * @return string
+     * @return string 
      */
-    public function getNom()
-    {
+    public function getNom() {
         return $this->nom;
     }
 
     /**
-     * Set numeroTelephone
+     * Set anciennete
      *
-     * @param string $numeroTelephone
-     *
-     * @return Utilisateur
+     * @param integer $anciennete
+     * @return User
      */
-    public function setNumeroTelephone($numeroTelephone)
-    {
-        $this->numeroTelephone = $numeroTelephone;
+    public function setAnciennete($anciennete) {
+        $this->anciennete = $anciennete;
 
         return $this;
     }
 
     /**
-     * Get numeroTelephone
+     * Get anciennete
      *
-     * @return string
+     * @return integer 
      */
-    public function getNumeroTelephone()
+    public function getAnciennete() {
+        return $this->anciennete;
+    }
+
+    /**
+     * Set matricule
+     *
+     * @param string $matricule
+     * @return User
+     */
+    public function setMatricule($matricule) {
+        $this->matricule = $matricule;
+
+        return $this;
+    }
+
+    /**
+     * Get matricule
+     *
+     * @return string 
+     */
+    public function getMatricule() {
+        return $this->matricule;
+    }
+
+    /**
+     * Set grade
+     *
+     * @param string $grade
+     * @return User
+     */
+    public function setGrade($grade) {
+        $this->grade = $grade;
+
+        return $this;
+    }
+
+    /**
+     * Get grade
+     *
+     * @return string 
+     */
+    public function getGrade() {
+        return $this->grade;
+    }
+
+    /**
+     * Set diplomes
+     *
+     * @param string $diplomes
+     * @return User
+     */
+    public function setDiplomes($diplomes) {
+        $this->diplomes = $diplomes;
+
+        return $this;
+    }
+
+    /**
+     * Get diplomes
+     *
+     * @return string 
+     */
+    public function getDiplomes() {
+        return $this->diplomes;
+    }
+
+    /**
+     * Set telephone
+     *
+     * @param string $telephone
+     * @return User
+     */
+    public function setTelephone($telephone) {
+        $this->telephone = $telephone;
+
+        return $this;
+    }
+
+    /**
+     * Get telephone
+     *
+     * @return string 
+     */
+    public function getTelephone() {
+        return $this->telephone;
+    }
+
+
+    /**
+     * Set level
+     *
+     * @param string $level
+     * @return User
+     */
+    public function setLevel($level)
     {
-        return $this->numeroTelephone;
+        $this->level = $level;
+    
+        return $this;
+    }
+
+    /**
+     * Get level
+     *
+     * @return string 
+     */
+    public function getLevel()
+    {
+        return $this->level;
     }
 }
