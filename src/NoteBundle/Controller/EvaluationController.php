@@ -125,6 +125,11 @@ class EvaluationController extends Controller {
 
         $em = $this->getDoctrine()->getManager();
 
+        if (((int) $idMat) == 0 || (int) $idSeq == 0) {
+
+            goto suite;
+        }
+
         $classe = $em->getRepository('StudentBundle:Classe')->find($id);
         $sequence = $em->getRepository('NoteBundle:Sequence')->find($idSeq);
         $matiere = $em->getRepository('MatiereBundle:Matiere')->find($idMat);
@@ -174,6 +179,7 @@ class EvaluationController extends Controller {
         }
 
         if ($request->getMethod() == 'POST') {
+
             foreach ($eleves as $elev) {
                 $qbEvaluation = $this->getDoctrine()->getManager()->createQueryBuilder();
                 $qbEvaluation->select('e')
@@ -219,6 +225,7 @@ class EvaluationController extends Controller {
                     }
                 }
             }
+            suite:
             return $this->redirect($this->generateUrl('homepage'));
         }
 
