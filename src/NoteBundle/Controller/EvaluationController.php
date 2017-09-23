@@ -228,7 +228,7 @@ class EvaluationController extends Controller {
                 }
             }
             suite:
-            return $this->redirect($this->generateUrl('homepage'));
+            return $this->redirect($this->generateUrl('classe_activite'));
         }
         $enseignement = $em->getRepository('MatiereBundle:EstDispense')->findOneBy(['classe' => $classe, 'annee' => $anneeEnCour, 'matiere' => $matiere]);
         return $this->render('evaluation/notes.html.twig', array(
@@ -249,10 +249,14 @@ class EvaluationController extends Controller {
      */
     public function afficheNoteAction() {
         $em = $this->getDoctrine()->getManager();
-        $qb = $em->createQueryBuilder();
-        $qb->select('cl')->from('StudentBundle:Classe', 'cl')->where('cl.classePere IS NOT NULL');
-        $classes = $qb->getQuery()->getResult();
 
+        $classes = $em->getRepository('StudentBundle:Classe')->findBy(['classePere' => !NULL]);
+        $qb = $em->createQueryBuilder();
+        $qb->select('cl')
+                ->from('StudentBundle:Classe', 'cl')
+                ->where('cl.classePere IS NOT NULL');
+
+        $classes = $qb->getQuery()->getResult();
         $sequences = $em->getRepository('NoteBundle:Sequence')->findAll();
         $matieres = $em->getRepository('MatiereBundle:Matiere')->findAll();
         $annee = $em->getRepository('ConfigBundle:Annee')->findOneBy(['isAnneeEnCour' => true]);

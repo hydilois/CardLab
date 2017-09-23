@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Pays list</h1>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Paysfrancais</th>
+                <th>Paysanglais</th>
+                <th>Ministerefrancais</th>
+                <th>Ministereanglais</th>
+                <th>Devisefrancais</th>
+                <th>Deviseanglais</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for pay in pays %}
+            <tr>
+                <td><a href="{{ path('pays_show', { 'id': pay.id }) }}">{{ pay.id }}</a></td>
+                <td>{{ pay.paysFrancais }}</td>
+                <td>{{ pay.paysAnglais }}</td>
+                <td>{{ pay.ministereFrancais }}</td>
+                <td>{{ pay.ministereAnglais }}</td>
+                <td>{{ pay.deviseFrancais }}</td>
+                <td>{{ pay.deviseAnglais }}</td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('pays_show', { 'id': pay.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('pays_edit', { 'id': pay.id }) }}">edit</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('pays_new') }}">Create a new pay</a>
+        </li>
+    </ul>
+{% endblock %}

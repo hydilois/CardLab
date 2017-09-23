@@ -13,7 +13,16 @@ class ClasseType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('nom')->add('abreviation')->add('classePere')->add('classeNext')->add('cycle');
+        $builder
+        ->add('nom')
+        ->add('abreviation')
+        ->add('classePere',EntityType::class, array('class'=>'StudentBundle\Entity\Classe',
+            'query_builder' => function (\Doctrine\ORM\EntityRepository $repository)
+            {return $repository->createQueryBuilder('c')->where('c.classePere is NULL');}))
+        ->add('classeNext',EntityType::class, array('class'=>'StudentBundle\Entity\Classe',
+            'query_builder' => function (\Doctrine\ORM\EntityRepository $repository)
+            {return $repository->createQueryBuilder('c')->where('c.classePere is NULL');}))
+        ->add('cycle');
     }
     
     /**

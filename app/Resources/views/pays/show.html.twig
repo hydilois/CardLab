@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Pay</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ pay.id }}</td>
+            </tr>
+            <tr>
+                <th>Paysfrancais</th>
+                <td>{{ pay.paysFrancais }}</td>
+            </tr>
+            <tr>
+                <th>Paysanglais</th>
+                <td>{{ pay.paysAnglais }}</td>
+            </tr>
+            <tr>
+                <th>Ministerefrancais</th>
+                <td>{{ pay.ministereFrancais }}</td>
+            </tr>
+            <tr>
+                <th>Ministereanglais</th>
+                <td>{{ pay.ministereAnglais }}</td>
+            </tr>
+            <tr>
+                <th>Devisefrancais</th>
+                <td>{{ pay.deviseFrancais }}</td>
+            </tr>
+            <tr>
+                <th>Deviseanglais</th>
+                <td>{{ pay.deviseAnglais }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('pays_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('pays_edit', { 'id': pay.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}

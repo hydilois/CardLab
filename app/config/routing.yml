@@ -1,3 +1,7 @@
+config_pays:
+    resource: "@ConfigBundle/Controller/PaysController.php"
+    type:     annotation
+
 student_cycle:
     resource: "@StudentBundle/Controller/CycleController.php"
     type:     annotation
@@ -28,6 +32,10 @@ note_sequence:
 
 note_evaluation:
     resource: "@NoteBundle/Controller/EvaluationController.php"
+    type:     annotation
+
+note_bulletin:
+    resource: "@NoteBundle/Controller/BulletinController.php"
     type:     annotation
 
 matiere_matiere:

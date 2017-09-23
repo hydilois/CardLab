@@ -44,15 +44,52 @@ class EstDispenseController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
+
             $em = $this->getDoctrine()->getManager();
-            $em->persist($estDispense);
-            $em->flush();
+            $school = $em->getRepository('ConfigBundle:Constante')->findAll();
+            $anneEncour = $em->getRepository('ConfigBundle:Annee')->findOneBy(['isAnneeEnCour' => true]);
+            $testEnseignementExist = $this->getDoctrine()->getRepository('MatiereBundle:EstDispense')->findBy(
+                array(
+                    'enseignant' => $estDispense->getEnseignant(),
+                    'matiere' => $estDispense->getMatiere(),
+                    'classe' => $estDispense->getClasse(),
+                    'annee' => $anneEncour,
+                ));
+            if($testEnseignementExist){
+                //die("Enseignement existe");
+                $request->getSession()->getFlashBag()->add('notice', 'Cet Enseignement est déjà enregistré.');
+            }else if($estDispense->getTitulaire()){
+                $enseignantTitulaire = $this->getDoctrine()->getRepository('MatiereBundle:EstDispense')->findBy(
+                    array(
+                        'classe' => $estDispense->getClasse(),
+                        'annee' => $anneEncour,
+                        'titulaire' => true,
+                    ));
+                if($enseignantTitulaire){
+                    //die("Titulaire existant");
+                    $request->getSession()->getFlashBag()->add('notice', 'la classe a déjà un titulaire.');
+                }else {
+                    $estDispense->setAnnee($anneEncour);
+                    $em->persist($estDispense);
+                    $em->flush();
 
-            $estDispenses = $em->getRepository('MatiereBundle:EstDispense')->findAll();
+                    $estDispenses = $em->getRepository('MatiereBundle:EstDispense')->findAll();
 
-            return $this->redirectToRoute('estdispense_index', array(
-                'estDispenses' => $estDispenses,
-            ));
+                    return $this->redirectToRoute('estdispense_index', array(
+                        'estDispenses' => $estDispenses,
+                        ));
+                }
+            }else{
+                $estDispense->setAnnee($anneEncour);
+                $em->persist($estDispense);
+                $em->flush();
+
+                $estDispenses = $em->getRepository('MatiereBundle:EstDispense')->findAll();
+
+                return $this->redirectToRoute('estdispense_index', array(
+                    'estDispenses' => $estDispenses,
+                    ));
+            }
         }
 
         return $this->render('estdispense/new.html.twig', array(

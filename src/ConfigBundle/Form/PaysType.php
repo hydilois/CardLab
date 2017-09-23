@@ -1,31 +1,19 @@
 <?php
 
-namespace UserBundle\Form;
+namespace ConfigBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
-class UtilisateurType extends AbstractType
+class PaysType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-        ->add('nom')
-        ->add('telephone')
-        ->add('anciennete')
-        ->add('matricule')
-        ->add('grade')
-        ->add('diplomes')
-        ->add('level')
-        ;
-    }
-
-    public function getParent(){
-        return 'FOS\UserBundle\Form\Type\RegistrationFormType';
+        $builder->add('paysFrancais')->add('paysAnglais')->add('ministereFrancais')->add('ministereAnglais')->add('deviseFrancais')->add('deviseAnglais');
     }
     
     /**
@@ -34,7 +22,7 @@ class UtilisateurType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'UserBundle\Entity\Utilisateur'
+            'data_class' => 'ConfigBundle\Entity\Pays'
         ));
     }
 
@@ -43,7 +31,7 @@ class UtilisateurType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'userbundle_utilisateur';
+        return 'configbundle_pays';
     }
 
 
