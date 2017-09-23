@@ -326,7 +326,7 @@ class BulletinController extends Controller {
      * @Method("GET")
      */
     public function bulletinTestClasseAction($idSeq, $idAnnee, $idClasse) {
-        $ecole = $this->getDoctrine()->getRepository('ConfigBundle:Constante')->find(1);
+        $ecole = $this->getDoctrine()->getRepository('ConfigBundle:Constante')->find(8);
         $pays = $this->getDoctrine()->getRepository('ConfigBundle:Pays')->find(1);
         //$ecole = $school[0];
         //$pays = $constante[0];
