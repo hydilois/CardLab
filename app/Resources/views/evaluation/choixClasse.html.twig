@@ -24,10 +24,49 @@
                             <tr>
                                 <td>{{num}}</td>
                                 <td>{{classe}}</td>
-                                <td><a href="#" class="">Insérer</a></td>
-                                <td><a href="#" class="">Ajouter</a></td>
-                                <td><a href="#" class="">Générer</a></td>
-                                <td><a href="#" class="">Produire</a></td>
+                                <td>
+                                    <a href="#" class="btn btn-info" data-toggle="modal" data-target=".modal_{{classe.id}}">Insérer</a>
+                                    <div class="modal fade modal_{{classe.id}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                                        <div class="modal-dialog modal-sm">
+                                            <div class="modal-content well">
+                                                <fieldset>
+                                                    <legend>
+                                                        <h5>informations complémentaires</h5>
+                                                    </legend>
+                                                    <div class="col-md-12">
+                                                        <nav class="col-md-12">
+                                                            <select onchange="buildMat({{classe.id}})" id="matiere_{{classe.id}}" class="form-control">
+                                                                <option value="0">Choisir la matière </option>
+                                                                {% for matiere in matieres %}
+                                                                    <option value="{{matiere.id}}">{{matiere | upper}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </nav>
+                                                        <br>
+                                                        <hr>
+                                                        <nav class="col-md-12">
+                                                            <select onchange="buildSeq({{classe.id}});" class="form-control" id="sequence_{{classe.id}}">
+                                                                <option value="0">Choisir la séquence </option>
+                                                                {% for sequence in sequences %}
+                                                                    <option value="{{sequence.id}}">{{sequence}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                        </nav>
+                                                        <br>
+                                                        <hr>
+                                                        <nav class="col-md-12">
+                                                            <button class="btn btn-danger pull-left" data-dismiss="modal">Annuler</button>
+                                                            <a id="cible{{classe.id}}" href="{{path('enregistrement_note', {'id': classe.id, 'idSeq': "IDSEQ", 'idMat': "IDMAT"})}}" class="pull-right btn btn-primary">Valider</a>
+                                                        </nav>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td><a href="#" class="btn btn-success">Ajouter</a></td>
+                                <td><a href="#" class="btn btn-primary">Générer</a></td>
+                                <td><a href="#" class="btn btn-danger">Produire</a></td>
                             </tr>
                             {% set num = num + 1 %}
                         {% endfor  %}
@@ -36,6 +75,24 @@
             </span>
         </fieldset>
     </div>
+    <script>
+
+
+        function buildMat(id) {
+            var idMat = document.getElementById('matiere_' + id).value;
+            var lien = document.getElementById('cible' + id).href;
+            lien = lien.replace("IDMAT", idMat);
+            document.getElementById('cible' + id).href = lien;
+        }
+
+        function buildSeq(id) {
+            var idSeq = document.getElementById('sequence_' + id).value;
+            var lien = document.getElementById('cible' + id).href;
+            lien = lien.replace("IDSEQ", idSeq);
+            document.getElementById('cible' + id).href = lien;
+        }
+
+    </script>
     {% include '/categorie/extras_categorie.css.html.twig' %}
     {% include '/categorie/extras_categorie.js.html.twig' %}
 {% endblock %}

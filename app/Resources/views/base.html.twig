@@ -1,45 +1,46 @@
 <!DOCTYPE html>
 
 <html lang="fr">
-<head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
-  <meta name="keywords" content="admin, dashboard, bootstrap, template, flat, modern, theme, responsive, fluid, retina, backend, html5, css, css3">
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+        <meta name="keywords" content="admin, dashboard, bootstrap, template, flat, modern, theme, responsive, fluid, retina, backend, html5, css, css3">
 
-  <title>GST-CardLab</title>
+        <title>GST-CardLab</title>
 
-{% block stylesheets %}
-        <!-- iCheck for checkboxes and radio inputs -->
-      <link href="{{ asset('js/iCheck/all.css') }}" rel="stylesheet" type="text/css" />
-      <!--icheck-->
-      <link href="{{asset('js/iCheck/skins/minimal/minimal.css')}}" rel="stylesheet">
-      <link href="{{asset('js/iCheck/skins/square/square.css')}}" rel="stylesheet">
-      <link href="{{asset('js/iCheck/skins/square/red.css')}}" rel="stylesheet">
-      <link href="{{asset('js/iCheck/skins/square/blue.css')}}" rel="stylesheet">
+        {% block stylesheets %}
+            <!-- iCheck for checkboxes and radio inputs -->
+            <link href="{{ asset('js/iCheck/all.css') }}" rel="stylesheet" type="text/css" />
+            <!--icheck-->
+            <link href="{{asset('js/iCheck/skins/minimal/minimal.css')}}" rel="stylesheet">
+            <link href="{{asset('js/iCheck/skins/square/square.css')}}" rel="stylesheet">
+            <link href="{{asset('js/iCheck/skins/square/red.css')}}" rel="stylesheet">
+            <link href="{{asset('js/iCheck/skins/square/blue.css')}}" rel="stylesheet">
 
-      <!--dashboard calendar-->
-      <link href="{{asset('css/clndr.css')}}" rel="stylesheet">
+            <link href="{{asset('bootstrap/css/bootstrap.min.css')}}" rel="stylesheet" type="text/css">
+            <!--dashboard calendar-->
+            <link href="{{asset('css/clndr.css')}}" rel="stylesheet">
 
 
-      <!--common-->
-      <link href="{{asset('css/style.css')}}" rel="stylesheet">
-      <link href="{{asset('css/style-responsive.css')}}" rel="stylesheet">
-    {% endblock %}
-    
-  <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-  <!--[if lt IE 9]>
-  <script src="{{asset('js/html5shiv.js')}}"></script>
-  <script src="{{asset('js/respond.min.js')}}"></script>
-  <![endif]-->
-    <!-- Placed js at the end of the document so the pages load faster -->
-    <script src="{{asset('js/jquery-1.10.2.min.js')}}"></script>
-    <script src="{{asset('js/library/head.min.js')}}"></script>
-    <script src="{{asset('js/jquery-ui-1.9.2.custom.min.js')}}"></script>
-    <script src="{{asset('js/jquery-migrate-1.2.1.min.js')}}"></script>
-  
-</head>
+            <!--common-->
+            <link href="{{asset('css/style.css')}}" rel="stylesheet">
+            <link href="{{asset('css/style-responsive.css')}}" rel="stylesheet">
+        {% endblock %}
 
-<body class="sticky-header">
+        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!--[if lt IE 9]>
+        <script src="{{asset('js/html5shiv.js')}}"></script>
+        <script src="{{asset('js/respond.min.js')}}"></script>
+        <![endif]-->
+        <!-- Placed js at the end of the document so the pages load faster -->
+        <script src="{{asset('js/jquery-1.10.2.min.js')}}"></script>
+        <script src="{{asset('js/library/head.min.js')}}"></script>
+        <script src="{{asset('js/jquery-ui-1.9.2.custom.min.js')}}"></script>
+        <script src="{{asset('js/jquery-migrate-1.2.1.min.js')}}"></script>
+
+    </head>
+
+    <body class="sticky-header">
 
         <section>
             <!-- left side start-->
@@ -47,7 +48,7 @@
 
                 <!--logo and iconic logo start-->
                 <div class="logo">
-                    <a href="index.html"><img src="{{asset('images/logo.png')}}" alt=""></a>
+                    <a href="index.html"><img src="" alt=""></a>
                 </div>
 
                 <div class="logo-icon text-center">
@@ -60,7 +61,7 @@
                     <!-- visible to small devices only -->
                     <div class="visible-xs hidden-sm hidden-md hidden-lg">
                         <div class="media logged-user">
-                            <img alt="" src="images/photos/user-avatar.png" class="media-object">
+                            <img alt="" src="" class="media-object">
                             <div class="media-body">
                                 <h4><a href="#">John Doe</a></h4>
                                 <span>"Hello There..."</span>
@@ -69,9 +70,9 @@
 
                         <h5 class="left-nav-title">Account Information</h5>
                         <ul class="nav nav-pills nav-stacked custom-nav">
-                          <li><a href="#"><i class="fa fa-user"></i> <span>Profile</span></a></li>
-                          <li><a href="#"><i class="fa fa-cog"></i> <span>Settings</span></a></li>
-                          <li><a href="#"><i class="fa fa-sign-out"></i> <span>Sign Out</span></a></li>
+                            <li><a href="#"><i class="fa fa-user"></i> <span>Profile</span></a></li>
+                            <li><a href="#"><i class="fa fa-cog"></i> <span>Settings</span></a></li>
+                            <li><a href="#"><i class="fa fa-sign-out"></i> <span>Sign Out</span></a></li>
                         </ul>
                     </div>
 
@@ -179,7 +180,7 @@
                 </div>
             </div>
             <!-- left side end-->
-            
+
             <!-- main content start-->
             <div class="main-content" >
 
@@ -283,8 +284,8 @@
                                             <a href="">
                                                 <span class="thumb"><img src="{{asset('images/photos/user1.png')}}" alt="" /></span>
                                                 <span class="desc">
-                                                  <span class="name">John Doe <span class="badge badge-success">new</span></span>
-                                                  <span class="msg">Lorem ipsum dolor sit amet...</span>
+                                                    <span class="name">John Doe <span class="badge badge-success">new</span></span>
+                                                    <span class="msg">Lorem ipsum dolor sit amet...</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -292,8 +293,8 @@
                                             <a href="">
                                                 <span class="thumb"><img src="{{asset('images/photos/user2.png')}}" alt="" /></span>
                                                 <span class="desc">
-                                                  <span class="name">Jonathan Smith</span>
-                                                  <span class="msg">Lorem ipsum dolor sit amet...</span>
+                                                    <span class="name">Jonathan Smith</span>
+                                                    <span class="msg">Lorem ipsum dolor sit amet...</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -301,8 +302,8 @@
                                             <a href="">
                                                 <span class="thumb"><img src="{{asset('images/photos/user3.png')}}" alt="" /></span>
                                                 <span class="desc">
-                                                  <span class="name">Jane Doe</span>
-                                                  <span class="msg">Lorem ipsum dolor sit amet...</span>
+                                                    <span class="name">Jane Doe</span>
+                                                    <span class="msg">Lorem ipsum dolor sit amet...</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -310,8 +311,8 @@
                                             <a href="">
                                                 <span class="thumb"><img src="{{asset('images/photos/user4.png')}}" alt="" /></span>
                                                 <span class="desc">
-                                                  <span class="name">Mark Henry</span>
-                                                  <span class="msg">Lorem ipsum dolor sit amet...</span>
+                                                    <span class="name">Mark Henry</span>
+                                                    <span class="msg">Lorem ipsum dolor sit amet...</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -319,8 +320,8 @@
                                             <a href="">
                                                 <span class="thumb"><img src="{{asset('images/photos/user5.png')}}" alt="" /></span>
                                                 <span class="desc">
-                                                  <span class="name">Jim Doe</span>
-                                                  <span class="msg">Lorem ipsum dolor sit amet...</span>
+                                                    <span class="name">Jim Doe</span>
+                                                    <span class="msg">Lorem ipsum dolor sit amet...</span>
                                                 </span>
                                             </a>
                                         </li>
@@ -373,7 +374,7 @@
                                     <img src="{{asset('images/photos/user-avatar.png')}}" alt="" />
                                     {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
                                         {{ app.user.nom }}
-                                     {% endif %}
+                                    {% endif %}
                                     <span class="caret"></span>
                                 </a>
                                 <ul class="dropdown-menu dropdown-menu-usermenu pull-right">
@@ -406,39 +407,39 @@
             <!-- main content end-->
         </section>
 
-    {% block javascripts %}
-        <script src="{{asset('js/bootstrap.min.js')}}"></script>
-        <script src="{{asset('js/modernizr.min.js')}}"></script>
-        <script src="{{asset('js/jquery.nicescroll.js')}}"></script>
+        {% block javascripts %}
+            <script src="{{asset('js/bootstrap.min.js')}}"></script>
+            <script src="{{asset('js/modernizr.min.js')}}"></script>
+            <script src="{{asset('js/jquery.nicescroll.js')}}"></script>
 
-        <!--easy pie chart-->
-        <script src="{{asset('js/easypiechart/jquery.easypiechart.js')}}"></script>
-        <script src="{{asset('js/easypiechart/easypiechart-init.js')}}"></script>
+            <!--easy pie chart-->
+            <script src="{{asset('js/easypiechart/jquery.easypiechart.js')}}"></script>
+            <script src="{{asset('js/easypiechart/easypiechart-init.js')}}"></script>
 
-        <!--Sparkline Chart-->
-        <script src="{{asset('js/sparkline/jquery.sparkline.js')}}"></script>
-        <script src="{{asset('js/sparkline/sparkline-init.js')}}"></script>
+            <!--Sparkline Chart-->
+            <script src="{{asset('js/sparkline/jquery.sparkline.js')}}"></script>
+            <script src="{{asset('js/sparkline/sparkline-init.js')}}"></script>
 
-        <!--icheck -->
-        <script src="{{asset('js/iCheck/jquery.icheck.js')}}"></script>
-        <script src="{{asset('js/icheck-init.js')}}"></script>
+            <!--icheck -->
+            <script src="{{asset('js/iCheck/jquery.icheck.js')}}"></script>
+            <script src="{{asset('js/icheck-init.js')}}"></script>
 
-        <!-- jQuery Flot Chart-->
-        {#<script src="{{asset('js/flot-chart/jquery.flot.js')}}"></script>
-        <script src="{{asset('js/flot-chart/jquery.flot.tooltip.js')}}"></script>
-        <script src="{{asset('js/flot-chart/jquery.flot.resize.js')}}"></script>
-        <script src="{{asset('js/flot-chart/jquery.flot.pie.resize.js')}}"></script>
-        <script src="{{asset('js/flot-chart/jquery.flot.selection.js')}}"></script>
-        <script src="{{asset('js/flot-chart/jquery.flot.stack.js')}}"></script>
-        <script src="{{asset('js/flot-chart/jquery.flot.time.js')}}"></script>
-        <script src="{{asset('js/main-chart.js')}}"></script>#}
+            <!-- jQuery Flot Chart-->
+            {#<script src="{{asset('js/flot-chart/jquery.flot.js')}}"></script>
+            <script src="{{asset('js/flot-chart/jquery.flot.tooltip.js')}}"></script>
+            <script src="{{asset('js/flot-chart/jquery.flot.resize.js')}}"></script>
+            <script src="{{asset('js/flot-chart/jquery.flot.pie.resize.js')}}"></script>
+            <script src="{{asset('js/flot-chart/jquery.flot.selection.js')}}"></script>
+            <script src="{{asset('js/flot-chart/jquery.flot.stack.js')}}"></script>
+            <script src="{{asset('js/flot-chart/jquery.flot.time.js')}}"></script>
+            <script src="{{asset('js/main-chart.js')}}"></script>#}
 
-        <!--common scripts for all pages-->
-        <script src="{{asset('js/scripts.js')}}"></script>
-        <script>
-            $("div#flashbag-alert").show("slow").delay(3000).hide("slow");
-        </script>
+            <!--common scripts for all pages-->
+            <script src="{{asset('js/scripts.js')}}"></script>
+            <script>
+                $("div#flashbag-alert").show("slow").delay(3000).hide("slow");
+            </script>
 
-{% endblock %}
-</body>
+        {% endblock %}
+    </body>
 </html>
