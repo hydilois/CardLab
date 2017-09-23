@@ -114,6 +114,11 @@ class Student {
     private $classe;
 
     /**
+     * @ORM\Column(name="redoublant", type="boolean")
+     */
+    private $redoublant;
+
+    /**
      * Get id
      *
      * @return integer 
@@ -396,4 +401,28 @@ class Student {
         return $this->photo;
     }
 
+
+    /**
+     * Set redoublant
+     *
+     * @param boolean $redoublant
+     *
+     * @return Student
+     */
+    public function setRedoublant($redoublant)
+    {
+        $this->redoublant = $redoublant;
+
+        return $this;
+    }
+
+    /**
+     * Get redoublant
+     *
+     * @return boolean
+     */
+    public function getRedoublant()
+    {
+        return $this->redoublant;
+    }
 }

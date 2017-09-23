@@ -122,10 +122,10 @@ class InscriptionController extends Controller {
     public function aInscrireAction() {
         $em = $this->getDoctrine()->getManager();
         $annee = $em->getRepository('ConfigBundle:Annee')->findOneBy(['isAnneeEnCour' => true]);
-        $anneEncour = '';
-        if ($annee != null) {
-            $anneEncour = $annee->getAnneeScolaire();
-        }
+        // $anneEncour = '';
+        // if ($annee != null) {
+        //     $anneEncour = $annee->getAnneeScolaire();
+        // }
 
         $subQueryBuilder = $em->createQueryBuilder();
         $subQuery = $subQueryBuilder
@@ -133,10 +133,12 @@ class InscriptionController extends Controller {
                 ->from('StudentBundle:Inscription', 'i')
                 ->where('i.annee= :annee')
                 ->setParameters(array(
-                    'annee' => $anneEncour,
+                    'annee' => $annee,
                 ))
                 ->getQuery()
                 ->getArrayResult();
+
+                
         if ($subQuery) {
             $queryBuilder = $em->createQueryBuilder();
             $query = $queryBuilder
@@ -154,7 +156,7 @@ class InscriptionController extends Controller {
         $incriptionsNonComplets = $this->getDoctrine()->getRepository('StudentBundle:Inscription')->findBy(
                 array(
                     'status' => 0,
-                    'annee' => $anneEncour,
+                    'annee' => $annee,
         ));
 
         return $this->render('inscription/listeElevesNonInscrits.html.twig', array(

@@ -3,6 +3,7 @@
 namespace StudentBundle\Controller;
 
 use StudentBundle\Entity\Student;
+use StudentBundle\Entity\Inscription;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -43,13 +44,28 @@ class StudentController extends Controller {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-
             $fichier = '';
             $fichier = $this->importation($fichier);
             $student->setPhoto($fichier);
 
             $em = $this->getDoctrine()->getManager();
             $em->persist($student);
+
+            $inscription = new Inscription();
+            $inscription->setStudent($student);
+            $inscription->setClasse($student->getClasse());
+            $inscription->setAvance(0);
+            $inscription->setDateDerniereAvance(new \Datetime());
+            $annee = $em->getRepository('ConfigBundle:Annee')->findOneBy(['isAnneeEnCour' => true]);
+            $inscription->setAnnee($annee);
+            $inscription->setStatus(false);
+            if ($student->getRedoublant()) {
+                $inscription->setRedoublant(true);
+            }else{
+                $inscription->setRedoublant(false);
+            }
+            
+            $em->persist($inscription);
             $em->flush();
 
             return $this->redirectToRoute('student_show', array('id' => $student->getId()));
