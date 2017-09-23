@@ -40,7 +40,7 @@
                                                         <br>
                                                         <hr>
                                                         <nav class="col-md-12">
-                                                            <select onchange="buildSeq({{classe.id}});" class="form-control" id="sequence_{{classe.id}}">
+                                                            <select onchange="builSeq({{classe.id}}, value)" class="form-control" id="sequence_{{classe.id}}">
                                                                 <option value="0">Choisir la séquence </option>
                                                                 {% for sequence in sequences %}
                                                                     <option value="{{sequence.id}}">{{sequence}}</option>
@@ -51,7 +51,7 @@
                                                         <hr>
                                                         <nav class="col-md-12">
                                                             <button class="btn btn-danger pull-left" data-dismiss="modal">Annuler</button>
-                                                            <a id="cible{{classe.id}}" href="{{path('enregistrement_note', {'id': classe.id, 'idSeq': "IDSEQ", 'idMat': "IDMAT"})}}" class="pull-right btn btn-primary">Valider</a>
+                                                            <a onclick="collecte({{classe.id}});" id="cible{{classe.id}}" href="{{path('enregistrement_note', {'id': classe.id, 'idSeq': "IDSEQ", 'idMat': "IDMAT"})}}" class="pull-right btn btn-primary">Valider</a>
                                                         </nav>
                                                     </div>
                                                 </fieldset>
@@ -59,8 +59,79 @@
                                         </div>
                                     </div>
                                 </td>
-                                <td><a href="#" class="btn btn-success">Ajouter</a></td>
-                                <td><a href="#" class="btn btn-primary">Générer</a></td>
+                                <td>
+                                    <a href="#" class="btn btn-success" data-toggle="modal" data-target=".modalAbs_{{classe.id}}">Ajouter</a>
+                                    <div class="modal fade modalAbs_{{classe.id}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                                        <div class="modal-dialog modal-sm">
+                                            <div class="modal-content well">
+                                                <fieldset class="panel-primary">
+                                                    <legend class="panel-heading">
+                                                        <h5 class="text-center">Informations complémentaires</h5>
+                                                    </legend>
+                                                    <nav class="col-md-12">
+                                                        <select onchange="builSeqAbs({{classe.id}}, value)" class="form-control" id="sequenceAbs_{{classe.id}}">
+                                                            <option value="0">Choisir la séquence </option>
+                                                            {% for sequence in sequences %}
+                                                                <option value="{{sequence.id}}">{{sequence}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </nav>
+                                                    <br>
+                                                    <hr>
+                                                    <nav class="col-md-12">
+                                                        <button class="btn btn-danger pull-left" data-dismiss="modal">Annuler</button>
+                                                        <a onclick="collecteAbs({{classe.id}});" id="cibleAbs{{classe.id}}" href="{{path('absence_classe', {'idClasse': classe.id, 'idSeq': "IDSEQ"})}}" class="pull-right btn btn-primary">Valider</a>
+                                                    </nav>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
+                                    <a href="#" class="btn btn-primary" data-toggle="modal" data-target=".modalBull_{{classe.id}}">Générer</a>
+                                    <div class="modal fade modalBull_{{classe.id}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel"
+                                         style="border-radius: 24px 24px 24px 24px">
+                                        <div class="modal-dialog modal-md">
+                                            <div class="modal-content well">
+                                                <fieldset class="panel-primary">
+                                                    <legend class="panel-heading">
+                                                        <h5 class="text-center">informations complémentaires</h5>
+                                                    </legend>
+                                                    <div class="col-md-12">
+                                                        <nav class="col-md-6">
+                                                            Classe: <strong>{{classe}}</strong>
+                                                        </nav>
+                                                        <nav class="col-md-6">
+                                                            Année scolaire: <strong>{{annee}}</strong>
+                                                        </nav>
+                                                        <hr class="col-md-12">
+                                                        <nav class="col-md-12">
+                                                            <select onchange="buildSeqBull({{classe.id}}, value);" class="form-control" id="sequenceBull_{{classe.id}}">
+                                                                <option value="0">Choisir la séquence </option>
+                                                                {% for sequence in sequences %}
+                                                                    <option value="{{sequence.id}}">{{sequence}}</option>
+                                                                {% endfor %}
+                                                            </select>
+                                                            <select onchange="buildTrimBull({{classe.id}}, value);" class="form-control pull-right" id="trimestre_{{classe.id}}">
+                                                                <option value="0">Choisir le trimestre </option>
+                                                                <option value="1">Trimestre 1</option>
+                                                                <option value="2">Trimestre 2</option>
+                                                                <option value="3">Trimestre 3</option>
+                                                            </select>
+                                                        </nav>
+                                                        <hr class="col-md-12">
+                                                        <span class=" col-md-12 alert-danger text-danger text text-bold"><u>NB:</u> En cas de choix de la séquence et du trimestre, c'est le trimestre qui est pris en compte!</span>
+                                                        <hr class="col-md-12">
+                                                        <nav class="col-md-12">
+                                                            <button class="btn btn-danger pull-left" data-dismiss="modal">Annuler</button>
+                                                            <a target="blank" onclick="collecteBull({{classe.id}});" id="cibleBull{{classe.id}}" href="{{path('bulletin_sequentiel_classe', {'idClasse': classe.id, 'idAnnee': annee.id, 'idSeq': "IDSEQ", 'idTrim': "IDTRIM"})}}" class="pull-right btn btn-primary">Valider</a>
+                                                        </nav>
+                                                    </div>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
                                 <td><a href="#" class="btn btn-danger">Produire</a></td>
                             </tr>
                             {% set num = num + 1 %}
@@ -71,25 +142,56 @@
         </fieldset>
     </div>
     <script>
-        function matiereClasse(idClasse) {
-            var lien = '{{path('classe_enseignement', {'idClasse': "IDCLASSE"})}}';
-            lien = lien.replace("IDCLASSE", idClasse);
-            $('.matiere').load(lien);
+                function matiereClasse(idClasse) {
+                var lien = '{{path('classe_enseignement', {'idClasse': "IDCLASSE"})}}';
+                        lien = lien.replace("IDCLASSE", idClasse);
+                        $('.matiere').load(lien);
+                }
+
+        function buildMat(id, value) {
+        document.getElementById('matiere_' + id).value = value;
+        }
+
+        function builSeq(id, value) {
+        document.getElementById('sequence_' + id).value = value;
+        }
+
+        function collecte(id) {
+        var lien = document.getElementById('cible' + id).href;
+                var idMat = document.getElementById('matiere_' + id).value;
+                var idSeq = document.getElementById('sequence_' + id).value;
+                lien = lien.replace("IDMAT", idMat);
+                lien = lien.replace("IDSEQ", idSeq);
+                document.getElementById('cible' + id).href = lien;
         }
 
 
-        function buildMat(id) {
-            var idMat = document.getElementById('matiere_' + id).value;
-            var lien = document.getElementById('cible' + id).href;
-            lien = lien.replace("IDMAT", idMat);
-            document.getElementById('cible' + id).href = lien;
+        function buildSeqBull(id, value) {
+        document.getElementById('sequenceBull_' + id).value = value;
         }
 
-        function buildSeq(id) {
-            var idSeq = document.getElementById('sequence_' + id).value;
-            var lien = document.getElementById('cible' + id).href;
-            lien = lien.replace("IDSEQ", idSeq);
-            document.getElementById('cible' + id).href = lien;
+        function buildTrimBull(id, value) {
+        document.getElementById('trimestre_' + id).value = value;
+        }
+
+        function collecteBull(id) {
+        var lien = document.getElementById('cibleBull' + id).href;
+                var idSeq = document.getElementById('sequenceBull_' + id).value;
+                var idTrim = document.getElementById('trimestre_' + id).value;
+                lien = lien.replace("IDSEQ", idSeq);
+                lien = lien.replace("IDTRIM", idTrim);
+                document.getElementById('cibleBull' + id).href = lien;
+        }
+
+        function builSeqAbs(id, value){
+        document.getElementById('sequenceAbs_' + id).value = value;
+        }
+
+        function collecteAbs(id) {
+        var lien = document.getElementById('cibleAbs' + id).href;
+                var idSeq = document.getElementById('sequenceAbs_' + id).value;
+                lien = lien.replace("IDSEQ", idSeq);
+                document.getElementById('cibleAbs' + id).href = lien;
         }
 
     </script>

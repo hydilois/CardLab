@@ -264,7 +264,8 @@ class EvaluationController extends Controller {
         return $this->render('evaluation/choixClasse.html.twig', array(
                     'classes' => $classes,
                     'sequences' => $sequences,
-                    'matieres' => $matieres
+                    'matieres' => $matieres,
+                    'annee' => $annee,
         ));
     }
 
@@ -284,7 +285,7 @@ class EvaluationController extends Controller {
 
         return $this->render('evaluation/enseignement.html.twig', array(
                     'enseignements' => $enseignement,
-                    'classe' => $classe
+                    'classe' => $classe,
         ));
     }
 

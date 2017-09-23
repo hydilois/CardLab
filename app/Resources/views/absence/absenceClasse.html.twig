@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h2>Insertion des absences de la <b>{{sequence}}</b> en classe de <b>{{classe}}</b></h2>
+    <hr>
+    <form method="POST" class="col-md-12" action="{{path('absence_classe', {'idClasse': classe.id, 'idSeq': sequence.id})}}">
+        <div class="adv-table">
+            <table class="display table table-bordered table-striped" id="dynamic-table">
+                <thead>
+                    <tr>
+                        <th>Id</th>
+                        <th>Année</th>
+                        <th>Nom de l'Elève </th>
+                        <th>Sexe </th>
+                        <th>Classe</th>
+                        <th>Séquence</th>
+                        <th>Valeur actuelle</th>
+                        <th>Ajouter ?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set compt = 1 %}
+                    {% for eleve in listEleves %}
+                        <tr>
+                            <td><a href="">{{ compt }}</a></td>
+                            <td>{{ annee }}</td>
+                            <td>{{ eleve.student }}</td>
+                            <td>{{ eleve.student.sexe }}</td>
+                            <td>{{ eleve.classe.abreviation }}</td>
+                            <td>{{ sequence}}</td>
+                            <td>
+                                {% if eleve.nbreAbsence is empty %}
+                                    0
+                                {% else %}
+                                    {{eleve.nbreAbsence}}
+                                {%endif%}
+                            </td>
+                            <td>
+                                <input type="number" class="form-control" value="0" min="0" name="el_{{eleve.id}}" style="width: 33%;"/>
+                            </td>
+                        </tr>
+                        {% set compt = compt + 1%}
+                    {% endfor %}
+                </tbody>
+            </table>
+            <div class="">
+                <button type="submit" class="btn btn-green">Enregistrer</button>
+                <button type="reset" class="btn btn-blue">Effacer</button>
+            </div>
+        </div>
+    </form>
+    {% include '/categorie/extras_categorie.css.html.twig' %}
+    {% include '/categorie/extras_categorie.js.html.twig' %}
+{% endblock %}

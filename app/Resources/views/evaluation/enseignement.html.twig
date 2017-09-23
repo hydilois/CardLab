@@ -1,4 +1,4 @@
-<select onchange="buildMat({{classe.id}})" id="matiere_{{classe.id}}" class="form-control">
+<select onchange="buildMat({{classe.id}}, value);" name="" id="matiere_{{classe.id}}" class="form-control">
     <option value="0">Choisir la matière </option>
     {% for enseignement in enseignements %}
         <option value="{{enseignement.matiere.id}}">{{enseignement.matiere | upper}}</option>
