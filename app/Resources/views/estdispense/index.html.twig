@@ -22,9 +22,8 @@
                 <th>Enseignant</th>
                 <th>Classe</th>
                 <th>Coefficient</th>
-                <th>Nombre heures annuel</th>
-                <th>Nombre leçons annuel</th>
-                <th>Titulaire</th>
+                <th>Nombre heures</th>
+                <th>Nombre leçons</th>
                 <th>Actions</th>
             </tr>
         </thead>
@@ -38,9 +37,9 @@
                 <td>{{ estDispense.coefficient }}</td>
                 <td>{{ estDispense.nombreHeuresAnnuel }}</td>
                 <td>{{ estDispense.nombreLeconsAnnuel }}</td>
-                <td>{% if estDispense.titulaire %}<span class="label label-info">Oui</span>{% else %}<span class="label label-warning">Non</span>{% endif %}</td>
+                {# <td>{% if estDispense.titulaire %}<span class="label label-info">Oui</span>{% else %}<span class="label label-warning">Non</span>{% endif %}</td> #}
                 <td>
-                            <a class="btn btn-info" href="{{ path('estdispense_show', { 'id': estDispense.id }) }}">Voir</a>
+                            {# <a class="btn btn-info" href="{{ path('estdispense_show', { 'id': estDispense.id }) }}">Voir</a> #}
                             <a class="btn btn-success" href="{{ path('estdispense_edit', { 'id': estDispense.id }) }}">Modifier</a>
                 </td>
             </tr>
