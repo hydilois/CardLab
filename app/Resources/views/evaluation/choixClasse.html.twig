@@ -25,7 +25,7 @@
                                 <td>{{num}}</td>
                                 <td>{{classe}}</td>
                                 <td>
-                                    <a href="#" class="btn btn-info" data-toggle="modal" data-target=".modal_{{classe.id}}">Insérer</a>
+                                    <a href="#" onclick="matiereClasse({{classe.id}});" class="btn btn-info" data-toggle="modal" data-target=".modal_{{classe.id}}">Insérer</a>
                                     <div class="modal fade modal_{{classe.id}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
                                         <div class="modal-dialog modal-sm">
                                             <div class="modal-content well">
@@ -34,13 +34,8 @@
                                                         <h5>informations complémentaires</h5>
                                                     </legend>
                                                     <div class="col-md-12">
-                                                        <nav class="col-md-12">
-                                                            <select onchange="buildMat({{classe.id}})" id="matiere_{{classe.id}}" class="form-control">
-                                                                <option value="0">Choisir la matière </option>
-                                                                {% for matiere in matieres %}
-                                                                    <option value="{{matiere.id}}">{{matiere | upper}}</option>
-                                                                {% endfor %}
-                                                            </select>
+                                                        <nav class="col-md-12 matiere">
+
                                                         </nav>
                                                         <br>
                                                         <hr>
@@ -76,6 +71,11 @@
         </fieldset>
     </div>
     <script>
+        function matiereClasse(idClasse) {
+            var lien = '{{path('classe_enseignement', {'idClasse': "IDCLASSE"})}}';
+            lien = lien.replace("IDCLASSE", idClasse);
+            $('.matiere').load(lien);
+        }
 
 
         function buildMat(id) {

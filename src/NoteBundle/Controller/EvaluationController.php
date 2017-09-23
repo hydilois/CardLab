@@ -8,7 +8,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use ConfigBundle\Entity\Ecole;
+use MatiereBundle\Entity\EstDispense;
 use NoteBundle\Form\EvaluationType;
+use StudentBundle\Entity\Classe;
 
 /**
  * Evaluation controller.
@@ -228,13 +230,14 @@ class EvaluationController extends Controller {
             suite:
             return $this->redirect($this->generateUrl('homepage'));
         }
-
+        $enseignement = $em->getRepository('MatiereBundle:EstDispense')->findOneBy(['classe' => $classe, 'annee' => $anneeEnCour, 'matiere' => $matiere]);
         return $this->render('evaluation/notes.html.twig', array(
                     'classe' => $classe,
                     'sequence' => $sequence,
                     'matiere' => $matiere,
                     'annee' => $anneeEnCour,
                     'eleves' => $eleves,
+                    'enseignement' => $enseignement
         ));
     }
 
@@ -246,7 +249,10 @@ class EvaluationController extends Controller {
      */
     public function afficheNoteAction() {
         $em = $this->getDoctrine()->getManager();
-        $classes = $em->getRepository('StudentBundle:Classe')->findBy(['classePere' => !NULL]);
+        $qb = $em->createQueryBuilder();
+        $qb->select('cl')->from('StudentBundle:Classe', 'cl')->where('cl.classePere IS NOT NULL');
+        $classes = $qb->getQuery()->getResult();
+
         $sequences = $em->getRepository('NoteBundle:Sequence')->findAll();
         $matieres = $em->getRepository('MatiereBundle:Matiere')->findAll();
         $annee = $em->getRepository('ConfigBundle:Annee')->findOneBy(['isAnneeEnCour' => true]);
@@ -255,6 +261,26 @@ class EvaluationController extends Controller {
                     'classes' => $classes,
                     'sequences' => $sequences,
                     'matieres' => $matieres
+        ));
+    }
+
+    /**
+     * Activités des classes
+     *
+     * @Route("/classes-{idClasse}/enseignement", name="classe_enseignement")
+     * @Method("GET")
+     */
+    public function enseignementAction($idClasse) {
+        $enseignement = new EstDispense();
+        $em = $this->getDoctrine()->getManager();
+        $classe = $em->getRepository('StudentBundle:Classe')->find($idClasse);
+        $annee = $em->getRepository('ConfigBundle:Annee')->findOneBy(['isAnneeEnCour' => true]);
+
+        $enseignement = $em->getRepository('MatiereBundle:EstDispense')->findBy(['classe' => $classe, 'annee' => $annee]);
+
+        return $this->render('evaluation/enseignement.html.twig', array(
+                    'enseignements' => $enseignement,
+                    'classe' => $classe
         ));
     }
 

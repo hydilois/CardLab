@@ -1,30 +1,46 @@
 {% extends 'base.html.twig' %}
 
 {% block body -%}
-    <h1 class="text-center">Remplissage des notes des élèves</h1>
+    <h3 class="text-center">Insertion des notes des élèves</h3>
 
     <div class="col-md-12">
-        <div class="row">
-            <div class="col-md-4">
-                <label for="">Ann&eacute;e Acad&eacute;mique: </label> <span>{{annee.anneeScolaire}}</span>
+        <div class="col-md-6">
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="">Ann&eacute;e Acad&eacute;mique: </label> <span>{{annee.anneeScolaire}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="">Classe: </label> <span>{{classe.nom}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="">Séquence: </label> <span>{{sequence.nom}}</span>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-12">
+                    <label for="">Matière: </label> <span>{{matiere.nom}}</span>
+                </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-md-3">
-                <label for="">Classe: </label> <span>{{classe.nom}}</span>
+        <div class="col-md-4 pull-right">
+            <div class="col-md-12">
+                <label for="">Enseignant: </label> <span>{{enseignement.enseignant}}</span>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3">
-                <label for="">Séquence: </label> <span>{{sequence.nom}}</span>
+            <div class="col-md-12">
+                <label for="">Coef: </label> <span>{{enseignement.coefficient}}</span>
             </div>
-        </div>
-        <div class="row">
-            <div class="col-md-3">
-                <label for="">Matière: </label> <span>{{matiere.nom}}</span>
+            <div class="col-md-12">
+                <label for="">Volume horaire: </label> <span>{{enseignement.nombreHeuresAnnuel}} Heures</span>
             </div>
-        </div>
-        <form name="notes" action="{{ path('enregistrement_note', { 'id': classe.id, 'idSeq':sequence.id, 'idMat':matiere.id})}}" method="post">
+            <div class="col-md-12">
+                <label for="">Nombre Leçon: </label> <span>{{enseignement.nombreLeconsAnnuel}}</span>
+            </div>
+        </div> 
+        <form class="col-md-12" name="notes" action="{{ path('enregistrement_note', { 'id': classe.id, 'idSeq':sequence.id, 'idMat':matiere.id})}}" method="post">
             <table class="table table-bordered table-hover panel-primary" id="notes">
                 <thead class="panel-heading">
                     <tr>
@@ -40,7 +56,7 @@
                                 {{eleve.nom}}
                             </td>
                             <td>
-                                <input id="entree{{ligne}}" type="text" min="0" max="20" {#value="{{ notes.student.nom }}"#} name="{{ eleve.id }}" class="form-control col-md-1" placeholder="note-{{ eleve.nom }}">
+                                <input autocomplete="off" onkeydown="next(event, {{ligne}})" id="entree{{ligne}}" type="text" min="0" max="20" {#value="{{ notes.student.nom }}"#} name="{{ eleve.id }}" class="form-control col-md-1" placeholder="note-{{ eleve.nom }}">
                             </td>
                         </tr>
                         {% set ligne = ligne + 1 %}
@@ -54,6 +70,7 @@
                 <input class="btn btn-primary pull-right" type="submit" value="Enregistrer" />
             </div>
         </form>
+        <script src="{{asset('bootstrap/js/new/fonctions.js')}}"></script>
     </div>
     {% include '/categorie/extras_categorie.css.html.twig' %}
     {% include '/categorie/extras_categorie.js.html.twig' %}
