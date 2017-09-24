@@ -5,6 +5,8 @@ namespace StudentBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Doctrine\ORM\EntityRepository;
 
 class ClasseType extends AbstractType
 {
@@ -17,8 +19,11 @@ class ClasseType extends AbstractType
         ->add('nom')
         ->add('abreviation')
         ->add('classePere',EntityType::class, array('class'=>'StudentBundle\Entity\Classe',
-            'query_builder' => function (\Doctrine\ORM\EntityRepository $repository)
-            {return $repository->createQueryBuilder('c')->where('c.classePere is NULL');}))
+            'query_builder' => function (\Doctrine\ORM\EntityRepository $repository){
+                return $repository->createQueryBuilder('c')->where('c.classePere is NULL');
+            },
+                'required' => false
+            ))
         ->add('classeNext',EntityType::class, array('class'=>'StudentBundle\Entity\Classe',
             'query_builder' => function (\Doctrine\ORM\EntityRepository $repository)
             {return $repository->createQueryBuilder('c')->where('c.classePere is NULL');}))

@@ -1,15 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Liste de tous les élèves</h1>
+    <h1 class="text-center">Liste des élèves</h1>
+            <a class="btn btn-primary pull-left" href="{{ path('student_new') }}">Ajouter èlève</a><br><br>
 
-    <nav class="nav navbar-nav">
-        <a class="btn btn-primary" href="{{ path('student_new') }}"><span class="glyphicon glyphicon-plus-sign"></span> Ajouter un nouvel élève</a>
-    </nav>
-    <table class="display table table-bordered" id="dynamic-table">
+    <table class="display table table-bordered table-striped" id="dynamic-table">
+
         <thead>
             <tr>
-                <th>Id</th>
+                <th>#</th>
                 <th>Matricule</th>
                 <th>Noms et prénoms</th>
                 <th>Date de naissance</th>

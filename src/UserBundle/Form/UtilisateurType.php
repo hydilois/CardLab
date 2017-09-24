@@ -20,7 +20,6 @@ class UtilisateurType extends AbstractType
         ->add('matricule')
         ->add('grade')
         ->add('diplomes')
-        ->add('level')
         ;
     }
 

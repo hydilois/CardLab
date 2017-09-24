@@ -1,25 +1,131 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Student edit</h1>
-
     {{ form_start(edit_form) }}
-    {{ form_widget(edit_form) }}
-    <input type="submit" value="Edit" />
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+            <section class="panel">
+                <header class="panel-heading text-center">
+                    Enregistrement d'un Nouvel élève
+                </header>
+                <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.matricule, "Matricule") }}
+                                    {{ form_widget(edit_form.matricule, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.nom, "Nom de l'élève") }}
+                                    {{ form_widget(edit_form.nom, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.sexe, "Sexe") }}
+                                    {{ form_widget(edit_form.sexe, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.dateNaissance, "Date de Naissance") }}
+                                    {{ form_widget(edit_form.dateNaissance, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.lieuNaissance, "Lieu de Naissance") }}
+                                    {{ form_widget(edit_form.lieuNaissance, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.nomPere, "Nom du père") }}
+                                    {{ form_widget(edit_form.nomPere, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.nomMere, "Nom de la mère") }}
+                                    {{ form_widget(edit_form.nomMere, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.adressePere, "Adresse du père") }}
+                                    {{ form_widget(edit_form.adressePere, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.adresseMere, "Adresse de la mère") }}
+                                    {{ form_widget(edit_form.adresseMere, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.personneAcontacter, "Personne à contacter") }}
+                                    {{ form_widget(edit_form.personneAcontacter, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.dernierEtablissementFreq, "Dernier établissement fréquenté") }}
+                                    {{ form_widget(edit_form.dernierEtablissementFreq, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.photo, "Photo") }}
+                                    {{ form_widget(edit_form.photo, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row"> 
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.classe, "Classe") }}
+                                    {{ form_widget(edit_form.classe, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.redoublant, "Redoublant") }}
+                                    {{ form_widget(edit_form.redoublant, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <table class="pull-left">
+                            <tr>
+                                <td><a class="btn btn-default" href="{{ path('student_index') }}">Retour à la liste</a></td>
+                                <td>&nbsp; &nbsp;</td>
+                                <td><input class="btn btn-success" type="submit" value="Modifier" /></td>
     {{ form_end(edit_form) }}
+                                <td>&nbsp; &nbsp;</td>
+                                <td>{{ form_start(delete_form) }}
+                                    <input class="btn btn-danger" type="submit" value="Supprimer">
+                                    {{ form_end(delete_form) }}
+                                </td>
+                            </tr>
+                        </table>
+                </div>
+            </section>
+        </div>
+    </div>
 
-    <ul>
-        <li>
-            <a href="{{ path('student_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-            <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
-
-    <script>
+        <script>
         var photo = document.getElementById('studentbundle_student_photo');
         photo.name = 'avatar';
     </script>

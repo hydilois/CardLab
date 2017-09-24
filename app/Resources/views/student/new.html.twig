@@ -1,21 +1,122 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Student creation</h1>
-
     {{ form_start(form) }}
-    {{ form_widget(form) }}
-    <input type="submit" value="Create" />
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+            <section class="panel">
+                <header class="panel-heading text-center">
+                    Enregistrement d'un Nouvel élève
+                </header>
+                <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.matricule, "Matricule") }}
+                                    {{ form_widget(form.matricule, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.nom, "Nom de l'élève") }}
+                                    {{ form_widget(form.nom, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.sexe, "Sexe") }}
+                                    {{ form_widget(form.sexe, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.dateNaissance, "Date de Naissance") }}
+                                    {{ form_widget(form.dateNaissance, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.lieuNaissance, "Lieu de Naissance") }}
+                                    {{ form_widget(form.lieuNaissance, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.nomPere, "Nom du père") }}
+                                    {{ form_widget(form.nomPere, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.nomMere, "Nom de la mère") }}
+                                    {{ form_widget(form.nomMere, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.adressePere, "Adresse du père") }}
+                                    {{ form_widget(form.adressePere, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.adresseMere, "Adresse de la mère") }}
+                                    {{ form_widget(form.adresseMere, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.personneAcontacter, "Personne à contacter") }}
+                                    {{ form_widget(form.personneAcontacter, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.dernierEtablissementFreq, "Dernier établissement fréquenté") }}
+                                    {{ form_widget(form.dernierEtablissementFreq, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.photo, "Photo") }}
+                                    {{ form_widget(form.photo, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row"> 
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.classe, "Classe") }}
+                                    {{ form_widget(form.classe, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(form.redoublant, "Redoublant") }}
+                                    {{ form_widget(form.redoublant, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </section>
+        </div>
+    </div>
     {{ form_end(form) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('student_index') }}">Back to the list</a>
-        </li>
-    </ul>
-
-    <script>
+        <script>
         var photo = document.getElementById('studentbundle_student_photo');
         photo.name = 'avatar';
     </script>
 {% endblock %}
+

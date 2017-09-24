@@ -1,25 +1,25 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Pays list</h1>
-
-    <table>
+    <h1 class="text-center">Information sur</h1>
+    <a class="btn btn-primary pull-left" href="{{ path('pays_new') }}">Ajouter</a>
+    <table class="display table table-bordered table-striped" id="dynamic-table">
         <thead>
             <tr>
-                <th>Id</th>
-                <th>Paysfrancais</th>
-                <th>Paysanglais</th>
-                <th>Ministerefrancais</th>
-                <th>Ministereanglais</th>
-                <th>Devisefrancais</th>
-                <th>Deviseanglais</th>
+                <th>#</th>
+                <th>Pays en Francais</th>
+                <th>Pays en Anglais</th>
+                <th>Ministère en Francais</th>
+                <th>Ministère en Anglais</th>
+                <th>Devise en Francais</th>
+                <th>Devise en Anglais</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for pay in pays %}
             <tr>
-                <td><a href="{{ path('pays_show', { 'id': pay.id }) }}">{{ pay.id }}</a></td>
+                <td>{{ pay.id }}</td>
                 <td>{{ pay.paysFrancais }}</td>
                 <td>{{ pay.paysAnglais }}</td>
                 <td>{{ pay.ministereFrancais }}</td>
@@ -27,23 +27,12 @@
                 <td>{{ pay.deviseFrancais }}</td>
                 <td>{{ pay.deviseAnglais }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('pays_show', { 'id': pay.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('pays_edit', { 'id': pay.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                        <a class="btn btn-success" href="{{ path('pays_edit', { 'id': pay.id }) }}">Modifier</a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('pays_new') }}">Create a new pay</a>
-        </li>
-    </ul>
+    {% include '/categorie/extras_categorie.css.html.twig' %}
+    {% include '/categorie/extras_categorie.js.html.twig' %}
 {% endblock %}

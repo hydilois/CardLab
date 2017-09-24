@@ -1,39 +1,35 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Evaluations list</h1>
+    <h1 class="text-center"> Liste des Evaluations</h1>
 
-    <table>
+    <table class="display table table-bordered table-striped" id="dynamic-table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>#</th>
+                <th>Elève</th>
+                <th>Classe</th>
                 <th>Note</th>
-                <th>Actions</th>
+                <th>Année</th>
+                {# <th>Actions</th> #}
             </tr>
         </thead>
         <tbody>
         {% for evaluation in evaluations %}
             <tr>
-                <td><a href="{{ path('evaluation_show', { 'id': evaluation.id }) }}">{{ evaluation.id }}</a></td>
+                <td>{{ evaluation.id }}</td>
+                <td>{{ evaluation.student }}</td>
+                <td>{{ evaluation.classe }}</td>
                 <td>{{ evaluation.note }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('evaluation_show', { 'id': evaluation.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('evaluation_edit', { 'id': evaluation.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
+                <td>{{ evaluation.annee }}</td>
+                {# <td>
+                        <a class="btn btn-info" href="{{ path('evaluation_show', { 'id': evaluation.id }) }}">Détails</a>
+                        <a class="btn btn-success" href="{{ path('evaluation_edit', { 'id': evaluation.id }) }}">Modifier</a>
+                </td> #}
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('evaluation_new') }}">Create a new evaluation</a>
-        </li>
-    </ul>
+    {% include '/categorie/extras_categorie.css.html.twig' %}
+    {% include '/categorie/extras_categorie.js.html.twig' %}
 {% endblock %}

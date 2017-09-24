@@ -1,21 +1,54 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Matiere edit</h1>
-
     {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+            <section class="panel">
+                <header class="panel-heading text-center">
+                    Modification d'une matière
+                </header>
+                <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.nom, "Nom") }}
+                                    {{ form_widget(edit_form.nom, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.abreviation, "Abreviation") }}
+                                    {{ form_widget(edit_form.abreviation, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.categorie, "Catégorie") }}
+                                    {{ form_widget(edit_form.categorie, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                </div>
+            </section>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-offset-3">
+        <table class="pull-left">
+            <tr>
+                <td> <input class="btn btn-success" type="submit" value="Enregistrer" /></td>
     {{ form_end(edit_form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('matiere_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+                <td>&nbsp;&nbsp;</td>
+                <td>
+                    {{ form_start(delete_form) }}
+                    <input class="btn btn-danger" type="submit" value="Suprimer">
+                    {{ form_end(delete_form) }}
+                </td>
+                <td>&nbsp;&nbsp;</td>
+                <td><a class="btn btn-default" href="{{ path('matiere_index') }}">Retour à la liste</a></td>
+            </tr>
+        </table>
+        </div>
+    </div>
 {% endblock %}

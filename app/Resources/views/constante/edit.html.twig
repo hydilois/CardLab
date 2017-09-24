@@ -1,24 +1,71 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Constante edit</h1>
-
     {{ form_start(edit_form) }}
-    {{ form_widget(edit_form) }}
-    <input type="submit" value="Edit" />
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+            <section class="panel">
+                <header class="panel-heading text-center">
+                    Modification d'une classe
+                </header>
+                <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.ville, "Vile ou localité") }}
+                                    {{ form_widget(edit_form.ville, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.nomFrancais, "Nom en Français") }}
+                                    {{ form_widget(edit_form.nomFrancais, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.nomAnglais, "Nom en Anglais") }}
+                                    {{ form_widget(edit_form.nomAnglais, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.deviseFrancais, "Devise en Français") }}
+                                    {{ form_widget(edit_form.deviseFrancais, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row"> 
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.deviseAnglais, "Devise en anglais") }}
+                                    {{ form_widget(edit_form.deviseAnglais, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.boitePostal, "Boite postal") }}
+                                    {{ form_widget(edit_form.boitePostal, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.logo, "Logo") }}
+                                    {{ form_widget(edit_form.logo, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                </div>
+            </section>
+        </div>
+    </div>
     {{ form_end(edit_form) }}
-
-    <ul>
-        <li>
-            <a href="{{ path('constante_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-            <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
-    <script>
+        <script>
         var logo = document.getElementById('configbundle_constante_logo');
         logo.name = 'avatar';
     </script>

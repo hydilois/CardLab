@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Constante</h1>
+    <h1 class="text-center">Détals sur l'établissement</h1>
 
-    <table>
+    <table class="table table-striped">
         <tbody>
             <tr>
-                <th>Id</th>
+                <th>#</th>
                 <td>{{ constante.id }}</td>
             </tr>
             <tr>
@@ -39,18 +39,21 @@
             </tr>
         </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('constante_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('constante_edit', { 'id': constante.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-            <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+    <table>
+            <td>
+            <a class="btn btn-default" href="{{ path('constante_index') }}">Retour à la liste</a>
+            </td>
+            <td>&nbsp;&nbsp;</td>
+            <td>
+                <a class="btn btn-success" href="{{ path('constante_edit', { 'id': constante.id }) }}">Modifier</a>
+            </td>
+            <td>&nbsp;&nbsp;</td>
+            <td>
+                {{ form_start(delete_form) }}
+                    <input class="btn btn-danger" type="submit" value="Supprimer">
+                {{ form_end(delete_form) }}
+            </td>
+        <tr>
+        </tr>
+    </table>
 {% endblock %}

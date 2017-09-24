@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
-{% block contenu %}
-    <h1>Utilisateur</h1>
+{% block body %}
+    <h1 class="text-center">Détail sur un utilisateur</h1>
 
-    <table>
+    <table class="table table-bordered">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -14,23 +14,42 @@
                 <td>{{ utilisateur.nom }}</td>
             </tr>
             <tr>
-                <th>Numerotelephone</th>
-                <td>{{ utilisateur.numeroTelephone }}</td>
+                <th>Matricule</th>
+                <td>{{ utilisateur.matricule }}</td>
+            </tr>
+            <tr>
+                <th>Grade</th>
+                <td>{{ utilisateur.grade }}</td>
+            </tr>
+            <tr>
+                <th>Diplome de recrutement</th>
+                <td>{{ utilisateur.diplomes }}</td>
+            </tr>
+            <tr>
+                <th>Ancienété</th>
+                <td>{{ utilisateur.anciennete }}</td>
+            </tr>
+            <tr>
+                <th>Numero de téléphone</th>
+                <td>{{ utilisateur.telephone }}</td>
             </tr>
         </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('utilisateur_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('utilisateur_edit', { 'id': utilisateur.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+        <table>
+            <tr>
+                <td>
+                    <a class="btn btn-default" href="{{ path('utilisateur_index') }}">Retour à la liste</a>
+                </td>
+                <td>&nbsp;&nbsp;</td>
+                <td>
+                    <a class="btn btn-success" href="{{ path('utilisateur_edit', { 'id': utilisateur.id }) }}">Modifier</a>
+                </td>
+                <td>&nbsp;&nbsp;</td>
+                <td>
+                    {{ form_start(delete_form) }}
+                        <input class="btn btn-danger" type="submit" value="Supprimer">
+                    {{ form_end(delete_form) }}
+                </td>
+            </tr>
+        </table>
 {% endblock %}

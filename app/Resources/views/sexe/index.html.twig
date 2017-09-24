@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Sexes list</h1>
-
-    <table>
+    <h1 class="text-center">Liste des sexes</h1>
+    <a class="btn btn-primary" href="{{ path('sexe_new') }}">Ajouter</a>
+    <table class="display table table-bordered table-striped" id="dynamic-table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th></th>
                 <th>Nom</th>
                 <th>Actions</th>
             </tr>
@@ -17,23 +17,13 @@
                 <td><a href="{{ path('sexe_show', { 'id': sexe.id }) }}">{{ sexe.id }}</a></td>
                 <td>{{ sexe.nom }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('sexe_show', { 'id': sexe.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('sexe_edit', { 'id': sexe.id }) }}">edit</a>
-                        </li>
+                        <a href="{{ path('sexe_edit', { 'id': sexe.id }) }}">Modifier</a>
                     </ul>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('sexe_new') }}">Create a new sexe</a>
-        </li>
-    </ul>
+    {% include '/categorie/extras_categorie.css.html.twig' %}
+    {% include '/sequence/extras_sequence.js.html.twig' %}
 {% endblock %}

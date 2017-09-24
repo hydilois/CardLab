@@ -8,13 +8,19 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
+use FOS\UserBundle\Controller\RegistrationController as BaseController;
+use FOS\UserBundle\Event\FilterUserResponseEvent;
+use FOS\UserBundle\Event\FormEvent;
+use FOS\UserBundle\Event\GetResponseUserEvent;
+use FOS\UserBundle\FOSUserEvents;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 
 /**
  * Utilisateur controller.
  *
  * @Route("utilisateur")
  */
-class UtilisateurController extends Controller
+class UtilisateurController extends BaseController
 {
     /**
      * Lists all utilisateur entities.
@@ -31,6 +37,70 @@ class UtilisateurController extends Controller
         return $this->render('utilisateur/index.html.twig', array(
             'utilisateurs' => $utilisateurs,
         ));
+    }
+
+    /**
+     * @param Request $request
+     *
+     * @return Response
+     * @Route("/enseignant", name="enseignant_register")
+     * @Method({"POST", "GET"})
+     */
+    public function registerAction(Request $request){
+            /** @var $formFactory FactoryInterface */
+            $formFactory = $this->get('fos_user.registration.form.factory');
+            /** @var $userManager UserManagerInterface */
+            $userManager = $this->get('fos_user.user_manager');
+            /** @var $dispatcher EventDispatcherInterface */
+            $dispatcher = $this->get('event_dispatcher');
+
+            $em = $this->getDoctrine()->getManager();
+
+            $user = $userManager->createUser();
+
+
+            $event = new GetResponseUserEvent($user, $request);
+            $dispatcher->dispatch(FOSUserEvents::REGISTRATION_INITIALIZE, $event);
+
+            if (null !== $event->getResponse()) {
+                return $event->getResponse();
+            }
+
+            $form = $formFactory->createForm();
+            $form->setData($user);
+
+            $form->handleRequest($request);
+            if ($form->isSubmitted()) {
+                if ($form->isValid()) {
+                    $event = new FormEvent($form, $request);
+                    $dispatcher->dispatch(FOSUserEvents::REGISTRATION_SUCCESS, $event);
+
+                    $user->setEnabled(true);
+
+                    $userManager->updateUser($user);
+
+                    $url = $this->generateUrl('utilisateur_index');
+                    $response = new RedirectResponse($url);
+                   
+                    //Flasbag message
+                   $request->getSession()
+                    ->getFlashBag()
+                    ->add('success', ' Compte Utilisateur créé avec succès');
+
+                    return $response;
+                }
+
+                $event = new FormEvent($form, $request);
+                $dispatcher->dispatch(FOSUserEvents::REGISTRATION_FAILURE, $event);
+
+                if (null !== $response = $event->getResponse()) {
+                    return $response;
+                }
+            }
+
+            return $this->render('utilisateur/new.html.twig', array(
+                'form' => $form->createView(),
+            ));
     }
 
     /**

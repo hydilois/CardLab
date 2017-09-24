@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Student</h1>
+    <h1 class="text-center">Détail sur un élève</h1>
 
-    <table>
+    <table class="table table-bordered">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -14,39 +14,39 @@
                 <td>{{ student.matricule }}</td>
             </tr>
             <tr>
-                <th>Nom</th>
+                <th>Nom de l'élève</th>
                 <td>{{ student.nom }}</td>
             </tr>
             <tr>
-                <th>Datenaissance</th>
+                <th>Date de naissance</th>
                 <td>{% if student.dateNaissance %}{{ student.dateNaissance|date('Y-m-d H:i:s') }}{% endif %}</td>
             </tr>
             <tr>
-                <th>Lieunaissance</th>
+                <th>Lieu de naissance</th>
                 <td>{{ student.lieuNaissance }}</td>
             </tr>
             <tr>
-                <th>Nompere</th>
+                <th>Nom du père</th>
                 <td>{{ student.nomPere }}</td>
             </tr>
             <tr>
-                <th>Nommere</th>
+                <th>Nom de la mère</th>
                 <td>{{ student.nomMere }}</td>
             </tr>
             <tr>
-                <th>Adressepere</th>
+                <th>Adresse du père</th>
                 <td>{{ student.adressePere }}</td>
             </tr>
             <tr>
-                <th>Adressemere</th>
+                <th>Adresse de la mère</th>
                 <td>{{ student.adresseMere }}</td>
             </tr>
             <tr>
-                <th>Personneacontacter</th>
+                <th>Personne à contacter</th>
                 <td>{{ student.personneAcontacter }}</td>
             </tr>
             <tr>
-                <th>Dernieretablissementfreq</th>
+                <th>Dernier etablissement frequenté</th>
                 <td>{{ student.dernierEtablissementFreq }}</td>
             </tr>
             <tr>
@@ -55,18 +55,16 @@
             </tr>
         </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('student_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('student_edit', { 'id': student.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-            <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+    <table class="pull-left">
+        <tr>
+            <td><a class="btn btn-default" href="{{ path('classe_index') }}">Retour à la liste</a></td>
+            <td>&nbsp; &nbsp;</td>
+            <td><a class="btn btn-success" href="{{ path('student_edit', { 'id': student.id }) }}">Modifier</a></td>
+            <td>&nbsp; &nbsp;</td>
+            <td>{{ form_start(delete_form) }}
+                <input class="btn btn-danger" type="submit" value="Supprimer">
+                {{ form_end(delete_form) }}
+            </td>
+        </tr>
+    </table>
 {% endblock %}

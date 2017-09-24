@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Matieres list</h1>
-
-    <table>
+    <h1 class="text-center">Liste des matières</h1>
+    <a class="btn btn-primary" href="{{ path('matiere_new') }}">Ajouter une matière</a>
+    <table class="display table table-bordered table-striped" id="dynamic-table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>#</th>
                 <th>Nom</th>
                 <th>Abreviation</th>
                 <th>Actions</th>
@@ -19,23 +19,12 @@
                 <td>{{ matiere.nom }}</td>
                 <td>{{ matiere.abreviation }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('matiere_show', { 'id': matiere.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('matiere_edit', { 'id': matiere.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                        <a class="btn btn-success" href="{{ path('matiere_edit', { 'id': matiere.id }) }}">Modifier</a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('matiere_new') }}">Create a new matiere</a>
-        </li>
-    </ul>
+    {% include '/categorie/extras_categorie.css.html.twig' %}
+    {% include '/categorie/extras_categorie.js.html.twig' %}
 {% endblock %}
