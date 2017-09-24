@@ -182,6 +182,7 @@ class EvaluationController extends Controller {
                     ->innerJoin('StudentBundle:Inscription', 'i', 'WITH', 'i.student = s.id')
                     ->innerJoin('StudentBundle:Classe', 'c', 'WITH', 'i.classe = c.id')
                     ->where('c.id = :identifie')
+                    ->orderBy('s.nom', 'ASC')
                     ->setParameter('identifie', $id);
             $eleves = $qb->getQuery()->getResult();
         } else {

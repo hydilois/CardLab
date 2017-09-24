@@ -12,7 +12,7 @@
     .60p { width: 60%; } .75p { width: 75%; }
     .30p {width: 30%;} .20p{width: 20%;}
     .40p{width: 40%} .100p{width: 100%;}
-                         .6p{width: 6%}
+    .6p{width: 6%}
 
     .info td, .info1 td{
         height: 20px;
@@ -44,9 +44,9 @@
                 B.P. {{ ecole.boitePostal }}
             </td>
             <td class="20p" style="text-align: center">
-			{%if ecole.logo %}
-                <img style="height: 80px; width: 60px;" src="uploads/logos/{{ ecole.logo.id ~'.'~ ecole.logo.url}}" alt="Logo" title="" >
-			{% endif %}
+                {%if ecole.logo is not null%}
+                    <img style="height: 80px; width: 60px;" src="Uploads/Logo/{{ ecole.logo}}" alt="Logo" title="" >
+                {% endif %}
             </td>
             <td style="text-align: right" class="40p">
                 {{ pays.paysFrancais }}<br/>
@@ -97,7 +97,7 @@
                         {% else %}
                             {% set compt0et8 = compt0et8 + 1%}
                         {% endif %}
-                        </td>
+                    </td>
                 </tr>
             {% endfor %}
         {% else %}
@@ -106,27 +106,27 @@
     </table>
 
     {% if evaluations %}
-    {% set totalNotes = evaluations|length %}
-    <table class="statistiques">
-        <tr>
-            <td style="text-align: left" class="50p">Nombres de moyennes </td>
-            <td style="text-align: center" class="20p">{{ comptSup10 }}</td>
-            <td style="text-align: center" class="20p">{% set pourcentage1 = (comptSup10 * 100)/totalNotes  %}
-                {{ pourcentage1 | number_format(2, '.', ',')  }}%</td>
-        </tr>
-        <tr>
-            <td style="text-align: left" class="50p">Nombres de note comprise entre 8.00 et 9.00 </td>
-            <td style="text-align: center" class="20p">{{ compt8et9 }}</td>
-            <td style="text-align: center" class="20p">{% set pourcentage2 = (compt8et9 * 100)/totalNotes  %}
-            {{ pourcentage2 | number_format(2, '.', ',') }}%
-            </td>
-        </tr>
-        <tr>
-            <td class="50p" style="text-align: left">Nombres de note inf&eacute;rieure &agrave; 8.00 </td>
-            <td class="20p" style="text-align: center">{{ compt0et8 }}</td>
-            <td class="20p" style="text-align: center">{% set pourcentage3 = (compt0et8 * 100)/totalNotes  %}
-                {{ pourcentage3 | number_format(2, '.', ',')  }}%</td>
-        </tr>
-    </table>
+        {% set totalNotes = evaluations|length %}
+        <table class="statistiques">
+            <tr>
+                <td style="text-align: left" class="50p">Nombres de moyennes </td>
+                <td style="text-align: center" class="20p">{{ comptSup10 }}</td>
+                <td style="text-align: center" class="20p">{% set pourcentage1 = (comptSup10 * 100)/totalNotes  %}
+                    {{ pourcentage1 | number_format(2, '.', ',')  }}%</td>
+            </tr>
+            <tr>
+                <td style="text-align: left" class="50p">Nombres de note comprise entre 8.00 et 9.00 </td>
+                <td style="text-align: center" class="20p">{{ compt8et9 }}</td>
+                <td style="text-align: center" class="20p">{% set pourcentage2 = (compt8et9 * 100)/totalNotes  %}
+                    {{ pourcentage2 | number_format(2, '.', ',') }}%
+                </td>
+            </tr>
+            <tr>
+                <td class="50p" style="text-align: left">Nombres de note inf&eacute;rieure &agrave; 8.00 </td>
+                <td class="20p" style="text-align: center">{{ compt0et8 }}</td>
+                <td class="20p" style="text-align: center">{% set pourcentage3 = (compt0et8 * 100)/totalNotes  %}
+                    {{ pourcentage3 | number_format(2, '.', ',')  }}%</td>
+            </tr>
+        </table>
     {% endif %}
-    </page>
+</page>

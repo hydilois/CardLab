@@ -44,19 +44,21 @@
             <table class="table table-bordered table-hover panel-primary" id="notes">
                 <thead class="panel-heading">
                     <tr>
+                        <th>N°</th>
                         <th>Noms et prénoms</th>
-                        <th class="col-md-2">Notes</th>
+                        <th class="col-md-3">Notes</th>
                     </tr>
                 </thead>
                 <tbody>
                     {% set ligne = 1 %}
                     {% for eleve in eleves %}
                         <tr>
+                            <td>{{ligne}}</td>
                             <td>
                                 {{eleve.nom}}
                             </td>
                             <td>
-                                <input autocomplete="off" onkeydown="next(event, {{ligne}})" id="entree{{ligne}}" type="text" min="0" max="20" {#value="{{ notes.student.nom }}"#} name="{{ eleve.id }}" class="form-control col-md-1" placeholder="note-{{ eleve.nom }}">
+                                <input autocomplete="off" onkeydown="next(event, {{ligne}});" id="entree{{ligne}}" type="text" min="0" max="20" {#value="{{ notes.student.nom }}"#} name="{{ eleve.id }}" class="form-control" placeholder="note-{{ eleve.nom }}">
                             </td>
                         </tr>
                         {% set ligne = ligne + 1 %}

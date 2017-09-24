@@ -8,6 +8,7 @@
             <tr>
                 <th>Id</th>
                 <th>Elèves</th>
+                <th>Classes</th>
                 <th>Nombre des absence</th>
                 <th>Séquence</th>
                 <th>Année</th>
@@ -18,6 +19,7 @@
             <tr>
                 <td>{{ absence.id }}</td>
                 <td>{{ absence.student }}</td>
+                <td>{{ absence.student.classe }}</td>
                 <td>{{ absence.nbreAbsence }}</td>
                 <td>{{ absence.sequence }}</td>
                 <td>{{ absence.anneeScolaire }}</td>
