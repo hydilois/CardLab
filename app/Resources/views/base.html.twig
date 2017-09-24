@@ -91,7 +91,7 @@
                             <ul class="sub-menu-list">
                                 <li><a href="{{path('student_new')}}"> Ajouter un élève</a></li>
                                 <li><a href="{{path('student_index')}}"> Modifier les données</a></li>
-                                <li><a href="{{path('student_index')}}"> Consulter la liste</a></li>
+                                <li><a href="{{path('inscription_index')}}"> Liste des élèves</a></li>
                                 <li><a href="{{path('student_index')}}"> Informer les parents</a></li>
                             </ul>
                         </li>
@@ -115,7 +115,7 @@
 
                         <li class="menu-list"><a href=""><i class="fa fa-bar-chart-o"></i> <span>Statistiques</span></a>
                             <ul class="sub-menu-list">
-                                <li><a href="form_layouts.html"> Par séquence</a></li>
+                                <li><a href="{{path('statSeq')}}"> Par séquence</a></li>
                                 <li><a href="form_advanced_components.html"> Par trimestre</a></li>
                                 <li><a href="form_validation.html"> Par Cycle</a></li>
                                 <li><a href="form_wizard.html"> Par Classe</a></li>
@@ -140,21 +140,16 @@
                                 <li><a href="editable_table.html"> Nos partenaires</a></li>
                             </ul>
                         </li>
+                        <hr>
+                        <li class="menu-list nav-active"><a href="#"><i class="glyphicon glyphicon-comment"></i> <span> Restez informé ?</span></a>
+                            <ul class="sub-menu-list">
+                                <li><a ><input type="email" class="form-control" placeholder="Votre Email" /></a></li>
+                                <li><a ><input type="email" class="form-control" placeholder="Votre Nom" /></a></li>
+                                <li><a > <input type="submit" class="btn btn-success" value="Soumettre"></a></li>
+                            </ul>
+                        </li>
                     </ul>
-                    <hr>
-                    <div class="col-md-12" style="color: darkcyan;">
-                        Restez informé ?
-                        <form>
-                            Votre email:
-                            <input type="email" class="form-control" placeholder="Ex: greensoft@gmail.com" />
-                            Votre nom:
-                            <input type="email" class="form-control" placeholder="Ex: Green Soft-Consulting" />
-                            <br>
-                            <input type="submit" class="btn btn-success" value="Soumettre">
-                        </form>
-                    </div>
                     <!--sidebar nav end-->
-
                 </div>
             </div>
             <!-- left side end-->

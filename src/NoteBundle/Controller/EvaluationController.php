@@ -2,15 +2,17 @@
 
 namespace NoteBundle\Controller;
 
-use NoteBundle\Entity\Evaluation;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use ConfigBundle\Entity\Ecole;
 use MatiereBundle\Entity\EstDispense;
 use NoteBundle\Form\EvaluationType;
 use StudentBundle\Entity\Classe;
+use NoteBundle\Entity\Evaluation;
+use UserBundle\Entity\Utilisateur;
 
 /**
  * Evaluation controller.
@@ -32,6 +34,27 @@ class EvaluationController extends Controller {
 
         return $this->render('evaluation/index.html.twig', array(
                     'evaluations' => $evaluations,
+        ));
+    }
+
+    /**
+     * Formulaire de Pre-statistique
+     *
+     * @Route("/Statistiques-par-Sequence", name="statSeq")
+     * @Method("GET")
+     */
+    public function statSeqMatAction() {
+        $em = $this->getDoctrine()->getManager();
+        $annee = $em->getRepository('ConfigBundle:Annee')->findOneBy(['isAnneeEnCour' => true]);
+
+        $listeEnseignements = $em->getRepository('MatiereBundle:EstDispense')->findBy(array(
+            'annee' => $annee,
+        ));
+        $sequence = $em->getRepository('NoteBundle:Sequence')->findAll();
+
+        return $this->render('evaluation/statSequentiel.html.twig', array(
+                    'enseignements' => $listeEnseignements,
+                    'sequences' => $sequence,
         ));
     }
 
@@ -302,6 +325,198 @@ class EvaluationController extends Controller {
                         ->setMethod('DELETE')
                         ->getForm()
         ;
+    }
+
+    /**
+     * Formulaire de Pre-statistique
+     *
+     * @Route("/{idSequence}/{idMatiere}/{idEnseignant}/statistiques/info", name="statistiques_info")
+     * @Method("GET")
+     */
+    public function infoStatistiquesAction($idSequence, $idMatiere, $idEnseignant) {
+        $em = $this->getDoctrine()->getManager();
+
+        $annee = $em->getRepository('ConfigBundle:Annee')->findOneBy(['isAnneeEnCour' => true]);
+
+        $sequence = $em->getRepository('NoteBundle:Sequence')->find($idSequence);
+        $matiere = $em->getRepository('MatiereBundle:Matiere')->find($idMatiere);
+        $enseignant = $em->getRepository('UserBundle:Utilisateur')->find($idEnseignant);
+
+
+        $listeEnseignements = $em->getRepository('MatiereBundle:EstDispense')->findBy(array(
+            'annee' => $annee,
+            'enseignant' => $enseignant,
+            'matiere' => $matiere,
+        ));
+
+        return $this->render('evaluation/formulaireStatistique.html.twig', array(
+                    'sequence' => $sequence,
+                    'matiere' => $matiere,
+                    'enseignant' => $enseignant,
+                    'enseignements' => $listeEnseignements,
+        ));
+    }
+
+    /**
+     * Formulaire de Pre-statistique
+     *
+     * @Route("/{idSequence}/{idMatiere}/{idEnseignant}/statistiques", name="statistiques")
+     * @Method("POST")
+     */
+    public function statistiquesSequenceAction(Request $request, $idSequence, $idMatiere, $idEnseignant) {
+
+        $em = $this->getDoctrine()->getManager();
+
+        //$school = $this->getDoctrine()->getRepository('ConfigBundle:Ecole')->findAll();
+        $constante = $em->getRepository('ConfigBundle:Pays')->findAll();
+        //$ecole = $school[0];
+
+        $school = $em->getRepository('ConfigBundle:Constante')->findAll();
+
+        $sequence = $em->getRepository('NoteBundle:Sequence')->find($idSequence);
+        $matiere = $em->getRepository('MatiereBundle:Matiere')->find($idMatiere);
+        $enseignant = $em->getRepository('UserBundle:Utilisateur')->find($idEnseignant);
+        $annee = $em->getRepository('ConfigBundle:Annee')->findOneBy(['isAnneeEnCour' => true]);
+
+
+        $listeEnseignements = $em->getRepository('MatiereBundle:EstDispense')->findBy(array(
+            'annee' => $annee,
+            'enseignant' => $enseignant,
+            'matiere' => $matiere,
+        ));
+        if ($request->getMethod() == "POST") {
+            $date = [];
+            $date[] = $request->get('dateDebut');
+            $date[] = $request->get('dateFin');
+            $compteurTotalMoyenne = 0;
+            $compteurTotalEvaluations = 0;
+            foreach ($listeEnseignements as $enseignement) {
+                $qb2 = $em->createQueryBuilder();
+                $qb2->select('s')
+                        ->from('StudentBundle:Student', 's')
+                        ->innerJoin('StudentBundle:Inscription', 'i', 'WITH', 'i.student = s.id')
+                        ->innerJoin('StudentBundle:Classe', 'c', 'WITH', 'i.classe = c.id')
+                        ->innerJoin('MatiereBundle:EstDispense', 'e', 'WITH', 'e.classe = c.id')
+                        ->innerJoin('StudentBundle:Sexe', 'se', 'WITH', 'se.id = s.sexe')
+                        ->where('i.annee= :anneeEnCour')
+                        ->andWhere('c.id = :idClasse')
+                        ->andWhere('se.nom = :sexe')
+                        ->setParameters(array(
+                            'anneeEnCour' => $enseignement->getAnnee(),
+                            'idClasse' => $enseignement->getClasse()->getId(),
+                            'sexe' => 'FEMININ',
+                ));
+                $filles = $qb2->getQuery()->getResult();
+
+                $qb1 = $em->createQueryBuilder();
+                $qb1->select('s')
+                        ->from('StudentBundle:Student', 's')
+                        ->innerJoin('StudentBundle:Inscription', 'i', 'WITH', 'i.student = s.id')
+                        ->innerJoin('StudentBundle:Classe', 'c', 'WITH', 'i.classe = c.id')
+                        ->innerJoin('MatiereBundle:EstDispense', 'e', 'WITH', 'e.classe = c.id')
+                        ->innerJoin('StudentBundle:Sexe', 'se', 'WITH', 'se.id = s.sexe')
+                        ->where('i.annee= :anneeEnCour')
+                        ->andWhere('c.id = :idClasse')
+                        ->andWhere('se.nom = :sexe')
+                        ->setParameters(array(
+                            'anneeEnCour' => $enseignement->getAnnee(),
+                            'idClasse' => $enseignement->getClasse()->getId(),
+                            'sexe' => 'MASCULIN',
+                ));
+                $garcons = $qb1->getQuery()->getResult();
+
+                $enseignement->setNbreFilles(count($filles));
+                $enseignement->setNbreGarcons(count($garcons));
+
+                $enseignement->setNbreHeures($request->get($enseignement->getId() . "-heures"));
+                $enseignement->setNbreLecons($request->get($enseignement->getId() . "-lecons"));
+                $evaluations = [];
+                $evaluations = $em->getRepository('NoteBundle:Evaluation')->findBy(array(
+                    'sequence' => $sequence,
+                    'matiere' => $matiere,
+                    'annee' => $annee,
+                    'classe' => $enseignement->getClasse(),
+                ));
+                $compt = 0;
+                $comptGarcons = 0;
+                $comptFilles = 0;
+                $moyenneGenerale = 0;
+
+                $compteur0_999 = 0;
+                $compteur10_1199 = 0;
+                $compteur12_1399 = 0;
+                $compteur14_1599 = 0;
+                $compteur16_20 = 0;
+                $listeNotes = [];
+                foreach ($evaluations as $moy) {
+                    if ($moy->getNote() >= 10) {
+                        $compt += 1;
+                        if ($moy->getStudent()->getSexe() == "MASCULIN") {
+                            $comptGarcons += 1;
+                        } else {
+                            $comptFilles += 1;
+                        }
+                    }
+                    $moyenneGenerale = $moyenneGenerale + $moy->getNote();
+                    //Gestion des intervalles de notes
+                    if ($moy->getNote() >= 16) {
+                        $compteur16_20 += 1;
+                    } else if ($moy->getNote() < 16 && $moy->getNote() >= 14) {
+                        $compteur14_1599 += 1;
+                    } else if ($moy->getNote() < 14 && $moy->getNote() >= 12) {
+                        $compteur12_1399 += 1;
+                    } else if ($moy->getNote() < 12 && $moy->getNote() >= 10) {
+                        $compteur10_1199 += 1;
+                    } else if ($moy->getNote() < 10 && $moy->getNote() >= 0) {
+                        $compteur0_999 += 1;
+                    }
+                }
+                $compteurTotalMoyenne += $compt;
+                $compteurTotalEvaluations += count($evaluations);
+
+                $enseignement->setCompteurFilles($comptFilles);
+                $enseignement->setCompteurGarcons($comptGarcons);
+                $enseignement->setNbreEvaluations(count($evaluations));
+                if (count($evaluations) != 0) {
+                    $enseignement->setMoyenneGenerale($moyenneGenerale / count($evaluations));
+                }
+                $listeNotes[] = $compteur16_20;
+                $listeNotes[] = $compteur14_1599;
+                $listeNotes[] = $compteur12_1399;
+                $listeNotes[] = $compteur10_1199;
+                $listeNotes[] = $compteur0_999;
+
+                $enseignement->setListeNotes($listeNotes);
+                $listeNotes = [];
+            }
+        }
+
+        $html = $this->renderView('evaluation/statistiques.html.twig', array(
+            'sequence' => $sequence,
+            'date' => $date,
+            'matiere' => $matiere,
+            'ecole' => $school[0],
+            'pays' => $constante[0],
+            'enseignant' => $enseignant,
+            'enseignements' => $listeEnseignements,
+            'nbreMoyennes' => $compteurTotalMoyenne,
+            'nbreEvaluations' => $compteurTotalEvaluations,
+        ));
+
+        $html2pdf = $this->get('html2pdf_factory')->create('L', 'A4', 'fr', true, 'UTF-8', array(10, 5, 10, 5));
+        $html2pdf->pdf->SetAuthor('GreenSoft-Team');
+        $html2pdf->pdf->SetTitle('Statistiques ' . $enseignant->getNom() . ' ' . $sequence->getNom());
+        $html2pdf->pdf->SetSubject('Statitiques Sequentiel');
+        $html2pdf->pdf->SetKeywords('Classe, Enseignant, Matiere, Sequence');
+        $html2pdf->pdf->SetDisplayMode('real');
+        $html2pdf->writeHTML($html);
+
+        $content = $html2pdf->Output('', true);
+        $response = new Response();
+        $response->setContent($content);
+        $response->headers->set('Content-Type', 'application/pdf');
+        $response->headers->set('Content-disposition', 'filename=StatistiquesSequentiels.pdf');
+        return $response;
     }
 
 }

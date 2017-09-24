@@ -1,45 +1,95 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Inscriptions list</h1>
-
-    <table>
+    <h1>Liste des élèves du lycée</h1>
+    <table class="display table table-bordered table-striped" id="dynamic-table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>N°</th>
+                <th>Nom de l'élève</th>
+                <th>Classe</th>
                 <th>Avance</th>
-                <th>Datederniereavance</th>
+                <th>Date dernière avance</th>
                 <th>Status</th>
                 <th>Redoublant</th>
-                <th>Actions</th>
+                <th>Complèter l'inscription</th>
+                <th>Profil</th>
             </tr>
         </thead>
         <tbody>
-        {% for inscription in inscriptions %}
-            <tr>
-                <td><a href="{{ path('inscription_show', { 'id': inscription.id }) }}">{{ inscription.id }}</a></td>
-                <td>{{ inscription.avance }}</td>
-                <td>{% if inscription.dateDerniereAvance %}{{ inscription.dateDerniereAvance|date('Y-m-d') }}{% endif %}</td>
-                <td>{% if inscription.status %}Yes{% else %}No{% endif %}</td>
-                <td>{% if inscription.redoublant %}Yes{% else %}No{% endif %}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('inscription_show', { 'id': inscription.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('inscription_edit', { 'id': inscription.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
-            </tr>
-        {% endfor %}
+            {% set num = 1  %}
+            {% for inscription in inscriptions %}
+                <tr>
+                    <td>{{num}}</td>
+                    <td><a href="{{path('student_show', { 'id': inscription.student.id })}}">{{inscription.student}}</a></td>
+                    <td>{{inscription.classe.abreviation}}</td>
+                    <td>{{ inscription.avance }}</td>
+                    <td>{% if inscription.dateDerniereAvance %}{{ inscription.dateDerniereAvance|date('Y-m-d') }}{% endif %}</td>
+                    <td>{% if inscription.status %}Yes{% else %}No{% endif %}</td>
+                    <td>{% if inscription.redoublant %}Yes{% else %}No{% endif %}</td>
+                    <td>
+                        <a href="{{ path('inscription_edit', { 'id': inscription.id }) }}">Compléter</a>
+                    </td>
+                    <td>
+                        <a href="#" class="btn btn-link" data-toggle="modal" data-target=".modal{{inscription.id}}">Profil</a>
+                        <div class="modal fade modal{{inscription.id}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabe" >
+                            <div class="modal-dialog modal-md">
+                                <div class="modal-content well">
+                                    <fieldset class="panel-primary">
+                                        <legend class="panel-heading">
+                                            <h5 class="text-center">informations complémentaires</h5>
+                                        </legend>
+                                        <div class="col-md-12">
+                                            <nav class="col-md-12">
+                                                <select onchange="buildSeqBull({{inscription.id}}, value);" class="form-control" id="sequence{{inscription.id}}">
+                                                    <option value="0">Choisir la séquence </option>
+                                                    {% for sequence in sequences %}
+                                                        <option value="{{sequence.id}}">{{sequence}}</option>
+                                                    {% endfor %}
+                                                </select>
+                                                <select onchange="buildTrimBull({{inscription.id}}, value);" class="form-control pull-right" id="trimestre{{inscription.id}}">
+                                                    <option value="0">Choisir le trimestre </option>
+                                                    <option value="1">Trimestre 1</option>
+                                                    <option value="2">Trimestre 2</option>
+                                                    <option value="3">Trimestre 3</option>
+                                                </select>
+                                            </nav>
+                                            <hr class="col-md-12">
+                                            <span class=" col-md-12 alert-danger text-danger text text-bold"><u>NB:</u> En cas de choix de la séquence et du trimestre, c'est le trimestre qui est pris en compte!</span>
+                                            <hr class="col-md-12">
+                                            <nav class="col-md-12">
+                                                <button class="btn btn-danger pull-left" data-dismiss="modal">Annuler</button>
+                                                <a target="blank" onclick="collecteBull({{inscription.id}});" id="cible{{inscription.id}}" href="{{ path('bulletin_sequentiel_classe', { 'idEleve': inscription.student.id, 'idAnnee': inscription.annee.id, 'idClasse': inscription.classe.id, 'idSeq': "IDSEQ"}) }}" class="pull-right btn btn-primary">Valider</a>
+                                            </nav>
+                                        </div>
+                                    </fieldset>
+                                </div>
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+                {% set num = num + 1 %}
+            {% endfor %}
         </tbody>
     </table>
+    <script>
+                function buildSeqBull(id, value) {
+                document.getElementById('sequence' + id).value = value;
+                }
 
-    <ul>
-        <li>
-            <a href="{{ path('inscription_new') }}">Create a new inscription</a>
-        </li>
-    </ul>
+        function buildTrimBull(id, value) {
+        document.getElementById('trimestre' + id).value = value;
+        }
+
+        function collecteBull(id) {
+        var lien = document.getElementById('cible' + id).href;
+                var idSeq = document.getElementById('sequence' + id).value;
+                var idTrim = document.getElementById('trimestre' + id).value;
+                lien = lien.replace("IDSEQ", idSeq);
+                document.getElementById('cible' + id).href = lien;
+        }
+
+    </script>
+    {% include '/categorie/extras_categorie.css.html.twig' %}
+    {% include '/categorie/extras_categorie.js.html.twig' %}
 {% endblock %}

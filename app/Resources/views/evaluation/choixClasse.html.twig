@@ -181,6 +181,7 @@
                 lien = lien.replace("IDSEQ", idSeq);
                 lien = lien.replace("IDTRIM", idTrim);
                 document.getElementById('cibleBull' + id).href = lien;
+                location.reload();
         }
 
         function builSeqAbs(id, value){

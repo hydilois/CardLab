@@ -1,0 +1,242 @@
+<style type="text/css">
+    table {
+        width: 100%;
+        color: #717375;
+        font-family: helvetica;
+        line-height: 5mm;
+        border-collapse: collapse;
+    }
+
+    .10p { width: 10%; } .15p { width: 15%; }
+    .25p { width: 25%; } .50p { width: 50%; }
+    .60p { width: 60%; } .75p { width: 75%; }
+    .30p {width: 30%;} .20p{width: 20%;}
+    .40p{width: 40%}
+
+    .info td, .info1 td{
+        height: 25px;
+        border-top: 1px solid black; border-bottom: 1px solid black;
+    }
+    .notes  td,.notes  th {
+        border: 1px solid darkgray;
+        height: 25px;
+    }
+    .conduite tr td{
+        border: 1px solid darkgray;
+        height: 35px;
+    }
+    .moyenne tr td{
+        border: 1px solid darkgray;
+        height: 55px;
+    }
+    .signature tr td{
+        border: 1px solid darkgray;
+        height: 55px;
+    }
+
+</style>
+<page backtop="10mm" backleft="10mm" backright="10mm" backbottom="10mm" footer="page;">
+    <page_footer>
+        <hr />
+        <p>GreenSoft-Team</p>
+    </page_footer>
+    <table>
+        <tr>
+            <td class="40p">
+                {{ pays.ministereFrancais }}<br/>
+                {{ ecole.nomFrancais }}<br/>
+                {{ ecole.boitePostal }}
+            </td>
+            <td class="20p" style="text-align: center">
+                {% if ecole.logo is not null %}
+                    <img style="height: 80px; width: 60px;" src="Uploads/Logo/{{ ecole.logo.id ~'.'~ ecole.logo.url}}" alt="Logo" title="" >
+                {% else %}
+
+                {% endif %}
+            </td>
+            <td style="text-align: right" class="40p">
+                {{ pays.paysFrancais }}<br/>
+                {{ pays.deviseFrancais }}<br/>
+                {{ ecole.deviseFrancais }}<br/>
+            </td>
+        </tr>
+    </table>
+    <table class="info1" style="margin-top: 10px;">
+        <tr>
+            <td class="25p" style="text-align: left;"><strong>{{annee}}</strong></td>
+            <td class="50p" style="text-align: center; font-size: 1.2em"><strong>BULLETIN DE NOTES</strong></td>
+            <td class="25p" style="text-align: right;"><strong>
+                    {% if listCategories[0].listeMatieres[0].evaluationSeq is not null %}
+                        {{ listCategories[0].listeMatieres[0].evaluationSeq[0].sequence }}
+                    {% endif %}
+                </strong></td>
+        </tr>
+    </table>
+    <table class="info">
+        <tr>
+            <td rowspan="2"  style="text-align: left; border-top: none" class="10p">
+                {% if student.photo is not null %}
+                    <img style="height: 90px; width: 80px;" src="
+                         uploads/images/{{ student.photo.id ~'.'~ student.photo.url}}" alt="{{student}}" title="{{student}}
+                         ">
+                {% endif %}
+                {#<img style="height: 90px; width: 80px;" src="uploads/images/1.jpg" alt="Image">#}
+            </td>
+            <td class="25p" style="text-align: left; border-top: none">El&egrave;ve: <b>{{ student.nom | upper}}</b></td>
+            <td class="25p" style="text-align: left; border-top: none">
+                N&eacute;(e) le:<b>{{ student.dateNaissance|date('d-m-Y') }}</b><br> A <b>{{ student.lieuNaissance | upper}}</b>
+            </td>
+            <td class="15p" style="text-align: left; border-top:none; ">Matricule:  <b>{{ student.matricule }}</b></td>
+            <td class="15p"  style="text-align: left; border-top: none">Sexe: <b>{{student.sexe}}</b></td>
+        </tr>
+        <tr>
+            <td class="25p" style="text-align: left;" >Titulaire: <b>{{titulaire}}</b></td>
+            <td class="25p" style="text-align: left">Classe:  <b>{{ classe.abreviation }}</b></td>
+            <td class="25p" style="text-align: left">Eff: <b>{{Allstudent | length}}</b></td>
+            <td></td>
+        </tr>
+    </table>
+    <table class="notes" style="margin-top: 15px;">
+        <tr>
+            <th class="20p" style="background: white;" >Disciplines</th>
+            <th class="20p" style="background: white;">Enseignants</th>
+            <th class="10p" style="background: white;">M./20</th>
+            <th class="10p" style="background: white;">Coef.</th>
+            <th class="10p" style="background: white;">Total</th>
+            <th class="15p" style="background: white;">Rang</th>
+            <th class="15p" style="background: white;">Mention</th>
+        </tr>
+        {% set somNote = 0 %}
+        {% set somCoef = 0 %}
+        {% for categorie in listCategories %}
+            {% set somCoefCat = 0 %}
+            {% set somTotalCat = 0 %}
+            {% for matiere in categorie.listeMatieres %}
+                <tr>
+                    <td>
+                        {% set mat = matiere.taille %}
+                        {% if mat > 13 %}
+                            {{ matiere.abreviation }}
+                        {% else %}
+                            {{matiere}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if matiere.evaluationSeq is not null %}
+                            {{matiere.evaluationSeq[0].index.enseignant}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if matiere.evaluationSeq is not null %}
+                            {{matiere.evaluationSeq[0].note}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if matiere.evaluationSeq is not null %}
+                            {% set somCoefCat = somCoefCat + matiere.evaluationSeq[0].index.coefficient %}
+                            {% set somCoef = somCoef + matiere.evaluationSeq[0].index.coefficient %}
+                            {{matiere.evaluationSeq[0].index.coefficient}}
+                        {% endif %}
+                    </td>
+                    <td>
+                        {% if matiere.evaluationSeq is not null %}
+                            {% set total = matiere.evaluationSeq[0].index.coefficient * matiere.evaluationSeq[0].note %} {{total}}
+                            {% set somTotalCat = somTotalCat + total %}
+                            {% set somNote = somNote + total %}
+                        {% endif %}
+                    </td>
+                    <td>
+                        Rang
+                    </td>
+                    <td>
+                        Mention
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr style="border: 2px solid black;">
+                <td  style="font-size: 10px; border-right: none">
+                    <strong><i>{{categorie}}</i></strong>
+                </td>
+                <td style="border-right: none"></td>
+                <td style="border-left: none"></td>
+                <td>
+                    <b>{{ somCoefCat }}</b>
+                </td>
+                <td>
+                    M:
+                    <b>
+                        {% if somCoefCat > 0 %}
+                            {{(somTotalCat / somCoefCat) | number_format(2, 'true', '.', ',')}}
+                        {% else %}
+                            /
+                        {% endif %}
+                    </b>
+                </td>
+                <td>
+                    <b>Rang</b>
+                </td>
+                <td><strong>Mention</strong></td>
+            </tr>
+        {% endfor %}
+    </table>
+    <table class="conduite" style="margin-top: 15px">
+        <tr style="border: 2px solid black; font-size: 11px;">
+            <td class="25p">
+                <b><u>Total des absences</u>:</b>
+                12
+            </td>
+            <td class="25p">
+                <b><u>Absences non justifi&eacute;s</u>:</b>
+                5
+            </td>
+            <td class="25p">
+                <b><u>D&eacute;cision du conseil</u>:</b>
+                Dois faire attention aux abscences
+            </td>
+            <td class="25p">
+                <b><u>Conduite:</u></b><br/>
+                Conduite aceptable
+            </td>
+        </tr>
+    </table>
+    <table class="moyenne">
+        <tr style="border: 2px solid black;">
+            <td class="20p">
+                <b><u>Moy. de la classe</u>:</b>
+                09.45
+            </td>
+            <td class="30p">
+        <u>Moy. de l'&eacute;l&egrave;ve</u>:
+        <b>
+            {% if somCoef  > 0 %}
+                {{(somNote / somCoef) | number_format(2, 'true', '.', ',')}}
+            {% else %}
+                /
+            {% endif %}
+        </b>
+        <br>
+        <b><u>Appr&eacute;ciation</u>:</b>
+        Passable
+        </td>
+        <td class="10p">
+            <b><u>RANG</u>:</b>
+            12�me
+        </td>
+        <td class="40p" >
+            <b><u>OBSERVATIONS</u></b><br/>
+            Un &eacute;ffort consid&eacute;rable s'impose <br> en mati&egrave;res litt&eacute;raires
+        </td>
+        </tr>
+    </table>
+    <table class="signature">
+        <tr>
+            <td class="50p" style="text-align: left">
+        <u>Le parent</u><br>
+        <span style="text-align: center;">Signature</span>
+        </td>
+        <td class="50p" style="text-align: right">
+            Fait &agrave; {{ecole.ville}} Le 12/11/2016
+        </td>
+        </tr>
+    </table>
+</page>

@@ -1,0 +1,208 @@
+<style>
+    #entete{
+        width: 100%;
+        /*color: #717375;*/
+        font-family: helvetica;
+        line-height: 5mm;
+        border-collapse: collapse;
+    }
+
+    #entete1{
+        width: 100%;
+        /*color: #717375;*/
+        font-family: helvetica;
+        line-height: 5mm;
+        border-collapse: collapse;
+    }
+
+    .10p { width: 10%; } .15p { width: 15%; }
+    .25p { width: 25%; } .50p { width: 50%; }
+    .60p { width: 60%; } .75p { width: 75%; }
+    .30p {width: 30%;} .20p{width: 20%;}
+    .40p{width: 40%}
+
+    .notes  td,.notes  th {
+        border: 1px solid darkgray;
+        height: 25px;
+    }
+
+    .notes{
+        border: none;
+    }
+
+    #tableau{
+        border-collapse: collapse;
+    }
+
+    #tableau td, #tableau th{
+        border: 1px solid black;
+    }
+    .centrerTexte{
+        text-align: center;
+    }
+    .fondGris{
+        background-color: grey;
+    }
+</style>
+
+<page backtop="10mm" backleft="10mm" backright="10mm" backbottom="10mm" footer="page;">
+    <page_footer>
+        <hr />
+        <p>GreenSoft-Team</p>
+    </page_footer>
+    <table id="entete1">
+        <tr>
+            <td class="40p">
+                {{ pays.ministereFrancais }}<br/>
+                {{ ecole.nomFrancais }}<br/>
+                B.P.{{ ecole.boitePostal }}
+            </td>
+            <td class="20p" style="text-align: center">
+                {% if ecole.logo is not null %}
+                    <img style="height: 80px; width: 60px;" src="Uploads/Logo/{{ ecole.logo}}" alt="Logo" title="" >
+                {% endif %}
+            </td>
+            <td style="text-align: right" class="40p">
+                {{ pays.paysFrancais }}<br/>
+                {{ pays.deviseFrancais }}<br/>
+                {{ ecole.deviseFrancais }}<br/>
+            </td>
+        </tr>
+    </table>
+    <h1 style="text-align: center;"><u>FICHE DE SUIVI PEDAGOGIQUE DU PROFESSEUR DANS SES DIFFERENTES CLASSES</u></h1>
+    <table id="entete" class="notes">
+        <tr>
+            <td style="border: none" colspan="3"><strong>Noms et pr&eacute;noms: </strong>{{ enseignements[0].enseignant.nom }}</td>
+        </tr>
+        <tr>
+            <td style="border: none" class="30p"><strong>Grade: </strong>{{ enseignements[0].enseignant.grade }}</td>
+            <td style="border: none" class="30p"><strong>Discipline: </strong>{{ enseignements[0].matiere.nom }}</td>
+            <td style="border: none" class="30p"><strong>S&eacute;quence : </strong>{{ sequence.nom }}</td>
+        </tr>
+        <tr>
+            <td style="border: none">
+                <strong>P&eacute;riode allant du: </strong> {{ date[0] | date('d/m/Y') }}<strong> au</strong> {{ date[1] | date('d/m/Y') }}
+            </td>
+            <td style="border: none">
+                <strong>Nombre de moyenne >= 10/20: </strong>{{ nbreMoyennes }}
+            </td>
+            <td style="border: none">
+                {% if nbreEvaluations > 0 %}
+                    <strong>Poucentage de r&eacute;ussite: </strong> {{ ((nbreMoyennes * 100)/nbreEvaluations) | number_format(2, '.', ',') }}%
+                {% else %}
+                    /
+                {% endif %}
+            </td>
+        </tr>
+    </table>
+
+
+    <table id="tableau">
+        <tr class="fondGris">
+            <th colspan="6" rowspan="2"></th>
+            <th class="centrerTexte" colspan="6" rowspan="2">A. Taux de couverture <br>des heures d'enseignement<br>et des programmes</th>
+            <th class="centrerTexte" rowspan="3">Moyenne<br>g&eacute;n&eacute;rale<br>de la<br>classe</th>
+            <th class="centrerTexte" colspan="3" rowspan="3">Taux de<br>r&eacute;ussite<br>en %</th>
+            <th class="centrerTexte" colspan="5">B. Statistiques des <br> r&eacute;sultats</th>
+        </tr>
+
+        <tr style="font-weight: bold" class="fondGris">
+            <td class="centrerTexte" colspan="5">Nombre de notes <br> compris entre</td>
+        </tr>
+        <tr style="font-weight: bold" class="fondGris">
+            <td>N&deg;</td>
+            <td>Classes</td>
+            <td>Discipline</td>
+            <td colspan="3">Effectif</td>
+            <td class="centrerTexte" colspan="3">1. Couverture <br> des heures <br>d'enseignements</td>
+            <td class="centrerTexte" colspan="3">2. Couvertures des <br> programmes</td>
+            <td>16-20</td>
+            <td>14-15.99</td>
+            <td>12-13.99</td>
+            <td>10-11.99</td>
+            <td>0-9.99</td>
+        </tr>
+
+        <tr class="centrerTexte">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>G</td>
+            <td>F</td>
+            <td>T</td>
+            <td>Heures<br>dues<br> par An</td>
+            <td>Heures<br> faites</td>
+            <td>Taux<br> en %</td>
+            <td>Nombres<br>de le&ccedil;ons <br> pr&eacute;vues <br> par an</td>
+            <td>Nombres<br> de le&ccedil;ons <br> faites</td>
+            <td>Taux<br>en %</td>
+            <td></td>
+            <td>G</td>
+            <td>F</td>
+            <td>T</td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+            <td></td>
+        </tr>
+        {% set i = 1 %}
+        {% for enseignement  in enseignements  %}
+            <tr class="centrerTexte">
+                <td>{{ i }}</td>
+                <td>{{ enseignement.classe.abreviation}}</td>
+                <td>{{ enseignement.matiere.abreviation}}</td>
+                <td>{{ enseignement.nbreGarcons }}</td>
+                <td> {{ enseignement.nbreFilles }}</td>
+                <td>{{ enseignement.nbreGarcons + enseignement.nbreFilles  }}</td>
+                <td>{{ enseignement.nombreHeuresAnnuel }}</td>
+                <td>{{ enseignement.nbreHeures}}</td>
+                <td>
+                    {% if ( enseignement.nombreHeuresAnnuel > 0  and  ((enseignement.nbreHeures * 100) /enseignement.nombreHeuresAnnuel <= 100)) %}
+                        {{ ((enseignement.nbreHeures * 100) /enseignement.nombreHeuresAnnuel) | number_format(2, '.', ',') }}%
+                    {% else %}
+                        Erreur
+                    {% endif %}
+                </td>
+                <td>{{ enseignement.nombreLeconsAnnuel }}</td>
+                <td>{{ enseignement.nbreLecons }}</td>
+                <td>
+                    {% if (enseignement.nombreLeconsAnnuel > 0 and (((enseignement.nbreLecons * 100)/enseignement.nombreLeconsAnnuel)<= 100)) %}
+                        {{ ((enseignement.nbreLecons * 100)/enseignement.nombreLeconsAnnuel) | number_format(2, '.', ',') }}%
+                    {% else %}
+                        Erreur
+                    {% endif %}</td>
+                <td>{% if enseignement.moyenneGenerale %}
+                    {{ enseignement.moyenneGenerale | number_format(2, '.', ',') }}
+                {% else %}
+                    Erreur
+                    {% endif %}
+                    </td>
+                    <td>{% if enseignement.nbreEvaluations > 0 %}
+                        {{ ((enseignement.compteurGarcons * 100)/enseignement.nbreEvaluations) | number_format(2, '.', ',') }}%
+                        {% else %}
+                            /
+                            {% endif %}
+                            </td>
+                            <td>{% if enseignement.nbreEvaluations > 0 %}
+                                {{ ((enseignement.compteurFilles * 100)/enseignement.nbreEvaluations) | number_format(2, '.', ',') }}%
+                                {% else %}
+                                    /
+                                    {% endif %}
+                                    </td>
+                                    <td>{% if enseignement.nbreEvaluations > 0 %}
+                                        {{ (((enseignement.compteurGarcons + enseignement.compteurFilles)*100)/enseignement.nbreEvaluations) | number_format(2, '.', ',')}}%
+                                        {% else %}
+                                            /
+                                            {% endif %}
+                                            </td>
+                                            <td>{{ enseignement.listeNotes[0] }}</td>
+                                            <td>{{ enseignement.listeNotes[1] }}</td>
+                                            <td>{{ enseignement.listeNotes[2] }}</td>
+                                            <td>{{ enseignement.listeNotes[3] }}</td>
+                                            <td>{{ enseignement.listeNotes[4] }}</td>
+                                        </tr>
+                                        {% set i = i+1 %}
+                                        {% endfor %}
+                                        </table>
+                                    </page>
