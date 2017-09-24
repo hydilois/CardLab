@@ -8,7 +8,7 @@
             <table class="display table table-bordered table-striped" id="dynamic-table">
                 <thead>
                     <tr>
-                        <th>Id</th>
+                        <th>N°</th>
                         <th>Année</th>
                         <th>Nom de l'Elève </th>
                         <th>Sexe </th>
@@ -22,7 +22,7 @@
                     {% set compt = 1 %}
                     {% for eleve in listEleves %}
                         <tr>
-                            <td><a href="">{{ compt }}</a></td>
+                            <td>{{ compt }}</td>
                             <td>{{ annee }}</td>
                             <td>{{ eleve.student }}</td>
                             <td>{{ eleve.student.sexe }}</td>

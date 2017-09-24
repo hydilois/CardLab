@@ -83,7 +83,7 @@ class StudentController extends Controller {
         $fichier = basename($_FILES['avatar']['name']);
         $taille_maxi = 4000000;
         $taille = filesize($_FILES['avatar']['tmp_name']);
-        $extensions = array('.png', '.gif', '.jpg', '.jpeg');
+        $extensions = array('.gif', '.jpg', '.jpeg');
         $extension = strrchr($_FILES['avatar']['name'], '.');
         //Début des vérifications de sécurité...
         if (!in_array($extension, $extensions)) { //Si l'extension n'est pas dans le tableau

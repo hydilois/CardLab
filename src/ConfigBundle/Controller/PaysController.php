@@ -48,7 +48,7 @@ class PaysController extends Controller
             $em->persist($pays);
             $em->flush();
 
-            return $this->generateUrl('pays_show', array('id' => $pays->getId()));
+            return $this->redirectToRoute('pays_show', array('id' => $pays->getId()));
         }
 
         return $this->render('pays/new.html.twig', array(

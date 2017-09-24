@@ -150,19 +150,19 @@ class BulletinController extends Controller {
      */
     public function performancesAction($idEleve) {
         $em = $this->getDoctrine()->getManager();
-        $school = $em->getRepository('SchoolConfigBundle:Constante')->findAll();
-        $constante = $em->getRepository('SchoolConfigBundle:Constante')->findAll();
+        $school = $em->getRepository('ConfigBundle:Constante')->findAll();
+        $constante = $em->getRepository('ConfigBundle:Pays')->findAll();
         $ecole = $school[0];
         $pays = $constante[0];
-        $student = $em->getRepository('SchoolStudentBundle:Student')->find($idEleve);
+        $student = $em->getRepository('StudentBundle:Student')->find($idEleve);
 
         if (($student != NULL)) {/* Toutes les inscriptions de l'eleve au courant des ann? pass?dans l'etablissement */
-            $listeInscriptions = $this->getDoctrine()->getRepository('SchoolStudentBundle:Inscription')->findBy(array(
+            $listeInscriptions = $this->getDoctrine()->getRepository('StudentBundle:Inscription')->findBy(array(
                 'student' => $student,
             ));
 
-            $listSequences = $this->getDoctrine()->getRepository('SchoolNoteBundle:Sequence')->findAll();
-            $listCategories = $this->getDoctrine()->getRepository('SchoolMatiereBundle:Categorie')->findAll();
+            $listSequences = $this->getDoctrine()->getRepository('NoteBundle:Sequence')->findAll();
+            $listCategories = $this->getDoctrine()->getRepository('MatiereBundle:Categorie')->findAll();
 
             $perfEleve = '<page backtop="10mm" backleft="10mm" backright="10mm" backbottom="10mm" footer="page;">
             <page_footer>
@@ -176,9 +176,11 @@ class BulletinController extends Controller {
                 ' . $ecole->getNomFrancais() . '<br/>
                 ' . $ecole->getBoitePostal() . '
             </td>
-            <td class="20p" style="text-align: center">
-                <img style="height: 80px; width: 60px;" src="uploads/logos/' . $ecole->getLogo()->getId() . '.' . $ecole->getLogo()->getUrl() . '" alt="Logo" title="" >
-            </td>
+            <td class="20p" style="text-align: center">';
+            if ($ecole->getLogo() != NULL) {
+                $perfEleve.='<img style="height: 80px; width: 60px;" src="Uploads/Logo/' . $ecole->getLogo() . '" alt="Logo" title="" >';
+            }
+            $perfEleve.='</td>
             <td style="text-align: right" class="40p">
                 ' . $pays->getPaysFrancais() . '<br/>
                 ' . $pays->getDeviseFrancais() . '<br/>
@@ -224,7 +226,7 @@ class BulletinController extends Controller {
                     <td>
                         ' . $inscription->getAnnee() . ' (' . $inscription->getClasse() . ')
                     </td>';
-                $dispense = $this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')->findBy(
+                $dispense = $this->getDoctrine()->getRepository('MatiereBundle:EstDispense')->findBy(
                         array(
                             'annee' => $inscription->getAnnee(),
                             'classe' => $inscription->getClasse(),
@@ -248,7 +250,7 @@ class BulletinController extends Controller {
                         $totalNoteParCategorie = 0;
                         foreach ($categorie->getListeMatieres() as $matiere) {
                             $matiere->setTaille(strlen($matiere->getNom()));
-                            $evaluationSeq = $em->getRepository('SchoolNoteBundle:Evaluation')
+                            $evaluationSeq = $em->getRepository('NoteBundle:Evaluation')
                                     ->findOneBy(
                                     array(
                                         'annee' => $inscription->getAnnee(),
@@ -258,7 +260,7 @@ class BulletinController extends Controller {
                                     )
                             );
                             if ($evaluationSeq != NULL) {
-                                $enseignement = $em->getRepository('SchoolMatiereBundle:EstDispense')
+                                $enseignement = $em->getRepository('MatiereBundle:EstDispense')
                                         ->findOneBy(array(
                                     'annee' => $inscription->getAnnee(),
                                     'classe' => $inscription->getClasse(),
@@ -292,7 +294,7 @@ class BulletinController extends Controller {
         </table>
             </page>';
 
-            $html = $this->renderView('SchoolNoteBundle:Bulletin:performancesEleve.html.twig', array(
+            $html = $this->renderView('bulletin/performancesEleve.html.twig', array(
                 'inscriptions' => $listeInscriptions,
                 'listCategories' => $listCategories,
                 'listeSequences' => $listSequences,
@@ -316,7 +318,7 @@ class BulletinController extends Controller {
             $response->headers->set('Content-disposition', 'filename=PerformancesEleve.pdf');
             return $response;
         } else {
-            return $this->render('SchoolNoteBundle:Error:error1.html.twig');
+            return $this->render('NoteBundle:Error:error1.html.twig');
         }
     }
 
@@ -446,7 +448,7 @@ class BulletinController extends Controller {
             </td>
             <td class="20p" style="text-align: center">';
                 if ($ecole->getLogo()) {
-                    $bullEleve .= ' <img style="height: 80px; width: 60px;" src="uploads/logos/' . $ecole->getLogo()->getId() . '.' . $ecole->getLogo()->getUrl() . '" alt="Logo" title="" >';
+                    $bullEleve .= ' <img style="height: 80px; width: 60px;" src="Uploads/Logo/' . $ecole->getLogo() . '" alt="Logo" title="" >';
                 }
                 $bullEleve .= '	
             </td>
@@ -469,7 +471,7 @@ class BulletinController extends Controller {
                 <tr>
                     <td rowspan="2"  style="text-align: left; border-top: none" class="10p">';
                 if ($eleve->getPhoto() != NULL) {
-                    $bullEleve.= '<img style="height: 90px;width: 80px;" src="uploads/images/' . $eleve->getPhoto()->getId() . '.' . $eleve->getPhoto()->getUrl() . '" alt="' . $eleve->getNom() . '" title="' . $eleve->getNom() . '">';
+                    $bullEleve.= '<img style="height: 90px;width: 80px;" src="Uploads/Photos/' . $eleve->getPhoto() . '" alt="' . $eleve->getNom() . '" title="' . $eleve->getNom() . '">';
                 }
                 $bullEleve .='
                     </td>
@@ -871,7 +873,7 @@ class BulletinController extends Controller {
             </td>
             <td class="20p" style="text-align: center">';
                 if ($ecole->getLogo()) {
-                    $bullEleve .= '<img style="height: 80px; width: 60px;" src="uploads/logos/' . $ecole->getLogo()->getId() . '.' . $ecole->getLogo()->getUrl() . '" alt="Logo" title="" >';
+                    $bullEleve .= '<img style="height: 80px; width: 60px;" src="Uploads/Logo/' . $ecole->getLogo() . '" alt="Logo" title="" >';
                 }
                 $bullEleve .= '
             </td>
@@ -1477,7 +1479,7 @@ class BulletinController extends Controller {
             </td>
             <td class="20p" style="text-align: center">';
                 if ($ecole->getLogo()) {
-                    $bullEleve .= '<img style="height: 80px; width: 60px;" src="uploads/logos/' . $ecole->getLogo()->getId() . '.' . $ecole->getLogo()->getUrl() . '" alt="Logo" title="" >';
+                    $bullEleve .= '<img style="height: 80px; width: 60px;" src="Uploads/Logo/' . $ecole->getLogo() . '" alt="Logo" title="" >';
                 }
                 $bullEleve .= '
             </td>

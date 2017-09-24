@@ -14,6 +14,7 @@
                         <th>Liste des enseignants</th>
                         <th>Matières</th>
                         <th>Classes</th>
+                        <th>Rélevé de notes</th>
                         <th>Statistiques</th>
                     </tr>
                 </thead>
@@ -27,32 +28,60 @@
                             <td>{{enseignement.matiere}}</td>
                             <td>{{enseignement.classe}}</td>
                             <td>
-                                <a href="#" class="btn btn-success" data-toggle="modal" data-target=".modalAbs_{{enseignement.id}}">Produire</a>
-                                    <div class="modal fade modalAbs_{{enseignement.id}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
-                                        <div class="modal-dialog modal-sm">
-                                            <div class="modal-content well">
-                                                <fieldset class="panel-primary">
-                                                    <legend class="panel-heading">
-                                                        <h5 class="text-center">Informations complémentaires</h5>
-                                                    </legend>
-                                                    <nav class="col-md-12">
-                                                        <select onchange="builSeqAbs({{enseignement.id}}, value)" class="form-control" id="sequenceAbs_{{enseignement.id}}">
-                                                            <option value="0">Choisir la séquence </option>
-                                                            {% for sequence in sequences %}
-                                                                <option value="{{sequence.id}}">{{sequence}}</option>
-                                                            {% endfor %}
-                                                        </select>
-                                                    </nav>
-                                                    <br>
-                                                    <hr>
-                                                    <nav class="col-md-12">
-                                                        <button class="btn btn-danger pull-left" data-dismiss="modal">Annuler</button>
-                                                        <a onclick="collecteAbs({{enseignement.id}});" id="cibleAbs{{enseignement.id}}" href="{{path('statistiques_info', {'idSequence': "IDSEQ", 'idEnseignant': enseignement.enseignant.id, 'idMatiere': enseignement.matiere.id})}}" class="pull-right btn btn-primary">Valider</a>
-                                                    </nav>
-                                                </fieldset>
-                                            </div>
+                                <a href="#" class="btn btn-info" data-toggle="modal" data-target=".modal_{{enseignement.id}}"><span class="glyphicon glyphicon-print"></span> Imprimer</a>
+                                <div class="modal fade modal_{{enseignement.id}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                                    <div class="modal-dialog modal-sm">
+                                        <div class="modal-content well">
+                                            <fieldset class="panel-primary">
+                                                <legend class="panel-heading">
+                                                    <h5 class="text-center">Informations complémentaires</h5>
+                                                </legend>
+                                                <nav class="col-md-12">
+                                                    <select onchange="builSeq({{enseignement.id}}, value)" class="form-control" id="sequence_{{enseignement.id}}">
+                                                        <option value="0">Choisir la séquence </option>
+                                                        {% for sequence in sequences %}
+                                                            <option value="{{sequence.id}}">{{sequence}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </nav>
+                                                <br>
+                                                <hr>
+                                                <nav class="col-md-12">
+                                                    <button class="btn btn-danger pull-left" data-dismiss="modal">Annuler</button>
+                                                    <a onclick="collecte({{enseignement.id}});" id="cible{{enseignement.id}}" href="{{path('notespdf', {'idSequence': "IDSEQ", 'idEnseignement': enseignement.id})}}" class="pull-right btn btn-primary">Valider</a>
+                                                </nav>
+                                            </fieldset>
                                         </div>
                                     </div>
+                                </div>
+                            </td>
+                            <td>
+                                <a href="#" class="btn btn-success" data-toggle="modal" data-target=".modalAbs_{{enseignement.id}}"><span class="glyphicon glyphicon-stats"></span> Produire</a>
+                                <div class="modal fade modalAbs_{{enseignement.id}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                                    <div class="modal-dialog modal-sm">
+                                        <div class="modal-content well">
+                                            <fieldset class="panel-primary">
+                                                <legend class="panel-heading">
+                                                    <h5 class="text-center">Informations complémentaires</h5>
+                                                </legend>
+                                                <nav class="col-md-12">
+                                                    <select onchange="builSeqAbs({{enseignement.id}}, value)" class="form-control" id="sequenceAbs_{{enseignement.id}}">
+                                                        <option value="0">Choisir la séquence </option>
+                                                        {% for sequence in sequences %}
+                                                            <option value="{{sequence.id}}">{{sequence}}</option>
+                                                        {% endfor %}
+                                                    </select>
+                                                </nav>
+                                                <br>
+                                                <hr>
+                                                <nav class="col-md-12">
+                                                    <button class="btn btn-danger pull-left" data-dismiss="modal">Annuler</button>
+                                                    <a onclick="collecteAbs({{enseignement.id}});" id="cibleAbs{{enseignement.id}}" href="{{path('statistiques_info', {'idSequence': "IDSEQ", 'idEnseignant': enseignement.enseignant.id, 'idMatiere': enseignement.matiere.id})}}" class="pull-right btn btn-primary">Valider</a>
+                                                </nav>
+                                            </fieldset>
+                                        </div>
+                                    </div>
+                                </div>
                             </td>
                         </tr>
                     {% endfor %}
@@ -61,15 +90,25 @@
         </span>
     </fieldset>
     <script>
-        function builSeqAbs(id, value) {
-            document.getElementById('sequenceAbs_' + id).value = value;
-        }
+                function builSeqAbs(id, value) {
+                document.getElementById('sequenceAbs_' + id).value = value;
+                }
 
         function collecteAbs(id) {
-            var lien = document.getElementById('cibleAbs' + id).href;
-            var idSeq = document.getElementById('sequenceAbs_' + id).value;
-            lien = lien.replace("IDSEQ", idSeq);
-            document.getElementById('cibleAbs' + id).href = lien;
+        var lien = document.getElementById('cibleAbs' + id).href;
+                var idSeq = document.getElementById('sequenceAbs_' + id).value;
+                lien = lien.replace("IDSEQ", idSeq);
+                document.getElementById('cibleAbs' + id).href = lien;
+        }
+        function builSeq(id, value) {
+        document.getElementById('sequence_' + id).value = value;
+        }
+
+        function collecte(id) {
+        var lien = document.getElementById('cible' + id).href;
+                var idSeq = document.getElementById('sequence_' + id).value;
+                lien = lien.replace("IDSEQ", idSeq);
+                document.getElementById('cible' + id).href = lien;
         }
     </script>
     {% include '/categorie/extras_categorie.css.html.twig' %}

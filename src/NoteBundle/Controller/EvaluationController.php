@@ -182,6 +182,7 @@ class EvaluationController extends Controller {
                     ->innerJoin('StudentBundle:Inscription', 'i', 'WITH', 'i.student = s.id')
                     ->innerJoin('StudentBundle:Classe', 'c', 'WITH', 'i.classe = c.id')
                     ->where('c.id = :identifie')
+                    ->orderBy('s.nom', 'ASC')
                     ->setParameter('identifie', $id);
             $eleves = $qb->getQuery()->getResult();
         } else {
@@ -517,6 +518,251 @@ class EvaluationController extends Controller {
         $response->headers->set('Content-Type', 'application/pdf');
         $response->headers->set('Content-disposition', 'filename=StatistiquesSequentiels.pdf');
         return $response;
+    }
+
+    /**
+     * Export de notes en PDF
+     *
+     * @Route("/enseignement-{idEnseignement}/sequence-{idSequence}/exportationnotes", name="notespdf")
+     */
+    public function exportationNotesAction($idEnseignement, $idSequence) {
+        $em = $this->getDoctrine()->getManager();
+
+        $school = $this->getDoctrine()->getRepository('ConfigBundle:Constante')->findAll();
+        $constante = $this->getDoctrine()->getRepository('ConfigBundle:Pays')->findAll();
+
+        $sequence = $em->getRepository('NoteBundle:Sequence')->find($idSequence);
+
+        $enseignement = $em->getRepository('MatiereBundle:EstDispense')->find($idEnseignement);
+
+        $evaluations = $em->getRepository('NoteBundle:Evaluation')->findBy(array(
+            'sequence' => $sequence,
+            'classe' => $enseignement->getClasse(),
+            'matiere' => $enseignement->getMatiere(),
+            'annee' => $enseignement->getAnnee(),
+                ), array(
+            'student' => 'ASC',
+                )
+        );
+
+        /* $qb = $em->createQueryBuilder();
+
+          $qb->select('e')
+          ->from('NoteBundle:Evaluation', 'e')
+          ->where('e.sequence = :sequence')
+          ->andWhere('e.classe= :classe')
+          ->andWhere('e.matiere= :matiere')
+          ->andWhere('e.annee= :annee')
+          ->setParameters(
+          array(
+          'sequence' => $sequence,
+          'classe' => $enseignement->getClasse(),
+          'matiere' => $enseignement->getMatiere(),
+          'annee' => $enseignement->getAnnee(),
+          )
+          )
+          ->addOrderBy('e.student.nom', 'DESC');
+          $evaluations = $qb->getQuery()->getResult(); */
+
+        $html = $this->renderView('bulletin/notesPdf.html.twig', array(
+            'sequence' => $sequence,
+            'enseignement' => $enseignement,
+            'evaluations' => $evaluations,
+            'ecole' => $school[0],
+            'pays' => $constante[0],
+        ));
+
+        $html2pdf = $this->get('html2pdf_factory')->create('P', 'A4', 'fr', true, 'UTF-8', array(10, 5, 10, 5));
+        $html2pdf->pdf->SetAuthor('GreenSoft-Team');
+        $html2pdf->pdf->SetTitle('Notes_' . $enseignement->getMatiere()->getNom() . '_' . $sequence->getNom());
+        $html2pdf->pdf->SetSubject('Notes Sequentielles');
+        $html2pdf->pdf->SetKeywords('Classe, Enseignementt, Matiere, Sequence, Annee');
+        $html2pdf->pdf->SetDisplayMode('real');
+        $html2pdf->writeHTML($html);
+
+        $content = $html2pdf->Output('', true);
+        $response = new Response();
+        $response->setContent($content);
+        $response->headers->set('Content-Type', 'application/pdf');
+        $response->headers->set('Content-disposition', 'filename=Notes_' . $enseignement->getMatiere()->getNom() . '_' . $sequence->getNom() . '.pdf');
+        return $response;
+    }
+
+    /**
+     * Performances de l'élève
+     *
+     * @Route("/performances/eleve-{idEleve}", name="student_performance")
+     * @Method("POST")
+     */
+    public function performancesAction($idEleve) {
+        $em = $this->getDoctrine()->getManager();
+        $school = $em->getRepository('ConfigBundle:Constante')->findAll();
+        $constante = $em->getRepository('ConfigBundle:Pays')->findAll();
+        $ecole = $school[0];
+        $pays = $constante[0];
+        $student = $em->getRepository('StudentBundle:Student')->find($idEleve);
+
+        if (($student != NULL)) {/* Toutes les inscriptions de l'eleve au courant des ann? pass?dans l'etablissement */
+            $listeInscriptions = $this->getDoctrine()->getRepository('StudentBundle:Inscription')->findBy(array(
+                'student' => $student,
+            ));
+
+            $listSequences = $this->getDoctrine()->getRepository('NoteBundle:Sequence')->findAll();
+            $listCategories = $this->getDoctrine()->getRepository('MatiereBundle:Categorie')->findAll();
+
+            $perfEleve = '<page backtop="10mm" backleft="10mm" backright="10mm" backbottom="10mm" footer="page;">
+            <page_footer>
+                <hr />
+                <p>GreenSoft-Team</p>
+            </page_footer>
+               <table>
+                <tr>
+            <td class="40p">
+                ' . $pays->getMinistereFrancais() . '<br/>
+                ' . $ecole->getNomFrancais() . '<br/>
+                ' . $ecole->getBoitePostal() . '
+            </td>
+            <td class="20p" style="text-align: center">
+                <img style="height: 80px; width: 60px;" src="uploads/logos/' . $ecole->getLogo()->getId() . '.' . $ecole->getLogo()->getUrl() . '" alt="Logo" title="" >
+            </td>
+            <td style="text-align: right" class="40p">
+                ' . $pays->getPaysFrancais() . '<br/>
+                ' . $pays->getDeviseFrancais() . '<br/>
+            </td>
+        </tr>
+            </table>
+            <table class="info1" style="margin-top: 10px;">
+                <tr>
+                    <td class="25p" style="text-align: left;"></td>
+                    <td class="50p" style="text-align: center; font-size: 1.2em"><strong>PERFORMANCES DE L\'ELEVE</strong></td>
+                    <td class="25p" style="text-align: right;"></td>
+                </tr>
+            </table>';
+            $perfEleve .= '
+            <table class="info">
+                <tr>
+                    <td rowspan="2"  style="text-align: left; border-top: none" class="10p">';
+            if ($student->getPhoto() != NULL) {
+                $perfEleve .= '<img style="height: 90px;width: 80px;" src="uploads/images/' . $student->getPhoto()->getId() . '.' . $student->getPhoto()->getUrl() . '" alt="' . $student->getNom() . '" title="' . $student->getNom() . '">';
+            }
+            $perfEleve .= '
+                    </td>
+                    <td class="25p" style="text-align: left; border-top: none">El&egrave;ve: <b>' . $student->getNom() . '</b></td>
+                    <td class="25p" style="text-align: left; border-top: none">
+                        N&eacute;(e) le:<b>' . $student->getDateNaissance()->format('Y-m-d') . '</b><br> A <b> ' . $student->getLieuNaissance() . '</b>
+                    </td>
+                    <td class="15p" style="text-align: left; border-top:none; ">Matricule:  <b>' . $student->getMatricule() . '</b></td>
+                    <td class="15p"  style="text-align: left; border-top: none">Sexe: <b>' . $student->getSexe() . '</b></td>
+                    <td></td>
+                </tr>
+            </table>
+            <table style="margin-top:10px;" class="notes">
+        <tr>
+            <th class="20p"></th>';
+            foreach ($listCategories as $categorie) {
+                $perfEleve .='<th style="text-align: center;" class="20p">' . $categorie->getNom() . '</th>';
+            }
+            $perfEleve .='
+        </tr>';
+            foreach ($listeInscriptions as $inscription) {
+                $perfEleve .= '
+                <tr>
+                    <td>
+                        ' . $inscription->getAnnee() . ' (' . $inscription->getClasse() . ')
+                    </td>';
+                $dispense = $this->getDoctrine()->getRepository('MatiereBundle:EstDispense')->findBy(
+                        array(
+                            'annee' => $inscription->getAnnee(),
+                            'classe' => $inscription->getClasse(),
+                ));
+                $listeMatieres = [];
+                foreach ($listCategories as $categorie) {
+                    foreach ($dispense as $enseign) {
+                        if ($categorie == $enseign->getMatiere()->getCategorie()) {
+                            $listeMatieres[] = $enseign->getMatiere();
+                        }
+                    }
+                    $categorie->setListeMatieres($listeMatieres);
+                    $listeMatieres = [];
+                }
+                foreach ($listCategories as $categorie) {
+                    $perfEleve .='<td>';
+                    $moySequentiel = 0;
+                    $compteurSequences = 0;
+                    foreach ($listSequences as $sequence) {
+                        $totalCoefficient = 0;
+                        $totalNoteParCategorie = 0;
+                        foreach ($categorie->getListeMatieres() as $matiere) {
+                            $matiere->setTaille(strlen($matiere->getNom()));
+                            $evaluationSeq = $em->getRepository('NoteBundle:Evaluation')
+                                    ->findOneBy(
+                                    array(
+                                        'annee' => $inscription->getAnnee(),
+                                        'student' => $student,
+                                        'sequence' => $sequence,
+                                        'matiere' => $matiere
+                                    )
+                            );
+                            if ($evaluationSeq != NULL) {
+                                $enseignement = $em->getRepository('MatiereBundle:EstDispense')
+                                        ->findOneBy(array(
+                                    'annee' => $inscription->getAnnee(),
+                                    'classe' => $inscription->getClasse(),
+                                    'matiere' => $evaluationSeq->getMatiere()
+                                ));
+                                $totalCoefficient = $totalCoefficient + $enseignement->getCoefficient();
+                                $totalNoteParCategorie = $totalNoteParCategorie + ($enseignement->getCoefficient() * $evaluationSeq->getNote());
+                            }
+                        }
+                        if ($totalCoefficient != 0) {
+                            $moySequentiel = $moySequentiel + ($totalNoteParCategorie / $totalCoefficient);
+                            $compteurSequences = $compteurSequences + 1;
+                        }
+                    }
+                    if ($compteurSequences) {
+                        $perfEleve .=
+                                number_format($moySequentiel / $compteurSequences, 2, ',', ' ');
+                        $perfEleve .= '</td>';
+                    } else {
+                        $perfEleve .=
+                                '//';
+                        $perfEleve .= '</td>';
+                    }
+                }
+
+                $perfEleve .='
+                </tr>
+                ';
+            }
+            $perfEleve .='
+        </table>
+            </page>';
+
+            $html = $this->renderView('bulletin/performancesEleve.html.twig', array(
+                'inscriptions' => $listeInscriptions,
+                'listCategories' => $listCategories,
+                'listeSequences' => $listSequences,
+                'performance' => $perfEleve,
+            ));
+
+
+            $html2pdf = $this->get('html2pdf_factory')->create('P', 'A4', 'fr', true, 'UTF-8', array(10, 5, 10, 5));
+            $html2pdf->pdf->SetAuthor('GrenSoft-Team');
+            $html2pdf->pdf->SetTitle('Performances' . ' ' . $student->getNom());
+            $html2pdf->pdf->SetSubject('Performance  Eleve');
+            $html2pdf->pdf->SetKeywords('Classe, Eleve, Bulletin, Notes, Sequence, Annee');
+            $html2pdf->pdf->SetDisplayMode('real');
+            $html2pdf->writeHTML($html);
+
+            $content = $html2pdf->Output('', true);
+            $response = new Response();
+            $response->setContent($content);
+            $response->headers->set('Content-Type', 'application/pdf');
+            $response->headers->set('Content-disposition', 'filename=PerformancesEleve.pdf');
+            return $response;
+        } else {
+            return $this->render('NoteBundle:Error:error1.html.twig');
+        }
     }
 
 }
