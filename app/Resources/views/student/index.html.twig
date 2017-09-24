@@ -5,42 +5,34 @@
             <a class="btn btn-primary pull-left" href="{{ path('student_new') }}">Ajouter èlève</a><br><br>
 
     <table class="display table table-bordered table-striped" id="dynamic-table">
+
         <thead>
             <tr>
                 <th>#</th>
                 <th>Matricule</th>
-                <th>Nom</th>
+                <th>Noms et prénoms</th>
                 <th>Date de naissance</th>
                 <th>Lieu de naissance</th>
-                <th>Nom du père</th>
-                <th>Nom de la mère</th>
-                <th>Adresse du père</th>
-                <th>Adresse de la mère</th>
-                <th>Personne à contacter</th>
-                <th>Dernier établissement</th>
-                <th>Actions</th>
+                <th>Détails</th>
+                <th>Modifier/Supprimer</th>
             </tr>
         </thead>
         <tbody>
-        {% for student in students %}
-            <tr>
-                <td>{{ student.id }}</td>
-                <td>{{ student.matricule }}</td>
-                <td>{{ student.nom }}</td>
-                <td>{% if student.dateNaissance %}{{ student.dateNaissance|date('Y-m-d H:i:s') }}{% endif %}</td>
-                <td>{{ student.lieuNaissance }}</td>
-                <td>{{ student.nomPere }}</td>
-                <td>{{ student.nomMere }}</td>
-                <td>{{ student.adressePere }}</td>
-                <td>{{ student.adresseMere }}</td>
-                <td>{{ student.personneAcontacter }}</td>
-                <td>{{ student.dernierEtablissementFreq }}</td>
-                <td>
-                            <a class="btn btn-info" href="{{ path('student_show', { 'id': student.id }) }}">Détails</a>
-                            <a class="btn btn-success" href="{{ path('student_edit', { 'id': student.id }) }}">Modifier</a>
-                </td>
-            </tr>
-        {% endfor %}
+            {% for student in students %}
+                <tr>
+                    <td><a href="{{ path('student_show', { 'id': student.id }) }}">{{ student.id }}</a></td>
+                    <td>{{ student.matricule }}</td>
+                    <td>{{ student.nom }}</td>
+                    <td>{% if student.dateNaissance %}{{ student.dateNaissance|date('Y-m-d') }}{% endif %}</td>
+                    <td>{{ student.lieuNaissance }}</td>
+                    <td>
+                        <a class="btn glyphicon glyphicon-list-alt" href="{{ path('student_show', { 'id': student.id }) }}"></a>
+                    </td>
+                    <td>
+                        <a class="btn glyphicon glyphicon-edit" href="{{ path('student_edit', { 'id': student.id }) }}"></a>
+                    </td>
+                </tr>
+            {% endfor %}
         </tbody>
     </table>
     {% include '/categorie/extras_categorie.css.html.twig' %}

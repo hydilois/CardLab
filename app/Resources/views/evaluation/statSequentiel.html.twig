@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block body -%}
+    <fieldset class="col-md-12">
+        <legend>
+            Gestion des salles de classes
+        </legend>
+        <span class="col-md-12">
+            <table class="display table table-bordered table-striped" id="dynamic-table">
+                <thead class="alert-info">
+                    <tr>
+                        <th>N°</th>
+                        <th>Année</th>
+                        <th>Liste des enseignants</th>
+                        <th>Matières</th>
+                        <th>Classes</th>
+                        <th>Statistiques</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% set num = 1 %}
+                    {% for enseignement in enseignements %}
+                        <tr>
+                            <td>{{num}}</td>
+                            <td>{{enseignement.annee}}</td>
+                            <td>{{enseignement.enseignant}}</td>
+                            <td>{{enseignement.matiere}}</td>
+                            <td>{{enseignement.classe}}</td>
+                            <td>
+                                <a href="#" class="btn btn-success" data-toggle="modal" data-target=".modalAbs_{{enseignement.id}}">Produire</a>
+                                    <div class="modal fade modalAbs_{{enseignement.id}}" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel">
+                                        <div class="modal-dialog modal-sm">
+                                            <div class="modal-content well">
+                                                <fieldset class="panel-primary">
+                                                    <legend class="panel-heading">
+                                                        <h5 class="text-center">Informations complémentaires</h5>
+                                                    </legend>
+                                                    <nav class="col-md-12">
+                                                        <select onchange="builSeqAbs({{enseignement.id}}, value)" class="form-control" id="sequenceAbs_{{enseignement.id}}">
+                                                            <option value="0">Choisir la séquence </option>
+                                                            {% for sequence in sequences %}
+                                                                <option value="{{sequence.id}}">{{sequence}}</option>
+                                                            {% endfor %}
+                                                        </select>
+                                                    </nav>
+                                                    <br>
+                                                    <hr>
+                                                    <nav class="col-md-12">
+                                                        <button class="btn btn-danger pull-left" data-dismiss="modal">Annuler</button>
+                                                        <a onclick="collecteAbs({{enseignement.id}});" id="cibleAbs{{enseignement.id}}" href="{{path('statistiques_info', {'idSequence': "IDSEQ", 'idEnseignant': enseignement.enseignant.id, 'idMatiere': enseignement.matiere.id})}}" class="pull-right btn btn-primary">Valider</a>
+                                                    </nav>
+                                                </fieldset>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </span>
+    </fieldset>
+    <script>
+        function builSeqAbs(id, value) {
+            document.getElementById('sequenceAbs_' + id).value = value;
+        }
+
+        function collecteAbs(id) {
+            var lien = document.getElementById('cibleAbs' + id).href;
+            var idSeq = document.getElementById('sequenceAbs_' + id).value;
+            lien = lien.replace("IDSEQ", idSeq);
+            document.getElementById('cibleAbs' + id).href = lien;
+        }
+    </script>
+    {% include '/categorie/extras_categorie.css.html.twig' %}
+    {% include '/categorie/extras_categorie.js.html.twig' %}
+{% endblock %}

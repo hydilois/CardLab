@@ -1,0 +1,83 @@
+{% extends 'base.html.twig' %}
+
+{% block body -%}
+    <link rel="stylesheet" href="{{asset('css/bootstrap-datepicker.min.css')}}">
+    <script src="{{asset('js/jquery-ui.js')}}"></script>
+    <script src="{{asset('js/bootstrap-datepicker.min.js')}}"></script>
+    <h1 class="text-center">Informations suppl&eacute;mentaires sur les statistiques</h1>
+
+    <div class="col-md-12">
+        <form target="blank" action="{{ path('statistiques', { 'idSequence':sequence.id, 'idMatiere':matiere.id, 'idEnseignant':enseignant.id })}}" method="post">
+            {#<form action="" method="post">#}
+            <h4>P&eacute;riode allant du:</h4>
+            <div class="row">
+                <div class="col-md-3">
+                    <!-- Date range -->
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </div>
+                            <input type="text" name="dateDebut" class="form-control pull-right" id="reservation">
+                        </div>
+                        <!-- /.input group -->
+                    </div>
+                    <!-- /.form group -->
+                </div>
+                <div class="col-md-1"><span>au</span></div>
+                <div class="col-md-3">
+                    <!-- Date range -->
+                    <div class="form-group">
+                        <div class="input-group">
+                            <div class="input-group-addon">
+                                <i class="glyphicon glyphicon-calendar"></i>
+                            </div>
+                            <input type="text" name="dateFin" class="form-control pull-right" id="reservation1">
+                        </div>
+                        <!-- /.input group -->
+                    </div>
+                    <!-- /.form group -->
+                </div>
+            </div>
+            <table class="table table-bordered table-hover panel-primary" id="stats">
+                <thead class="panel-heading">
+                    <tr>
+                        <th>Classes</th>
+                        <th class="col-md-3">Nombre d'heures d&eacute;j&agrave; faites</th>
+                        <th class="col-md-3">Nombre de le&ccedil;ons d&eacute;j&agrave; faites</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for enseignement in enseignements %}
+                        <tr>
+                            <td>{{enseignement.classe}}</td>
+                            <td>
+                                <input type="number"  name="{{ enseignement.id }}-heures" class="form-control col-md-1">
+                            </td>
+                            <td>
+                                <input type="number"  name="{{ enseignement.id }}-lecons" class="form-control col-md-1">
+                            </td>
+
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+            <input class="btn btn-primary" type="submit" value="Generer" />
+            <a class="btn btn-default" href="{{ path('homepage') }}">
+                Annuler
+            </a>
+        </form>
+    </div>
+    <script>
+        $('#reservation').datepicker();
+        $('#reservation1').datepicker();
+        {#$('#stats').DataTable({#}
+        {#"pagingType": "full_numbers",#}
+        {#"lengthMenu": [[10, 20], [10, 20]],#}
+        {#"language": {#}
+        {#"url": "{{ asset('DataTables/French.json') }}"#}
+        {#}#}
+
+        {#}); #}
+    </script>
+{% endblock %}

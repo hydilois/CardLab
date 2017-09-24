@@ -7,7 +7,6 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use NoteBundle\Entity\Evaluation;
 use NoteBundle\Entity\Sequence;
-use ConfigBundle\Entity\Ecole;
 use ConfigBundle\Entity\Constante;
 use StudentBundle\Entity\Inscription;
 use MatiereBundle\Entity\EstDispense;
@@ -40,17 +39,17 @@ class BulletinController extends Controller {
      * @Method("GET")
      */
     public function bulletinStudentAction($idEleve, $idSeq, $idAnnee, $idClasse) {
-        $school = $this->getDoctrine()->getRepository('SchoolConfigBundle:Ecole')->findAll();
-        $constante = $this->getDoctrine()->getRepository('SchoolConfigBundle:Constante')->findAll();
+        $school = $this->getDoctrine()->getRepository('ConfigBundle:Constante')->findAll();
+        $constante = $this->getDoctrine()->getRepository('ConfigBundle:Pays')->findAll();
         $ecole = $school[0];
         $pays = $constante[0];
 
-        $eleve = $this->getDoctrine()->getRepository('SchoolStudentBundle:Student')->find($idEleve);
-        $classe = $this->getDoctrine()->getRepository('SchoolStudentBundle:Classe')->find($idClasse);
-        $sequence = $this->getDoctrine()->getRepository('SchoolNoteBundle:Sequence')->find($idSeq);
-        $anneeScolaire = $this->getDoctrine()->getRepository('SchoolConfigBundle:Annee')->find($idAnnee);
+        $eleve = $this->getDoctrine()->getRepository('StudentBundle:Student')->find($idEleve);
+        $classe = $this->getDoctrine()->getRepository('StudentBundle:Classe')->find($idClasse);
+        $sequence = $this->getDoctrine()->getRepository('NoteBundle:Sequence')->find($idSeq);
+        $anneeScolaire = $this->getDoctrine()->getRepository('ConfigBundle:Annee')->find($idAnnee);
 
-        $Allstudent = $this->getDoctrine()->getRepository('SchoolStudentBundle:Inscription')->findBy(
+        $Allstudent = $this->getDoctrine()->getRepository('StudentBundle:Inscription')->findBy(
                 array(
                     'classe' => $classe,
                     'annee' => $anneeScolaire
@@ -58,8 +57,8 @@ class BulletinController extends Controller {
 
         if (($eleve != NULL) && ($sequence != NULL) && ($anneeScolaire != NULL) && ($classe != NULL)) {
 
-            $listCategorie = $this->getDoctrine()->getRepository('SchoolMatiereBundle:Categorie')->findAll();
-            $dispense = $this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')
+            $listCategorie = $this->getDoctrine()->getRepository('MatiereBundle:Categorie')->findAll();
+            $dispense = $this->getDoctrine()->getRepository('MatiereBundle:EstDispense')
                     ->findBy(
                     array(
                         'annee' => $anneeScolaire,
@@ -75,7 +74,7 @@ class BulletinController extends Controller {
                 }
                 foreach ($listeMatieres as $matiere) {
                     $matiere->setTaille(strlen($matiere->getNom()));
-                    $evaluationSeq = $this->getDoctrine()->getRepository('SchoolNoteBundle:Evaluation')
+                    $evaluationSeq = $this->getDoctrine()->getRepository('NoteBundle:Evaluation')
                             ->findBy(
                             array(
                                 'annee' => $anneeScolaire,
@@ -85,7 +84,7 @@ class BulletinController extends Controller {
                             )
                     );
                     foreach ($evaluationSeq as $note) {
-                        $note->setIndex($this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')
+                        $note->setIndex($this->getDoctrine()->getRepository('MatiereBundle:EstDispense')
                                         ->findOneBy(array(
                                             'annee' => $anneeScolaire,
                                             'classe' => $classe,
@@ -98,16 +97,21 @@ class BulletinController extends Controller {
                 $listeMatieres = [];
             }
 
-            $titulaire = $this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')
-                            ->findOneBy(
-                                    array(
-                                        'annee' => $anneeScolaire,
-                                        'classe' => $classe,
-                                        'titulaire' => true
-                                    )
-                            )->getEnseignant();
+            $titulaire = $this->getDoctrine()->getRepository('MatiereBundle:EstDispense')
+                    ->findOneBy(
+                    array(
+                        'annee' => $anneeScolaire,
+                        'classe' => $classe,
+                        'titulaire' => true
+                    )
+            );
+            if ($titulaire != Null) {
+                $titulaire = $titulaire->getEnseignant();
+            } else {
+                $titulaire = 'Pas de Nom!';
+            }
 
-            $html = $this->renderView('SchoolNoteBundle:Bulletin:bulletins.html.twig', array(
+            $html = $this->renderView('bulletin/bulletins.html.twig', array(
                 'ecole' => $ecole,
                 'pays' => $pays,
                 'listCategories' => $listCategorie,
@@ -118,7 +122,7 @@ class BulletinController extends Controller {
                 'classe' => $classe,
             ));
 
-            $html2pdf = new \Html2Pdf_Html2Pdf('P', 'A4', 'fr');
+            $html2pdf = $this->get('html2pdf_factory')->create('P', 'A4', 'fr', true, 'UTF-8', array(10, 5, 10, 5));
             $html2pdf->pdf->SetAuthor('GreenSoft');
             $html2pdf->pdf->SetTitle('Bulletin');
             $html2pdf->pdf->SetSubject('Bulletin Sequentiel');
@@ -134,7 +138,7 @@ class BulletinController extends Controller {
             $response->headers->set('Content-disposition', 'filename=BulletinsSequentiels.pdf');
             return $response;
         } else {
-            return $this->render('SchoolNoteBundle:Error:error1.html.twig');
+            return $this->render('NoteBundle:Error:error1.html.twig');
         }
     }
 
@@ -146,7 +150,7 @@ class BulletinController extends Controller {
      */
     public function performancesAction($idEleve) {
         $em = $this->getDoctrine()->getManager();
-        $school = $em->getRepository('SchoolConfigBundle:Ecole')->findAll();
+        $school = $em->getRepository('SchoolConfigBundle:Constante')->findAll();
         $constante = $em->getRepository('SchoolConfigBundle:Constante')->findAll();
         $ecole = $school[0];
         $pays = $constante[0];
@@ -162,8 +166,8 @@ class BulletinController extends Controller {
 
             $perfEleve = '<page backtop="10mm" backleft="10mm" backright="10mm" backbottom="10mm" footer="page;">
             <page_footer>
-                <hr />
-                <p>GreenSoft-Team</p>
+                <hr>
+                <p>&copy; 2017 CardLab by GreenSoft-Team</p>
             </page_footer>
                <table>
                 <tr>
@@ -297,7 +301,7 @@ class BulletinController extends Controller {
 
 
             // $html2pdf = new \Html2Pdf_Html2Pdf('P', 'A4', 'fr');
-            $html2pdf = $this->get('html2pdf_factory')->create('P', 'A4', 'fr', true, 'UTF-8', array(10, 15, 10, 15));
+            $html2pdf = $this->get('html2pdf_factory')->create('P', 'A4', 'fr', true, 'UTF-8', array(10, 5, 10, 5));
             $html2pdf->pdf->SetAuthor('GrenSoft-Team');
             $html2pdf->pdf->SetTitle('Performances' . ' ' . $student->getNom());
             $html2pdf->pdf->SetSubject('Performance  Eleve');
@@ -323,6 +327,26 @@ class BulletinController extends Controller {
      * @Method("GET")
      */
     public function bulletinTestClasseAction($idSeq, $idAnnee, $idClasse) {
+
+
+        if (isset($_GET['idTrim'])) {
+            $idTrim = $_GET['idTrim'];
+            if ((int) $idTrim !== 0) {
+                if ((int) $idTrim <= 2) {
+                    return $this->redirectToRoute('bulletin_trimestriel_classe', array(
+                                'idAnnee' => $idAnnee,
+                                'idClasse' => $idClasse,
+                                'idTrim' => $idTrim,
+                    ));
+                } else {
+                    return $this->redirectToRoute('bulletin_trimestriel3_classe', array(
+                                'idAnnee' => $idAnnee,
+                                'idClasse' => $idClasse,
+                    ));
+                }
+            }
+        }
+
         $ecole = $this->getDoctrine()->getRepository('ConfigBundle:Constante')->findAll();
         $pays = $this->getDoctrine()->getRepository('ConfigBundle:Pays')->findAll();
         $pays = $pays[0];
@@ -351,12 +375,18 @@ class BulletinController extends Controller {
                 )
         );
         $titulaire = $this->getDoctrine()->getRepository('MatiereBundle:EstDispense')->findOneBy(
-                        array(
-                            'annee' => $anneeScolaire,
-                            'classe' => $classe,
-                            'titulaire' => true
-                        )
-                )->getEnseignant();
+                array(
+                    'annee' => $anneeScolaire,
+                    'classe' => $classe,
+                    'titulaire' => true
+                )
+        );
+        if ($titulaire != Null) {
+            $titulaire = $titulaire->getEnseignant();
+        } else {
+            $titulaire = 'Pas de Nom!';
+        }
+
         if (($sequence != NULL) && ($anneeScolaire != NULL) && ($classe != NULL)) {
             $listCategorie = $this->getDoctrine()->getRepository('MatiereBundle:Categorie')->findAll();
             $dispense = $this->getDoctrine()->getRepository('MatiereBundle:EstDispense')->findBy(
@@ -404,7 +434,8 @@ class BulletinController extends Controller {
                 }
                 $bullEleve .= '<page backtop="5mm" backleft="10mm" backright="10mm" backbottom="5mm" footer="page;">
             <page_footer>
-                <p>GreenSoft-Team</p>
+            <hr>
+                <p>&copy; 2017 CardLab by GreenSoft-Team</p>
             </page_footer>
                <table>
                 <tr>
@@ -678,8 +709,8 @@ class BulletinController extends Controller {
                 'page' => $bullEleve
             ));
             // $html2pdf = new \Html2Pdf_Html2Pdf('P', 'A4', 'fr');
-            $html2pdf = $this->get('html2pdf_factory')->create('P', 'A4', 'fr', true, 'UTF-8', array(10, 15, 10, 15));
-            $html2pdf->pdf->SetAuthor('GreenSoft-Team');
+            $html2pdf = $this->get('html2pdf_factory')->create('P', 'A4', 'fr', true, 'UTF-8', array(10, 5, 10, 5));
+            $html2pdf->pdf->SetAuthor('&copy; 2017 CardLab by GreenSoft-Team');
             $html2pdf->pdf->SetTitle('Bulletins' . ' ' . $sequence->getNom() . ' ' . $classe->getNom());
             $html2pdf->pdf->SetSubject('Bulletin Sequentiel');
             $html2pdf->pdf->SetKeywords('Classe, Eleve, Bulletin, Notes, Sequence');
@@ -699,29 +730,30 @@ class BulletinController extends Controller {
     /**
      * Lists all evaluation entities.
      *
-     * @Route("/classe-{idClasse}/annee-{idAnnee}/{trim}", name="bulletin_trimestriel_classe")
+     * @Route("/classe-{idClasse}/annee-{idAnnee}/{idTrim}", name="bulletin_trimestriel_classe")
      * @Method("GET")
      */
-    public function bulletinTrimestrielleClasseAction($idAnnee, $idClasse, $trim) {
+    public function bulletinTrimestrielleClasseAction($idAnnee, $idClasse, $idTrim) {
         $em = $this->getDoctrine()->getManager();
 
-        if ($trim == 'Trim1') {
-            $sequenceFirst = $em->getRepository('SchoolNoteBundle:Sequence')->find(1);
-            $sequenceSecond = $em->getRepository('SchoolNoteBundle:Sequence')->find(2);
+        if ($idTrim == 1) {
+            $sequenceFirst = $em->getRepository('NoteBundle:Sequence')->findOneBy(['nom' => 'Séquence 1']);
+            $sequenceSecond = $em->getRepository('NoteBundle:Sequence')->findOneBy(['nom' => 'Séquence 2']);
             $valeurTrim = 'Trimestre 1';
-        } else if ($trim == 'Trim2') {
-            $sequenceFirst = $em->getRepository('SchoolNoteBundle:Sequence')->find(3);
-            $sequenceSecond = $em->getRepository('SchoolNoteBundle:Sequence')->find(4);
+        } else if ($idTrim == 2) {
+            $sequenceFirst = $em->getRepository('NoteBundle:Sequence')->findOneBy(['nom' => 'Séquence 3']);
+            $sequenceSecond = $em->getRepository('NoteBundle:Sequence')->findOneBy(['nom' => 'Séquence 4']);
             $valeurTrim = 'Trimestre 2';
         }
 
-        $school = $em->getRepository('SchoolConfigBundle:Ecole')->findAll();
-        $constante = $em->getRepository('SchoolConfigBundle:Constante')->findAll();
+        $school = $this->getDoctrine()->getRepository('ConfigBundle:Constante')->findAll();
+        $constante = $this->getDoctrine()->getRepository('ConfigBundle:Pays')->findAll();
         $ecole = $school[0];
         $pays = $constante[0];
-        $classe = $em->getRepository('SchoolStudentBundle:Classe')->find($idClasse);
-        $anneeScolaire = $em->getRepository('SchoolConfigBundle:Annee')->find($idAnnee);
-        $matieresTotalClasse = $em->getRepository('SchoolMatiereBundle:EstDispense')->findBy(
+
+        $classe = $em->getRepository('StudentBundle:Classe')->find($idClasse);
+        $anneeScolaire = $em->getRepository('ConfigBundle:Annee')->find($idAnnee);
+        $matieresTotalClasse = $em->getRepository('MatiereBundle:EstDispense')->findBy(
                 array(
                     'annee' => $anneeScolaire,
                     'classe' => $classe,
@@ -731,24 +763,29 @@ class BulletinController extends Controller {
         foreach ($matieresTotalClasse as $matiere) {
             $coefTotal += $matiere->getCoefficient();
         }
-        $AllstudentsteEleve = $this->getDoctrine()->getRepository('SchoolStudentBundle:Inscription')->findBy(
+        $AllstudentsteEleve = $this->getDoctrine()->getRepository('StudentBundle:Inscription')->findBy(
                 array
                     (
                     'classe' => $classe,
                     'annee' => $anneeScolaire
                 )
         );
-        $titulaire = $this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')->findOneBy(
-                        array(
-                            'annee' => $anneeScolaire,
-                            'classe' => $classe,
-                            'titulaire' => true
-                        )
-                )->getEnseignant();
+        $titulaire = $this->getDoctrine()->getRepository('MatiereBundle:EstDispense')->findOneBy(
+                array(
+                    'annee' => $anneeScolaire,
+                    'classe' => $classe,
+                    'titulaire' => true
+                )
+        );
+        if ($titulaire != Null) {
+            $titulaire = $titulaire->getEnseignant();
+        } else {
+            $titulaire = 'Pas de Nom!';
+        }
 
         if (($sequenceFirst != NULL) && ($sequenceSecond != NULL) && ($anneeScolaire != NULL) && ($classe != NULL)) {
-            $listCategorie = $this->getDoctrine()->getRepository('SchoolMatiereBundle:Categorie')->findAll();
-            $dispense = $this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')->findBy(
+            $listCategorie = $this->getDoctrine()->getRepository('MatiereBundle:Categorie')->findAll();
+            $dispense = $this->getDoctrine()->getRepository('MatiereBundle:EstDispense')->findBy(
                     array(
                         'annee' => $anneeScolaire,
                         'classe' => $classe,
@@ -770,7 +807,7 @@ class BulletinController extends Controller {
                 foreach ($listCategorie as $categorie) {
                     foreach ($categorie->getListeMatieres() as $matiere) {
                         $matiere->setTaille(strlen($matiere->getNom()));
-                        $evaluationSeqFirst = $this->getDoctrine()->getRepository('SchoolNoteBundle:Evaluation')
+                        $evaluationSeqFirst = $this->getDoctrine()->getRepository('NoteBundle:Evaluation')
                                 ->findOneBy(
                                 array(
                                     'annee' => $anneeScolaire,
@@ -779,7 +816,7 @@ class BulletinController extends Controller {
                                     'matiere' => $matiere
                                 )
                         );
-                        $evaluationSeqSecond = $this->getDoctrine()->getRepository('SchoolNoteBundle:Evaluation')
+                        $evaluationSeqSecond = $this->getDoctrine()->getRepository('NoteBundle:Evaluation')
                                 ->findOneBy(
                                 array(
                                     'annee' => $anneeScolaire,
@@ -789,27 +826,27 @@ class BulletinController extends Controller {
                                 )
                         );
                         if ($evaluationSeqFirst != NULL && $evaluationSeqSecond != NULL) {
-                            $evaluationSeqFirst->setIndex($this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')
+                            $evaluationSeqFirst->setIndex($this->getDoctrine()->getRepository('MatiereBundle:EstDispense')
                                             ->findOneBy(array(
                                                 'annee' => $anneeScolaire,
                                                 'classe' => $classe,
                                                 'matiere' => $evaluationSeqFirst->getMatiere()
                             )));
-                            $evaluationSeqSecond->setIndex($this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')
+                            $evaluationSeqSecond->setIndex($this->getDoctrine()->getRepository('MatiereBundle:EstDispense')
                                             ->findOneBy(array(
                                                 'annee' => $anneeScolaire,
                                                 'classe' => $classe,
                                                 'matiere' => $evaluationSeqSecond->getMatiere()
                             )));
                         } else if ($evaluationSeqFirst != NULL) {
-                            $evaluationSeqFirst->setIndex($this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')
+                            $evaluationSeqFirst->setIndex($this->getDoctrine()->getRepository('MatiereBundle:EstDispense')
                                             ->findOneBy(array(
                                                 'annee' => $anneeScolaire,
                                                 'classe' => $classe,
                                                 'matiere' => $evaluationSeqFirst->getMatiere()
                             )));
                         } else if ($evaluationSeqSecond != NULL) {
-                            $evaluationSeqSecond->setIndex($this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')
+                            $evaluationSeqSecond->setIndex($this->getDoctrine()->getRepository('MatiereBundle:EstDispense')
                                             ->findOneBy(array(
                                                 'annee' => $anneeScolaire,
                                                 'classe' => $classe,
@@ -822,7 +859,8 @@ class BulletinController extends Controller {
                 }
                 $bullEleve .= '<page backtop="5mm" backleft="10mm" backright="10mm" backbottom="5mm" footer="page;">
             <page_footer>
-                <p>GreenSoft-Team</p>
+            <hr>
+                <p>&copy; 2017 CardLab by GreenSoft-Team</p>
             </page_footer>
                <table>
                 <tr>
@@ -847,9 +885,9 @@ class BulletinController extends Controller {
             <table class="info1" style="margin-top: 10px;">
                 <tr>
                     <td class="25p" style="text-align: left;"><strong>' . $anneeScolaire->getAnneeScolaire() . '</strong></td>';
-                if ($trim == 'Trim1') {
+                if ($idTrim == 1) {
                     $bullEleve .= '<td class="50p" style="text-align: center; font-size: 1.2em"><strong>BULLETIN DE NOTES DU PREMIER TRIMESTRE </strong></td>';
-                } else if ($trim == 'Trim2') {
+                } else if ($idTrim == 2) {
                     $bullEleve .= '<td class="50p" style="text-align: center; font-size: 1.2em"><strong>BULLETIN DE NOTES DU DEUXIEME TRIMESTRE </strong></td>';
                 } else {
                     $bullEleve .= '<td class="50p" style="text-align: center; font-size: 1.2em"><strong>BULLETIN DE NOTES DU TROIXIEME TRIMESTRE </strong></td>';
@@ -891,13 +929,13 @@ class BulletinController extends Controller {
                 <tr>
                     <th class="20p" style="background: white;" >Disciplines</th>
                     <th class="20p" style="background: white;">Enseignants</th>';
-                if ($trim == 'Trim1') {
+                if ($idTrim == 1) {
                     $bullEleve .='
                             <th class="5p" style="background: white;">Seq 1</th>
                             <th class="5p" style="background: white;">Seq 2</th>
                             <th class="5p" style="background: white;">M./20</th>
                             ';
-                } else if ($trim == 'Trim2') {
+                } else if ($idTrim == 2) {
                     $bullEleve .='
                             <th class="5p" style="background: white;">Seq 3</th>
                             <th class="5p" style="background: white;">Seq 4</th>
@@ -1047,7 +1085,7 @@ class BulletinController extends Controller {
                         </td>
                     </tr>';
                 }
-                $abs = $this->getDoctrine()->getRepository('SchoolStudentBundle:Absence')
+                $abs = $this->getDoctrine()->getRepository('StudentBundle:Absence')
                         ->findOneBy(
                         array(
                             'student' => $inscription,
@@ -1055,7 +1093,7 @@ class BulletinController extends Controller {
                             'sequence' => $sequenceFirst
                         )
                 );
-                $abs1 = $this->getDoctrine()->getRepository('SchoolStudentBundle:Absence')
+                $abs1 = $this->getDoctrine()->getRepository('StudentBundle:Absence')
                         ->findOneBy(
                         array(
                             'student' => $inscription,
@@ -1163,7 +1201,7 @@ class BulletinController extends Controller {
                     $bullEleve = str_replace('RANG_' . $tabMoy[$i], ($j++) . 'ème', $bullEleve);
                 }
             }
-            $html = $this->renderView('SchoolNoteBundle:Bulletin:bulletinTrimClasse.html.twig', array(
+            $html = $this->renderView('bulletin/bulletinTrimClasse.html.twig', array(
                 'ecole' => $ecole,
                 'pays' => $pays,
                 'annee' => $anneeScolaire,
@@ -1172,8 +1210,8 @@ class BulletinController extends Controller {
                 //'sequence' => $sequence,
                 'page' => $bullEleve
             ));
-            $html2pdf = new \Html2Pdf_Html2Pdf('P', 'A4', 'fr');
-            $html2pdf->pdf->SetAuthor('GreenSoft-Team');
+            $html2pdf = $this->get('html2pdf_factory')->create('P', 'A4', 'fr', true, 'UTF-8', array(10, 5, 10, 5));
+            $html2pdf->pdf->SetAuthor('&copy; 2017 CardLab by GreenSoft-Team');
             $html2pdf->pdf->SetTitle('Bulletins' . 'Trimestriel ' . $classe->getNom());
             $html2pdf->pdf->SetSubject('Bulletin Sequentiel');
             $html2pdf->pdf->SetKeywords('Classe, Eleve, Bulletin, Notes, Trimestre');
@@ -1187,7 +1225,7 @@ class BulletinController extends Controller {
             $response->headers->set('Content-disposition', 'filename=Bulletins_' . $classe->getNom() . '_' . $valeurTrim . '.pdf');
             return $response;
         } else {
-            return $this->render('SchoolNoteBundle:Error:error1.html.twig');
+            return $this->render('NoteBundle:Error:error1.html.twig');
         }
     }
 
@@ -1201,24 +1239,25 @@ class BulletinController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
 
-        $sequenceFirst = $em->getRepository('SchoolNoteBundle:Sequence')->find(5);
-        $sequenceSecond = $em->getRepository('SchoolNoteBundle:Sequence')->find(6);
+        //Variables du bulletin de troisième trimestre
+        $sequenceFirst = $em->getRepository('NoteBundle:Sequence')->findOneBy(['nom' => 'Séquence 5']);
+        $sequenceSecond = $em->getRepository('NoteBundle:Sequence')->findOneBy(['nom' => 'Séquence 6']);
 
         /* Deux séquences du premier trimestre */
-        $sequenceOne = $em->getRepository('SchoolNoteBundle:Sequence')->find(1);
-        $sequenceTwo = $em->getRepository('SchoolNoteBundle:Sequence')->find(2);
+        $sequenceOne = $em->getRepository('NoteBundle:Sequence')->findOneBy(['nom' => 'Séquence 1']);
+        $sequenceTwo = $em->getRepository('NoteBundle:Sequence')->findOneBy(['nom' => 'Séquence 2']);
 
         /* Deux séquences du deuxième trimestre */
-        $sequenceThree = $em->getRepository('SchoolNoteBundle:Sequence')->find(3);
-        $sequenceFourth = $em->getRepository('SchoolNoteBundle:Sequence')->find(4);
+        $sequenceThree = $em->getRepository('NoteBundle:Sequence')->findOneBy(['nom' => 'Séquence 3']);
+        $sequenceFourth = $em->getRepository('NoteBundle:Sequence')->findOneBy(['nom' => 'Séquence 4']);
 
-        $school = $em->getRepository('SchoolConfigBundle:Ecole')->findAll();
-        $constante = $em->getRepository('SchoolConfigBundle:Constante')->findAll();
+        $school = $em->getRepository('ConfigBundle:Constante')->findAll();
+        $constante = $em->getRepository('ConfigBundle:Pays')->findAll();
         $ecole = $school[0];
         $pays = $constante[0];
-        $classe = $em->getRepository('SchoolStudentBundle:Classe')->find($idClasse);
-        $anneeScolaire = $em->getRepository('SchoolConfigBundle:Annee')->find($idAnnee);
-        $matieresTotalClasse = $em->getRepository('SchoolMatiereBundle:EstDispense')->findBy(
+        $classe = $em->getRepository('StudentBundle:Classe')->find($idClasse);
+        $anneeScolaire = $em->getRepository('ConfigBundle:Annee')->find($idAnnee);
+        $matieresTotalClasse = $em->getRepository('MatiereBundle:EstDispense')->findBy(
                 array(
                     'annee' => $anneeScolaire,
                     'classe' => $classe,
@@ -1230,24 +1269,29 @@ class BulletinController extends Controller {
             $coefTotalTrim1 += $matiere->getCoefficient();
             $coefTotalTrim2 += $matiere->getCoefficient();
         }
-        $AllstudentsteEleve = $this->getDoctrine()->getRepository('SchoolStudentBundle:Inscription')->findBy(
+        $AllstudentsteEleve = $this->getDoctrine()->getRepository('StudentBundle:Inscription')->findBy(
                 array
                     (
                     'classe' => $classe,
                     'annee' => $anneeScolaire
                 )
         );
-        $titulaire = $this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')->findOneBy(
-                        array(
-                            'annee' => $anneeScolaire,
-                            'classe' => $classe,
-                            'titulaire' => true
-                        )
-                )->getEnseignant();
+        $titulaire = $this->getDoctrine()->getRepository('MatiereBundle:EstDispense')->findOneBy(
+                array(
+                    'annee' => $anneeScolaire,
+                    'classe' => $classe,
+                    'titulaire' => true
+                )
+        );
+        if ($titulaire != Null) {
+            $titulaire = $titulaire->getEnseignant();
+        } else {
+            $titulaire = 'Pas de Nom';
+        }
 
         if (($sequenceFirst != NULL) && ($sequenceSecond != NULL) && ($anneeScolaire != NULL) && ($classe != NULL)) {
-            $listCategorie = $this->getDoctrine()->getRepository('SchoolMatiereBundle:Categorie')->findAll();
-            $dispense = $this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')->findBy(
+            $listCategorie = $this->getDoctrine()->getRepository('MatiereBundle:Categorie')->findAll();
+            $dispense = $this->getDoctrine()->getRepository('MatiereBundle:EstDispense')->findBy(
                     array(
                         'annee' => $anneeScolaire,
                         'classe' => $classe,
@@ -1271,7 +1315,7 @@ class BulletinController extends Controller {
                 foreach ($listCategorie as $categorie) {
                     foreach ($categorie->getListeMatieres() as $matiere) {
                         $matiere->setTaille(strlen($matiere->getNom()));
-                        $evaluationSeqFirst = $this->getDoctrine()->getRepository('SchoolNoteBundle:Evaluation')
+                        $evaluationSeqFirst = $this->getDoctrine()->getRepository('NoteBundle:Evaluation')
                                 ->findOneBy(
                                 array(
                                     'annee' => $anneeScolaire,
@@ -1280,7 +1324,7 @@ class BulletinController extends Controller {
                                     'matiere' => $matiere
                                 )
                         );
-                        $evaluationSeqSecond = $this->getDoctrine()->getRepository('SchoolNoteBundle:Evaluation')
+                        $evaluationSeqSecond = $this->getDoctrine()->getRepository('NoteBundle:Evaluation')
                                 ->findOneBy(
                                 array(
                                     'annee' => $anneeScolaire,
@@ -1290,34 +1334,34 @@ class BulletinController extends Controller {
                                 )
                         );
                         if ($evaluationSeqFirst != NULL && $evaluationSeqSecond != NULL) {
-                            $evaluationSeqFirst->setIndex($this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')
+                            $evaluationSeqFirst->setIndex($this->getDoctrine()->getRepository('MatiereBundle:EstDispense')
                                             ->findOneBy(array(
                                                 'annee' => $anneeScolaire,
                                                 'classe' => $classe,
                                                 'matiere' => $evaluationSeqFirst->getMatiere()
                             )));
-                            $evaluationSeqSecond->setIndex($this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')
+                            $evaluationSeqSecond->setIndex($this->getDoctrine()->getRepository('MatiereBundle:EstDispense')
                                             ->findOneBy(array(
                                                 'annee' => $anneeScolaire,
                                                 'classe' => $classe,
                                                 'matiere' => $evaluationSeqSecond->getMatiere()
                             )));
                         } else if ($evaluationSeqFirst != NULL) {
-                            $evaluationSeqFirst->setIndex($this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')
+                            $evaluationSeqFirst->setIndex($this->getDoctrine()->getRepository('MatiereBundle:EstDispense')
                                             ->findOneBy(array(
                                                 'annee' => $anneeScolaire,
                                                 'classe' => $classe,
                                                 'matiere' => $evaluationSeqFirst->getMatiere()
                             )));
                         } else if ($evaluationSeqSecond != NULL) {
-                            $evaluationSeqSecond->setIndex($this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')
+                            $evaluationSeqSecond->setIndex($this->getDoctrine()->getRepository('MatiereBundle:EstDispense')
                                             ->findOneBy(array(
                                                 'annee' => $anneeScolaire,
                                                 'classe' => $classe,
                                                 'matiere' => $evaluationSeqSecond->getMatiere()
                             )));
                         }
-                        $evaluationSeqOne = $this->getDoctrine()->getRepository('SchoolNoteBundle:Evaluation')
+                        $evaluationSeqOne = $this->getDoctrine()->getRepository('NoteBundle:Evaluation')
                                 ->findOneBy(
                                 array(
                                     'annee' => $anneeScolaire,
@@ -1326,7 +1370,7 @@ class BulletinController extends Controller {
                                     'matiere' => $matiere
                                 )
                         );
-                        $evaluationSeqTwo = $this->getDoctrine()->getRepository('SchoolNoteBundle:Evaluation')
+                        $evaluationSeqTwo = $this->getDoctrine()->getRepository('NoteBundle:Evaluation')
                                 ->findOneBy(
                                 array(
                                     'annee' => $anneeScolaire,
@@ -1335,7 +1379,7 @@ class BulletinController extends Controller {
                                     'matiere' => $matiere
                                 )
                         );
-                        $evaluationSeqThree = $this->getDoctrine()->getRepository('SchoolNoteBundle:Evaluation')
+                        $evaluationSeqThree = $this->getDoctrine()->getRepository('NoteBundle:Evaluation')
                                 ->findOneBy(
                                 array(
                                     'annee' => $anneeScolaire,
@@ -1345,7 +1389,7 @@ class BulletinController extends Controller {
                                 )
                         );
 
-                        $evaluationSeqFourth = $this->getDoctrine()->getRepository('SchoolNoteBundle:Evaluation')
+                        $evaluationSeqFourth = $this->getDoctrine()->getRepository('NoteBundle:Evaluation')
                                 ->findOneBy(
                                 array(
                                     'annee' => $anneeScolaire,
@@ -1356,27 +1400,27 @@ class BulletinController extends Controller {
                         );
 
                         if ($evaluationSeqOne != NULL && $evaluationSeqTwo != NULL) {
-                            $evaluationSeqOne->setIndex($this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')
+                            $evaluationSeqOne->setIndex($this->getDoctrine()->getRepository('MatiereBundle:EstDispense')
                                             ->findOneBy(array(
                                                 'annee' => $anneeScolaire,
                                                 'classe' => $classe,
                                                 'matiere' => $evaluationSeqOne->getMatiere()
                             )));
-                            $evaluationSeqTwo->setIndex($this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')
+                            $evaluationSeqTwo->setIndex($this->getDoctrine()->getRepository('MatiereBundle:EstDispense')
                                             ->findOneBy(array(
                                                 'annee' => $anneeScolaire,
                                                 'classe' => $classe,
                                                 'matiere' => $evaluationSeqTwo->getMatiere()
                             )));
                         } else if ($evaluationSeqOne != NULL) {
-                            $evaluationSeqOne->setIndex($this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')
+                            $evaluationSeqOne->setIndex($this->getDoctrine()->getRepository('MatiereBundle:EstDispense')
                                             ->findOneBy(array(
                                                 'annee' => $anneeScolaire,
                                                 'classe' => $classe,
                                                 'matiere' => $evaluationSeqOne->getMatiere()
                             )));
                         } else if ($evaluationSeqTwo != NULL) {
-                            $evaluationSeqTwo->setIndex($this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')
+                            $evaluationSeqTwo->setIndex($this->getDoctrine()->getRepository('MatiereBundle:EstDispense')
                                             ->findOneBy(array(
                                                 'annee' => $anneeScolaire,
                                                 'classe' => $classe,
@@ -1384,27 +1428,27 @@ class BulletinController extends Controller {
                             )));
                         }
                         if ($evaluationSeqThree != NULL && $evaluationSeqFourth != NULL) {
-                            $evaluationSeqThree->setIndex($this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')
+                            $evaluationSeqThree->setIndex($this->getDoctrine()->getRepository('MatiereBundle:EstDispense')
                                             ->findOneBy(array(
                                                 'annee' => $anneeScolaire,
                                                 'classe' => $classe,
                                                 'matiere' => $evaluationSeqThree->getMatiere()
                             )));
-                            $evaluationSeqFourth->setIndex($this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')
+                            $evaluationSeqFourth->setIndex($this->getDoctrine()->getRepository('MatiereBundle:EstDispense')
                                             ->findOneBy(array(
                                                 'annee' => $anneeScolaire,
                                                 'classe' => $classe,
                                                 'matiere' => $evaluationSeqFourth->getMatiere()
                             )));
                         } else if ($evaluationSeqThree != NULL) {
-                            $evaluationSeqThree->setIndex($this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')
+                            $evaluationSeqThree->setIndex($this->getDoctrine()->getRepository('MatiereBundle:EstDispense')
                                             ->findOneBy(array(
                                                 'annee' => $anneeScolaire,
                                                 'classe' => $classe,
                                                 'matiere' => $evaluationSeqThree->getMatiere()
                             )));
                         } else if ($evaluationSeqFourth != NULL) {
-                            $evaluationSeqFourth->setIndex($this->getDoctrine()->getRepository('SchoolMatiereBundle:EstDispense')
+                            $evaluationSeqFourth->setIndex($this->getDoctrine()->getRepository('MatiereBundle:EstDispense')
                                             ->findOneBy(array(
                                                 'annee' => $anneeScolaire,
                                                 'classe' => $classe,
@@ -1421,7 +1465,8 @@ class BulletinController extends Controller {
                 }
                 $bullEleve .= '<page backtop="5mm" backleft="10mm" backright="10mm" backbottom="5mm" footer="page;">
             <page_footer>
-                <p>GreenSoft-Team</p>
+            <hr>
+                <p>&copy; 2017 CardLab by GreenSoft-Team</p>
             </page_footer>
                <table>
                 <tr>
@@ -1674,7 +1719,7 @@ class BulletinController extends Controller {
                         </td>
                     </tr>';
                 }
-                $abs = $this->getDoctrine()->getRepository('SchoolStudentBundle:Absence')
+                $abs = $this->getDoctrine()->getRepository('StudentBundle:Absence')
                         ->findOneBy(
                         array(
                             'student' => $inscription,
@@ -1682,7 +1727,7 @@ class BulletinController extends Controller {
                             'sequence' => $sequenceFirst
                         )
                 );
-                $abs1 = $this->getDoctrine()->getRepository('SchoolStudentBundle:Absence')
+                $abs1 = $this->getDoctrine()->getRepository('StudentBundle:Absence')
                         ->findOneBy(
                         array(
                             'student' => $inscription,
@@ -1838,7 +1883,7 @@ class BulletinController extends Controller {
                 }
             }
 
-            $html = $this->renderView('SchoolNoteBundle:Bulletin:bulletinTrimClasse.html.twig', array(
+            $html = $this->renderView('bulletin/bulletinTrimClasse.html.twig', array(
                 'ecole' => $ecole,
                 'pays' => $pays,
                 'annee' => $anneeScolaire,
@@ -1847,8 +1892,8 @@ class BulletinController extends Controller {
                 //'sequence' => $sequence,
                 'page' => $bullEleve
             ));
-            $html2pdf = new \Html2Pdf_Html2Pdf('P', 'A4', 'fr');
-            $html2pdf->pdf->SetAuthor('GreenSoft-Team');
+            $html2pdf = $this->get('html2pdf_factory')->create('P', 'A4', 'fr', true, 'UTF-8', array(10, 5, 10, 5));
+            $html2pdf->pdf->SetAuthor('&copy; 2017 CardLab by GreenSoft-Team');
             $html2pdf->pdf->SetTitle('Bulletins' . 'Trimestriel ' . $classe->getNom());
             $html2pdf->pdf->SetSubject('Bulletin Sequentiel');
             $html2pdf->pdf->SetKeywords('Classe, Eleve, Bulletin, Notes, Trimestre');
@@ -1861,7 +1906,7 @@ class BulletinController extends Controller {
             $response->headers->set('Content-disposition', 'filename=Bulletins_' . $classe->getNom() . '.pdf');
             return $response;
         } else {
-            return $this->render('SchoolNoteBundle:Error:error1.html.twig');
+            return $this->render('NoteBundle:Error:error1.html.twig');
         }
     }
 
@@ -1869,13 +1914,13 @@ class BulletinController extends Controller {
         if ($note <= 3)
             return 'NUL';
         if ($note < 6)
-            return utf8_encode('Très Faible');
+            return 'Très Faible';
         if ($note < 8)
             return 'Faible';
         if ($note < 9)
             return 'Insuffisant';
         if ($note < 10)
-            return utf8_encode('Médiocre');
+            return 'Médiocre';
         if ($note < 12)
             return 'Passable';
         if ($note < 14)
@@ -1883,7 +1928,7 @@ class BulletinController extends Controller {
         if ($note < 16)
             return 'Bien';
         if ($note < 18)
-            return utf8_encode('Très Bien');
+            return 'Très Bien';
         if ($note < 20)
             return 'Excellent';
         if ($note == 20)

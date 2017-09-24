@@ -125,3 +125,4 @@ fos_rest:
         json: true
     body_listener: true
     disable_csrf_role: ROLE_API
+    

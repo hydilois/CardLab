@@ -9,6 +9,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
 use ConfigBundle\Entity\Annee;
 use StudentBundle\Entity\Student;
+use NoteBundle\Entity\Sequence;
 
 /**
  * Inscription controller.
@@ -27,9 +28,11 @@ class InscriptionController extends Controller {
         $em = $this->getDoctrine()->getManager();
 
         $inscriptions = $em->getRepository('StudentBundle:Inscription')->findAll();
+        $sequences = $em->getRepository('NoteBundle:Sequence')->findAll();
 
         return $this->render('inscription/index.html.twig', array(
                     'inscriptions' => $inscriptions,
+                    'sequences' => $sequences
         ));
     }
 
@@ -138,7 +141,7 @@ class InscriptionController extends Controller {
                 ->getQuery()
                 ->getArrayResult();
 
-                
+
         if ($subQuery) {
             $queryBuilder = $em->createQueryBuilder();
             $query = $queryBuilder
