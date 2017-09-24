@@ -1,52 +1,56 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Pay</h1>
+    <h1 class="text-center">Détail sur Pays</h1>
 
-    <table>
+    <table class="table table-striped">
         <tbody>
             <tr>
                 <th>Id</th>
                 <td>{{ pay.id }}</td>
             </tr>
             <tr>
-                <th>Paysfrancais</th>
+                <th>Pays en francais</th>
                 <td>{{ pay.paysFrancais }}</td>
             </tr>
             <tr>
-                <th>Paysanglais</th>
+                <th>Pays en anglais</th>
                 <td>{{ pay.paysAnglais }}</td>
             </tr>
             <tr>
-                <th>Ministerefrancais</th>
+                <th>Ministère en francais</th>
                 <td>{{ pay.ministereFrancais }}</td>
             </tr>
             <tr>
-                <th>Ministereanglais</th>
+                <th>Ministère en anglais</th>
                 <td>{{ pay.ministereAnglais }}</td>
             </tr>
             <tr>
-                <th>Devisefrancais</th>
+                <th>Devise en français</th>
                 <td>{{ pay.deviseFrancais }}</td>
             </tr>
             <tr>
-                <th>Deviseanglais</th>
+                <th>Devise en anglais</th>
                 <td>{{ pay.deviseAnglais }}</td>
             </tr>
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('pays_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('pays_edit', { 'id': pay.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+    <table>
+        <tr>
+            <td>
+                <a class="btn btn-default" href="{{ path('pays_index') }}">Retour à la liste</a>
+            </td>
+            <td>&nbsp;&nbsp;</td>
+            <td>
+                <a class="btn btn-success" href="{{ path('pays_edit', { 'id': pay.id }) }}">Modifier</a>
+            </td>
+            <td>&nbsp;&nbsp;</td>
+            <td>
+                {{ form_start(delete_form) }}
+                    <input class="btn btn-danger" type="submit" value="Supprimer">
+                {{ form_end(delete_form) }}
+            </td>
+        </tr>
+    </table>
 {% endblock %}

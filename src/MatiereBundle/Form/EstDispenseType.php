@@ -27,7 +27,11 @@ class EstDispenseType extends AbstractType
         ->add('classe',EntityType::class, array('class'=>'StudentBundle\Entity\Classe',
             'query_builder' => function (\Doctrine\ORM\EntityRepository $repository)
             {return $repository->createQueryBuilder('c')->where('c.classePere is NOT NULL');}))
-        ->add('annee');
+        ->add('annee',EntityType::class, array('class'=>'ConfigBundle\Entity\Annee',
+            'query_builder' => function (\Doctrine\ORM\EntityRepository $repository){
+                return $repository->createQueryBuilder('a')->where('a.isAnneeEnCour = TRUE');
+            }))
+        ;
     }
     
     /**

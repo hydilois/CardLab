@@ -1,21 +1,70 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Pay edit</h1>
-
     {{ form_start(edit_form) }}
-        {{ form_widget(edit_form) }}
-        <input type="submit" value="Edit" />
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+            <section class="panel">
+                <header class="panel-heading text-center">
+                    Informations sur le Pays
+                </header>
+                <div class="panel-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.paysFrancais, "Nom du pays en Français") }}
+                                    {{ form_widget(edit_form.paysFrancais, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.paysAnglais, "Nom du pays en Anglais") }}
+                                    {{ form_widget(edit_form.paysAnglais, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.ministereFrancais, "Nom du Ministère en charge en Français") }}
+                                    {{ form_widget(edit_form.ministereFrancais, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.ministereAnglais, "Nom du Ministère en charge en Anglais") }}
+                                    {{ form_widget(edit_form.ministereAnglais, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.deviseFrancais, "Devise du pays en Français") }}
+                                    {{ form_widget(edit_form.deviseFrancais, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    {{ form_label(edit_form.deviseAnglais, "Devise du pays en Anglais") }}
+                                    {{ form_widget(edit_form.deviseAnglais, {'attr':{'class':'form-control'}}) }}
+                                </div>
+                            </div>
+                        </div>
+                        <div>
+                        <button type="submit" class="btn btn-primary">Enregistrer</button>
+                            <a class="btn btn-default" href="{{path('pays_index')}}">Retour</a>
+                        </div>
+                </div>
+            </section>
+        </div>
+    </div>
     {{ form_end(edit_form) }}
 
-    <ul>
-        <li>
-            <a href="{{ path('pays_index') }}">Back to the list</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+        <script>
+        var photo = document.getElementById('studentbundle_student_photo');
+        photo.name = 'avatar';
+    </script>
 {% endblock %}
+
+

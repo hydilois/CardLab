@@ -36,8 +36,8 @@ $(function() {
          */
         Sequence.prototype.initializeView = function() {
             console.log("Here stand Sequence");
+            // $('.panel .tools .fa').trigger('click');
         }
-
 
         /**
          * allow to set a whole bunch of listeners
@@ -71,5 +71,6 @@ $(function() {
         //this should be at the end
         sequence.initializeView();
         sequence.setListeners();
+        // sequence.postActions();
     });
 });
