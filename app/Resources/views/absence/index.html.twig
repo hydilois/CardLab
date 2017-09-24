@@ -1,39 +1,31 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Absences list</h1>
+    <h1 class="text-center">Liste total des absences</h1>
 
-    <table>
+    <table class="display table table-bordered table-striped" id="dynamic-table">
         <thead>
             <tr>
                 <th>Id</th>
-                <th>Nbreabsence</th>
-                <th>Actions</th>
+                <th>Elèves</th>
+                <th>Nombre des absence</th>
+                <th>Séquence</th>
+                <th>Année</th>
             </tr>
         </thead>
         <tbody>
         {% for absence in absences %}
             <tr>
-                <td><a href="{{ path('absence_show', { 'id': absence.id }) }}">{{ absence.id }}</a></td>
+                <td>{{ absence.id }}</td>
+                <td>{{ absence.student }}</td>
                 <td>{{ absence.nbreAbsence }}</td>
-                <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('absence_show', { 'id': absence.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('absence_edit', { 'id': absence.id }) }}">edit</a>
-                        </li>
-                    </ul>
-                </td>
+                <td>{{ absence.sequence }}</td>
+                <td>{{ absence.anneeScolaire }}</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('absence_new') }}">Create a new absence</a>
-        </li>
-    </ul>
+    {% include '/categorie/extras_categorie.css.html.twig' %}
+    {% include '/categorie/extras_categorie.js.html.twig' %}
 {% endblock %}

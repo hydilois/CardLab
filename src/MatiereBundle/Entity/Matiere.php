@@ -55,6 +55,8 @@ class Matiere
      * @Assert\NotBlank()
      */
     private $categorie;
+
+    
     private $evaluationSeq;
     private $evaluationSeq1;
     private $evaluationSeqOne;

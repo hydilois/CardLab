@@ -1,12 +1,21 @@
-        <script src="{{asset('assets/plugins/jquery-circliful/js/jquery.circliful.min.js')}}" type="text/javascript"></script>
-        <script>
-			$(function() {
-                $('.circliful-chart').circliful();
-			});
-		</script>
+<!-- jQuery Flot Chart-->
+<script src="{{asset('js/flot-chart/jquery.flot.js')}}"></script>
+<script src="{{asset('js/flot-chart/jquery.flot.tooltip.js')}}"></script>
+<script src="{{asset('js/flot-chart/jquery.flot.resize.js')}}"></script>
 
 
-<!-- Chart JS -->
-<script src="{{asset('assets/plugins/chart.js/chart.min.js')}}" type="text/javascript"></script>
-<script src="{{asset('assets/pages/jquery.chartjs.init.js')}}" type="text/javascript"></script>
-<script src="{{asset('assets/js/main/application.endpoint.js')}}" type="text/javascript"></script>
+<!--Morris Chart-->
+<script src="{{asset('js/morris-chart/morris.js')}}"></script>
+<script src="{{asset('js/morris-chart/raphael-min.js')}}"></script>
+
+<!--Calendar-->
+<script src="{{asset('js/calendar/clndr.js')}}"></script>
+<script src="{{asset('js/calendar/evnt.calendar.init.js')}}"></script>
+<script src="{{asset('js/calendar/moment-2.2.1.js')}}"></script>
+<script src="{{asset('http://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.5.2/underscore-min.js')}}"></script>
+
+<!--common scripts for all pages-->
+{# <script src="{{asset('js/scripts.js')}}"></script> #}
+
+<!--Dashboard Charts-->
+<script src="{{asset('js/dashboard-chart-init.js')}}"></script>

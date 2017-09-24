@@ -1,12 +1,12 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Classes list</h1>
-
-    <table>
+    <h1 class="text-center">Liste des Classes</h1>
+    <a class="btn btn-primary" href="{{ path('classe_new') }}">Ajouter une classe</a>
+    <table class="display table table-bordered table-striped" id="dynamic-table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>#</th>
                 <th>Nom</th>
                 <th>Abreviation</th>
                 <th>Actions</th>
@@ -19,23 +19,15 @@
                 <td>{{ classe.nom }}</td>
                 <td>{{ classe.abreviation }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('classe_show', { 'id': classe.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('classe_edit', { 'id': classe.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                        {# <a class="btn btn-info" href="{{ path('classe_show', { 'id': classe.id }) }}">show</a> #}
+                        <a class="btn btn-success" href="{{ path('classe_edit', { 'id': classe.id }) }}">Modifier</a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('classe_new') }}">Create a new classe</a>
-        </li>
-    </ul>
+    {% include '/categorie/extras_categorie.css.html.twig' %}
+    {% include '/categorie/extras_categorie.js.html.twig' %}
+
 {% endblock %}

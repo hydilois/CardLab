@@ -1,14 +1,14 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Inscriptions list</h1>
-
-    <table>
+    <h1 class="text-center">Liste des Inscriptions</h1>
+        <a class="btn btn-primary" href="{{path('inscription_notyet')}}">Inscrire Elève</a> <br>
+        <table class="display table table-bordered table-striped" id="dynamic-table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>#</th>
                 <th>Avance</th>
-                <th>Datederniereavance</th>
+                <th>Date dernière avance</th>
                 <th>Status</th>
                 <th>Redoublant</th>
                 <th>Actions</th>
@@ -23,23 +23,13 @@
                 <td>{% if inscription.status %}Yes{% else %}No{% endif %}</td>
                 <td>{% if inscription.redoublant %}Yes{% else %}No{% endif %}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('inscription_show', { 'id': inscription.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('inscription_edit', { 'id': inscription.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                        <a class="btn btn-info" href="{{ path('inscription_show', { 'id': inscription.id }) }}">Voir</a>
+                        <a class="btn btn-success" href="{{ path('inscription_edit', { 'id': inscription.id }) }}">Modifier</a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('inscription_new') }}">Create a new inscription</a>
-        </li>
-    </ul>
+    {% include '/categorie/extras_categorie.css.html.twig' %}
+    {% include '/categorie/extras_categorie.js.html.twig' %}
 {% endblock %}

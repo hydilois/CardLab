@@ -1,29 +1,30 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Students list</h1>
+    <h1 class="text-center">Liste des élèves</h1>
+            <a class="btn btn-primary pull-left" href="{{ path('student_new') }}">Ajouter èlève</a><br><br>
 
-    <table class="table">
+    <table class="display table table-bordered table-striped" id="dynamic-table">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>#</th>
                 <th>Matricule</th>
                 <th>Nom</th>
-                <th>Datenaissance</th>
-                <th>Lieunaissance</th>
-                <th>Nompere</th>
-                <th>Nommere</th>
-                <th>Adressepere</th>
-                <th>Adressemere</th>
-                <th>Personneacontacter</th>
-                <th>Dernieretablissementfreq</th>
+                <th>Date de naissance</th>
+                <th>Lieu de naissance</th>
+                <th>Nom du père</th>
+                <th>Nom de la mère</th>
+                <th>Adresse du père</th>
+                <th>Adresse de la mère</th>
+                <th>Personne à contacter</th>
+                <th>Dernier établissement</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for student in students %}
             <tr>
-                <td><a href="{{ path('student_show', { 'id': student.id }) }}">{{ student.id }}</a></td>
+                <td>{{ student.id }}</td>
                 <td>{{ student.matricule }}</td>
                 <td>{{ student.nom }}</td>
                 <td>{% if student.dateNaissance %}{{ student.dateNaissance|date('Y-m-d H:i:s') }}{% endif %}</td>
@@ -35,23 +36,13 @@
                 <td>{{ student.personneAcontacter }}</td>
                 <td>{{ student.dernierEtablissementFreq }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('student_show', { 'id': student.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('student_edit', { 'id': student.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                            <a class="btn btn-info" href="{{ path('student_show', { 'id': student.id }) }}">Détails</a>
+                            <a class="btn btn-success" href="{{ path('student_edit', { 'id': student.id }) }}">Modifier</a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('student_new') }}">Create a new student</a>
-        </li>
-    </ul>
+    {% include '/categorie/extras_categorie.css.html.twig' %}
+    {% include '/categorie/extras_categorie.js.html.twig' %}
 {% endblock %}

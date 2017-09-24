@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Cycles list</h1>
-
-    <table>
+    <h1 class="text-center">Liste des cycles</h1>
+     <a class="btn btn-primary" href="{{ path('cycle_new') }}">Ajouter un cycle</a>
+    <table  class="display table table-bordered table-striped" id="dynamic-table">
         <thead>
             <tr>
                 <th>Id</th>
@@ -17,23 +17,13 @@
                 <td><a href="{{ path('cycle_show', { 'id': cycle.id }) }}">{{ cycle.id }}</a></td>
                 <td>{{ cycle.nom }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('cycle_show', { 'id': cycle.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('cycle_edit', { 'id': cycle.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                    <a class="btn btn-success" href="{{ path('cycle_edit', { 'id': cycle.id }) }}">Mofifier</a>
+
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('cycle_new') }}">Create a new cycle</a>
-        </li>
-    </ul>
+    {% include '/categorie/extras_categorie.css.html.twig' %}
+    {% include '/categorie/extras_categorie.js.html.twig' %}
 {% endblock %}

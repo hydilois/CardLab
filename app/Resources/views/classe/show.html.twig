@@ -3,7 +3,7 @@
 {% block body %}
     <h1>Classe</h1>
 
-    <table>
+    <table class="table table-striped">
         <tbody>
             <tr>
                 <th>Id</th>
@@ -20,17 +20,18 @@
         </tbody>
     </table>
 
-    <ul>
-        <li>
-            <a href="{{ path('classe_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('classe_edit', { 'id': classe.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
+    <table class="pull-left">
+        <tr>
+            <td><a class="btn btn-default" href="{{ path('classe_index') }}">Retour à la liste</a></td>
+            <td>&nbsp; &nbsp;</td>
+            <td><a class="btn btn-success" href="{{ path('classe_edit', { 'id': classe.id }) }}">Modifier</a></td>
+            <td>&nbsp; &nbsp;</td>
+            <td>{{ form_start(delete_form) }}
+                <input class="btn btn-danger" type="submit" value="Supprimer">
+                {{ form_end(delete_form) }}
+            </td>
+        </tr>
+    </table>
+    {% include '/categorie/extras_categorie.css.html.twig' %}
+    {% include '/categorie/extras_categorie.js.html.twig' %}
 {% endblock %}

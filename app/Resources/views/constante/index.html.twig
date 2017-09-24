@@ -1,25 +1,25 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Constantes list</h1>
-
-    <table>
+    <h1 class="text-center">Informations sur l'établissement</h1>
+    <a class="btn btn-primary pull-left" href="{{ path('constante_new') }}">Nouvel etablissement</a>
+    <table  class="display table table-bordered table-striped" id="dynamic-table">
         <thead>
             <tr>
                 <th>Id</th>
                 <th>Ville</th>
-                <th>Nomfrancais</th>
-                <th>Nomanglais</th>
-                <th>Devisefrancais</th>
-                <th>Deviseanglais</th>
-                <th>Boitepostal</th>
+                <th>Nom en français</th>
+                <th>Nom en anglais</th>
+                <th>Devise en francais</th>
+                <th>Devise en anglais</th>
+                <th>Boite postal</th>
                 <th>Actions</th>
             </tr>
         </thead>
         <tbody>
         {% for constante in constantes %}
             <tr>
-                <td><a href="{{ path('constante_show', { 'id': constante.id }) }}">{{ constante.id }}</a></td>
+                <td>{{ constante.id }}</td>
                 <td>{{ constante.ville }}</td>
                 <td>{{ constante.nomFrancais }}</td>
                 <td>{{ constante.nomAnglais }}</td>
@@ -27,23 +27,13 @@
                 <td>{{ constante.deviseAnglais }}</td>
                 <td>{{ constante.boitePostal }}</td>
                 <td>
-                    <ul>
-                        <li>
-                            <a href="{{ path('constante_show', { 'id': constante.id }) }}">show</a>
-                        </li>
-                        <li>
-                            <a href="{{ path('constante_edit', { 'id': constante.id }) }}">edit</a>
-                        </li>
-                    </ul>
+                            <a class="btn btn-info" href="{{ path('constante_show', { 'id': constante.id }) }}">Détails</a>
+                            <a class="btn btn-success" href="{{ path('constante_edit', { 'id': constante.id }) }}">Modifier</a>
                 </td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
-
-    <ul>
-        <li>
-            <a href="{{ path('constante_new') }}">Create a new constante</a>
-        </li>
-    </ul>
+    {% include '/categorie/extras_categorie.css.html.twig' %}
+    {% include '/categorie/extras_categorie.js.html.twig' %}
 {% endblock %}
