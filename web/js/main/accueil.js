@@ -36,7 +36,7 @@ $(function() {
          */
         Base.prototype.initializeView = function() {
             console.log("Here stand the index file");
-            $('.panel .tools .fa').trigger('click');
+            // $('.panel .tools .fa').trigger('click');
             this.percentage();
         }
 
@@ -45,47 +45,28 @@ $(function() {
          * allow to set a whole bunch of listeners
          */
         Base.prototype.setListeners = function() {
-            this.setCreateFormModalShow();
-            this.setEditFormModalShow();
-        }
-
-        Base.prototype.setCreateFormModalShow = function() {
-            $('body').on('click','a[name="add-categorie"]', function() {
-                console.log("Je sui déja la");
-
-                $('#categorie-form').load(URL_ROOT+'/categorie/new', function(){
-                    $('.modal-add-categorie').modal('show');
-                });
-            })
         }
 
         Base.prototype.percentage  = function() {
+            console.log("Yesyyyyyyyyyyyyyyyyyyyy");
+
             Morris.Donut({
                 element: 'graph-donut',
                 data: [
-                    {value: 50, label: 'New Visit', formatted: 'at least 70%' },
-                    {value: 20, label: 'Unique Visits', formatted: 'approx. 15%' },
-                    {value: 20, label: 'Bounce Rate', formatted: 'approx. 10%' },
-                    {value: 10, label: 'Up Time', formatted: 'at most 99.99%' }
+                    {value: 15, label: 'Sequence 1', formatted: 'at least 15%' },
+                    {value: 15, label: 'Séquence 2', formatted: 'approx. 15%' },
+                    {value: 15, label: 'Séquence 3', formatted: 'approx. 15%' },
+                    {value: 15, label: 'Séquence 4', formatted: 'at most 15%' },
+                    {value: 20, label: 'Séquence 5', formatted: 'at most 20%' },
+                    {value: 20, label: 'Séquence 6', formatted: 'at most 20%' },
                 ],
                 backgroundColor: false,
                 labelColor: '#fff',
                 colors: [
-                    '#4acacb','#6a8bc0','#5ab6df','#fe8676'
+                    '#4acacb','#6a8bc0','#5ab6df','#fe1076','#fe8676','#fe8676'
                 ],
                 formatter: function (x, data) { return data.formatted; }
             });
-        }
-
-        Base.prototype.setEditFormModalShow = function() {
-            $('body').on('click','a[name="categorie-edit"]', function() {
-                console.log("Je sui déja la");
-                val = $(this).data('categorie');
-
-                $('#categorie-editform').load(URL_ROOT+'/categorie/'+val+'/edit', function(){
-                    $('.modal-edit-categorie').modal('show');
-                });
-            })
         }
 
         //this should be at the end
